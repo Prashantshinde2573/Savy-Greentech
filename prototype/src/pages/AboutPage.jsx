@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  PiArrowLeft,
   PiArrowRight,
   PiCheckCircle,
   PiFactory,
@@ -15,7 +16,7 @@ import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
-import { leadershipTeam, journeyTimeline } from '../data/team';
+import { leadershipTeam, journeyGroups, journeyTimeline } from '../data/team';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,8 +33,47 @@ export function AboutPage() {
   const storySequenceRef = useRef(null);
   const videoRef = useRef(null);
   const metricsRef = useRef(null);
+  const journeyScrollRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [activeGroupIndex, setActiveGroupIndex] = useState(0);
+  const [storyExpanded, setStoryExpanded] = useState(false);
+
+  // Sync active year tab and bottom counter indicator on horizontal scroll
+  useEffect(() => {
+    const viewport = journeyScrollRef.current;
+    if (!viewport) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const viewportLeft = viewport.getBoundingClientRect().left;
+          let closestIdx = 0;
+          let minDistance = Infinity;
+
+          journeyGroups.forEach((group, idx) => {
+            const el = document.getElementById(`journey-year-${group.year}`);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              const dist = Math.abs(rect.left - viewportLeft - 40);
+              if (dist < minDistance) {
+                minDistance = dist;
+                closestIdx = idx;
+              }
+            }
+          });
+
+          setActiveGroupIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    viewport.addEventListener('scroll', handleScroll, { passive: true });
+    return () => viewport.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Video autoplay listener
   useEffect(() => {
@@ -82,7 +122,7 @@ export function AboutPage() {
 
       // Section Headings & Card Groups Reveal
       gsap.utils.toArray(
-        '.about-story-content, .founding-story-card, .journey-timeline-grid, .mission-vision-grid, .engineering-grid, .about-team-grid, .partners-title, .contact-inner'
+        '.about-story-content, .founder-profile-card, .founding-story-content, .journey-timeline-grid, .mission-vision-grid, .engineering-grid, .about-team-grid, .partners-title, .contact-inner'
       ).forEach((group) => {
         gsap.from(group, {
           autoAlpha: 0,
@@ -214,53 +254,237 @@ export function AboutPage() {
       </section>
 
       {/* =========================================================================
-          SECTION 4: OUR FOUNDING STORY
+          SECTION 4: OUR FOUNDING STORY (REFINED 2-COLUMN WITH COMPACT LIQUID CARD & READ MORE)
           ========================================================================= */}
-      <section className="section-cream founding-story-section" id="founding-story" aria-labelledby="founding-story-title">
-        <div className="container">
-          <div className="founding-story-card">
-            <div className="founding-story-heading">
-              <span className="founding-story-badge">Our Founding Story</span>
-              <h2 id="founding-story-title">Custom EV Manufacturing Engineered from the Ground Up</h2>
+      <section className="founding-story-section" id="founding-story" aria-labelledby="founding-story-title">
+        {/* Subtle Organic Background Waves / Gradients */}
+        <div className="founding-story-bg-organic" aria-hidden="true">
+          <div className="organic-shape organic-shape-1" />
+          <div className="organic-shape organic-shape-2" />
+          <div className="organic-shape organic-shape-3" />
+          <svg className="organic-wave-svg" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,160 C320,300 420,-40 720,140 C1020,320 1180,40 1440,180 L1440,600 L0,600 Z" fill="url(#organic-gradient-1)" opacity="0.45" />
+            <path d="M0,280 C360,120 600,340 960,200 C1200,100 1320,240 1440,160 L1440,600 L0,600 Z" fill="url(#organic-gradient-2)" opacity="0.35" />
+            <defs>
+              <linearGradient id="organic-gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#e8f6ef" />
+                <stop offset="50%" stopColor="#f2faf5" />
+                <stop offset="100%" stopColor="#e0f2e9" />
+              </linearGradient>
+              <linearGradient id="organic-gradient-2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ebf8f1" />
+                <stop offset="100%" stopColor="#f5fbf7" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div className="container relative-z">
+          <div className="founding-story-layout">
+            {/* LEFT COLUMN: Compact Founder Profile Card (Liquid Glass UI) */}
+            <div className="founder-card-column">
+              <div className="founder-profile-card">
+                <div className="founder-card-glass-glow" aria-hidden="true" />
+                
+                <div className="founder-image-box">
+                  <img
+                    src="/assets/team/chandan-mundhra.jpg"
+                    alt="Chandan Mundhra, Founder & CEO of SAVY Greentech"
+                    className="founder-profile-img"
+                    loading="lazy"
+                  />
+                  <div className="founder-image-overlay">
+                    <span className="founder-badge-role">Founder &amp; CEO</span>
+                    <strong className="founder-badge-name">Chandan Mundhra</strong>
+                    <span className="founder-badge-detail">25+ Years Automotive Engineering</span>
+                  </div>
+                </div>
+
+                <div className="founder-meta-bar">
+                  <span className="founder-est-badge">EST. 2014</span>
+                  <span className="founder-location-text">Ahmedabad, Gujarat</span>
+                </div>
+              </div>
             </div>
-            <div className="founding-story-copy">
-              <p className="founding-story-lead">
-                Founded by <strong>Chandan Mundhra</strong>, an automotive engineering visionary with over 25 years of industry experience, <strong>Savy Greentech Pvt. Ltd.</strong> (formerly Savy Electric Vehicles Pvt. Ltd.) was established to bridge a crucial gap in India’s electric transition: custom, purpose-built commercial and campus electric vehicles.
-              </p>
-              <p>
-                While mass-market automotive players focused on standardized passenger cars, Indian institutions, municipal corporations, resorts, hospitals, and industrial plants struggled with off-the-shelf vehicles that failed under demanding Indian terrain and operational duty cycles.
-              </p>
-              <p>
-                SAVY pioneered indigenous design-to-assembly manufacturing in Ahmedabad, Gujarat, developing our own high-torque motor controllers, heavy-duty chassis frames, and intelligent battery systems. Today, SAVY powers operations for prestigious government bodies, defence establishments, luxury resorts, and Fortune 500 corporations across India.
-              </p>
+
+            {/* RIGHT COLUMN: Section Eyebrow, Heading, Lead & Expandable Story */}
+            <div className="founding-story-content">
+              <div className="founding-story-eyebrow-wrap">
+                <span className="founding-story-eyebrow-dot" />
+                <span className="founding-story-eyebrow">OUR FOUNDING STORY</span>
+              </div>
+
+              <h2 id="founding-story-title" className="founding-story-heading">
+                Custom EV Manufacturing Engineered from the Ground Up
+              </h2>
+
+              <div className="founding-story-body">
+                <p className="founding-story-lead">
+                  Founded by <strong>Chandan Mundhra</strong>, an automotive engineering visionary with over 25 years of industry experience, <strong>Savy Greentech Pvt. Ltd.</strong> (formerly Savy Electric Vehicles Pvt. Ltd.) was established to bridge a crucial gap in India’s electric transition: custom, purpose-built commercial and campus electric vehicles.
+                </p>
+
+                {/* Secondary Content - Expandable with Smooth Animation */}
+                <div
+                  id="founding-expandable-text"
+                  className={`founding-story-expandable ${storyExpanded ? 'is-expanded' : ''}`}
+                  aria-hidden={!storyExpanded}
+                >
+                  <div className="founding-story-expandable-inner">
+                    <p>
+                      While mass-market automotive players focused on standardized passenger cars, Indian institutions, municipal corporations, resorts, hospitals, and industrial plants struggled with off-the-shelf vehicles that failed under demanding Indian terrain and operational duty cycles.
+                    </p>
+                    <p>
+                      SAVY pioneered indigenous design-to-assembly manufacturing in Ahmedabad, Gujarat, developing our own high-torque motor controllers, heavy-duty chassis frames, and intelligent battery systems. Today, SAVY powers operations for prestigious government bodies, defence establishments, luxury resorts, and Fortune 500 corporations across India.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Read More / Read Less Interactive Action */}
+                <button
+                  type="button"
+                  className="founding-read-more-btn"
+                  onClick={() => setStoryExpanded((prev) => !prev)}
+                  aria-expanded={storyExpanded}
+                  aria-controls="founding-expandable-text"
+                >
+                  <span>{storyExpanded ? 'Read less' : 'Read more'}</span>
+                  <span className={`read-more-arrow ${storyExpanded ? 'is-up' : 'is-down'}`} aria-hidden="true">
+                    {storyExpanded ? '↑' : '↓'}
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 5: COMPANY JOURNEY TIMELINE
+          SECTION 5: SAVY JOURNEY (MULTI-CARD HORIZONTAL TIMELINE)
           ========================================================================= */}
-      <section className="section-white journey-section" aria-labelledby="journey-title">
+      <section className="section-white journey-section" id="journey" aria-labelledby="journey-title">
         <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">Our Evolution</p>
-            <h2 id="journey-title">The SAVY Journey</h2>
-            <p className="section-subtitle">From pioneering concepts to international exhibitions and nationwide institutional fleets.</p>
-          </div>
+          {/* Top Header Row */}
+          <div className="journey-header-row">
+            <div className="journey-title-block">
+              <span className="journey-eyebrow">OUR JOURNEY</span>
+              <h2 id="journey-title" className="journey-main-heading">SAVY Journey</h2>
+              <p className="journey-subtitle">Milestones that drive a cleaner, smarter tomorrow.</p>
+            </div>
 
-          <div className="journey-timeline-grid">
-            {journeyTimeline.map((item, index) => (
-              <article className="journey-card" key={item.phase}>
-                <div className="journey-card-header">
-                  <span className="journey-index">0{index + 1}</span>
-                  <span className="journey-year">{item.year}</span>
+            <div className="journey-years-nav-block">
+              <div className="journey-years-tabs" role="tablist" aria-label="Milestone Years">
+                {journeyGroups.map((group, idx) => {
+                  const isActive = idx === activeGroupIndex;
+                  return (
+                    <button
+                      key={group.year}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      className={`journey-year-tab ${isActive ? 'active' : ''}`}
+                      onClick={() => {
+                        setActiveGroupIndex(idx);
+                        const target = document.getElementById(`journey-year-${group.year}`);
+                        if (target) {
+                          target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                        }
+                      }}
+                    >
+                      <span>{group.year}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Full-Bleed Horizontal Journey Scroll Viewport */}
+        <div className="journey-full-bleed-viewport" ref={journeyScrollRef} tabIndex={0} role="region" aria-label="SAVY Journey Timeline">
+          <div className="journey-scroll-track">
+            {journeyGroups.map((group, groupIdx) => (
+              <div className="journey-year-group" id={`journey-year-${group.year}`} key={group.year}>
+                <div className="journey-group-content">
+                  <h3 className="journey-group-year">{group.year}</h3>
+
+                  <div className="journey-cards-grid">
+                    {group.milestones.map((item) => (
+                      <article key={item.id} className="journey-milestone-card">
+                        <div className="journey-card-media">
+                          <img src={item.image} alt={item.alt || item.title} loading="lazy" />
+                        </div>
+                        <div className="journey-card-info">
+                          <h4 className="journey-card-title">{item.title}</h4>
+                          <p className="journey-card-desc">{item.description}</p>
+                          <a className="journey-card-cta" href={item.ctaUrl || '/about'}>
+                            <span>{item.ctaLabel || 'View More'}</span>
+                            <PiArrowRight aria-hidden="true" />
+                          </a>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="journey-phase">{item.phase}</h3>
-                <h4 className="journey-card-title">{item.title}</h4>
-                <p className="journey-description">{item.description}</p>
-              </article>
+
+                {groupIdx < journeyGroups.length - 1 && (
+                  <div className="journey-vertical-divider" aria-hidden="true" />
+                )}
+              </div>
             ))}
+          </div>
+        </div>
+
+        <div className="container">
+          {/* Bottom Controls Row */}
+          <div className="journey-bottom-bar">
+            <div className="journey-nav-arrows">
+              <button
+                type="button"
+                className={`journey-arrow-btn ${activeGroupIndex > 0 ? 'active' : ''}`}
+                onClick={() => {
+                  const nextIdx = Math.max(0, activeGroupIndex - 1);
+                  setActiveGroupIndex(nextIdx);
+                  const target = document.getElementById(`journey-year-${journeyGroups[nextIdx].year}`);
+                  if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                  }
+                }}
+                disabled={activeGroupIndex === 0}
+                aria-label="Previous Milestone Year"
+              >
+                <PiArrowLeft aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className={`journey-arrow-btn primary ${activeGroupIndex < journeyGroups.length - 1 ? 'active' : ''}`}
+                onClick={() => {
+                  const nextIdx = Math.min(journeyGroups.length - 1, activeGroupIndex + 1);
+                  setActiveGroupIndex(nextIdx);
+                  const target = document.getElementById(`journey-year-${journeyGroups[nextIdx].year}`);
+                  if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                  }
+                }}
+                disabled={activeGroupIndex === journeyGroups.length - 1}
+                aria-label="Next Milestone Year"
+              >
+                <PiArrowRight aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="journey-progress-indicator">
+              <div className="journey-progress-track">
+                <div
+                  className="journey-progress-fill"
+                  style={{
+                    width: `${((activeGroupIndex + 1) / journeyGroups.length) * 100}%`
+                  }}
+                />
+              </div>
+              <span className="journey-counter-display">
+                0{activeGroupIndex + 1} <span className="counter-divider">/</span> 0{journeyGroups.length}
+              </span>
+            </div>
           </div>
         </div>
       </section>

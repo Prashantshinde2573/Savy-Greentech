@@ -1226,67 +1226,340 @@ main#top:not(.home-old) :focus-visible {
   line-height: 1.75;
 }
 
-/* Section 4: Our Founding Story Card */
+/* Section 4: Our Founding Story (Liquid Card UI) */
+/* =========================================================================
+   OUR FOUNDING STORY (REFINED 2-COLUMN LAYOUT WITH COMPACT LIQUID CARD)
+   ========================================================================= */
 .founding-story-section {
-  padding: 100px 0;
+  position: relative;
+  padding: clamp(72px, 8vw, 110px) 0;
+  background: linear-gradient(180deg, #fbfdfc 0%, #f4faf6 50%, #f9fcfb 100%);
+  overflow: hidden;
 }
 
-.founding-story-card {
-  background: var(--white);
-  border: 1px solid var(--sage);
-  border-radius: 24px;
-  padding: clamp(36px, 5vw, 64px);
+/* Subtle Organic Background Treatment */
+.founding-story-bg-organic {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.organic-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.organic-shape-1 {
+  top: -120px;
+  right: -80px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(30, 168, 104, 0.12) 0%, rgba(220, 246, 233, 0.05) 70%, transparent 100%);
+}
+
+.organic-shape-2 {
+  bottom: -140px;
+  left: -100px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(16, 67, 54, 0.08) 0%, rgba(200, 240, 220, 0.04) 70%, transparent 100%);
+}
+
+.organic-shape-3 {
+  top: 35%;
+  left: 45%;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(183, 244, 211, 0.2) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+}
+
+.organic-wave-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.relative-z {
+  position: relative;
+  z-index: 2;
+}
+
+/* Clean 2-Column Layout */
+.founding-story-layout {
   display: grid;
-  grid-template-columns: minmax(320px, 0.8fr) minmax(500px, 1.2fr);
-  gap: clamp(48px, 6vw, 80px);
-  align-items: start;
+  grid-template-columns: minmax(260px, 320px) minmax(360px, 1fr);
+  gap: clamp(40px, 6vw, 84px);
+  align-items: flex-start;
 }
 
-.founding-story-badge {
-  display: inline-flex;
+/* LEFT COLUMN: Compact Founder Profile Card (Liquid Glass UI) */
+.founder-card-column {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.founder-profile-card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94) 0%, rgba(240, 248, 244, 0.82) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(16, 67, 54, 0.12);
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 20px 48px rgba(16, 67, 54, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+.founder-profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 56px rgba(16, 67, 54, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.founder-card-glass-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 168, 104, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(24px);
+}
+
+.founder-image-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.4;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f2d24;
+}
+
+.founder-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.founder-profile-card:hover .founder-profile-img {
+  transform: scale(1.04);
+}
+
+.founder-image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 16px 14px;
+  background: linear-gradient(180deg, rgba(12, 33, 27, 0) 0%, rgba(10, 29, 24, 0.92) 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.founder-badge-role {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a3efc5;
+}
+
+.founder-badge-name {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.founder-badge-detail {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.founder-meta-bar {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  margin-bottom: 16px;
-  font-size: 12px;
+  padding: 10px 4px 2px;
+}
+
+.founder-est-badge {
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--canopy);
+  color: #104336;
+  background: #e1f3ea;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(16, 67, 54, 0.1);
 }
 
-.founding-story-heading h2 {
-  font-size: clamp(32px, 3.2vw, 44px);
+.founder-location-text {
+  font-size: 12px;
   font-weight: 500;
-  line-height: 1.15;
+  color: #4b675c;
+}
+
+/* RIGHT COLUMN: Content */
+.founding-story-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.founding-story-eyebrow-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.founding-story-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1ea868;
+  box-shadow: 0 0 0 3px rgba(30, 168, 104, 0.25);
+}
+
+.founding-story-eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #104336;
+}
+
+.founding-story-heading {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 600;
+  line-height: 1.18;
   letter-spacing: -0.025em;
-  color: var(--bark);
-  margin: 0;
+  color: #0c201a;
+  margin: 0 0 20px;
 }
 
-.founding-story-copy p.founding-story-lead {
-  font-size: clamp(18px, 1.6vw, 22px);
-  line-height: 1.5;
-  color: var(--bark);
+.founding-story-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.founding-story-lead {
+  font-size: clamp(16px, 1.4vw, 18.5px);
+  line-height: 1.65;
+  color: #132a22;
   font-weight: 500;
-  margin-bottom: 24px;
+  margin: 0 0 14px;
 }
 
-.founding-story-copy p {
-  font-size: 16px;
+.founding-story-lead strong {
+  color: #081914;
+  font-weight: 600;
+}
+
+/* Smooth Expandable CSS Grid Transition */
+.founding-story-expandable {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, margin 0.35s ease;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+.founding-story-expandable.is-expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 4px;
+}
+
+.founding-story-expandable-inner {
+  min-height: 0;
+}
+
+.founding-story-expandable-inner p {
+  font-size: 15px;
   line-height: 1.7;
-  color: var(--slate);
-  margin-bottom: 20px;
+  color: #435e53;
+  margin: 0 0 16px;
 }
 
-.founding-story-copy p:last-child {
-  margin-bottom: 0;
+.founding-story-expandable-inner p:last-child {
+  margin-bottom: 8px;
+}
+
+/* Read More Button */
+.founding-read-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #104336;
+  cursor: pointer;
+  transition: color 0.2s ease, gap 0.2s ease;
+  align-self: flex-start;
+}
+
+.founding-read-more-btn:hover {
+  color: #1ea868;
+  gap: 11px;
+}
+
+.read-more-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(16, 67, 54, 0.08);
+  font-size: 13px;
+  font-weight: 700;
+  color: #104336;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.founding-read-more-btn:hover .read-more-arrow {
+  background: #104336;
+  color: #ffffff;
 }
 
 @media (max-width: 960px) {
-  .founding-story-card {
+  .founding-story-layout {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 32px 24px;
+    gap: 36px;
+  }
+
+  .founder-profile-card {
+    max-width: 300px;
   }
 }
 
@@ -5274,5 +5547,366 @@ main#top:not(.home-old) :focus-visible {
   .job-card-header {
     flex-direction: column;
     gap: 12px;
+  }
+}
+
+/* ==========================================================================
+   SAVY JOURNEY — HORIZONTAL MULTI-CARD FULL-BLEED TIMELINE
+   ========================================================================== */
+.journey-section {
+  padding: 100px 0;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Header Row with Title and Year Tabs */
+.journey-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #eef3f0;
+  padding-bottom: 20px;
+}
+
+.journey-title-block {
+  max-width: 580px;
+}
+
+.journey-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1e7d5d;
+  margin: 0 0 6px;
+  display: block;
+}
+
+.journey-main-heading {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: clamp(34px, 3.6vw, 48px);
+  font-weight: 700;
+  color: #0c201a;
+  margin: 0 0 8px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.journey-subtitle {
+  font-size: 15px;
+  color: #5a7368;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.journey-years-nav-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.journey-years-tabs {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.journey-year-tab {
+  background: transparent;
+  border: 0;
+  padding: 6px 4px;
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #617a6f;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+  outline: none;
+}
+
+.journey-year-tab:hover {
+  color: #104336;
+}
+
+.journey-year-tab.active {
+  color: #104336;
+  font-weight: 700;
+}
+
+.journey-year-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: #104336;
+  border-radius: 2px;
+}
+
+/* Full-Bleed Horizontal Scroll Viewport */
+.journey-full-bleed-viewport {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0 20px;
+}
+
+.journey-full-bleed-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.journey-scroll-track {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  padding-left: max(24px, calc((100vw - 1200px) / 2 + 16px));
+  padding-right: max(24px, calc((100vw - 1200px) / 2 + 16px));
+  gap: 48px;
+}
+
+.journey-year-group {
+  display: flex;
+  align-items: stretch;
+  gap: 48px;
+  flex-shrink: 0;
+  scroll-margin-left: max(24px, calc((100vw - 1200px) / 2 + 16px));
+}
+
+.journey-group-content {
+  flex-shrink: 0;
+}
+
+.journey-group-year {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: clamp(48px, 5vw, 76px);
+  font-weight: 400;
+  color: #0c2b22;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 0 0 20px;
+}
+
+.journey-cards-grid {
+  display: flex;
+  gap: 22px;
+}
+
+.journey-vertical-divider {
+  width: 1px;
+  background: #dce7e1;
+  align-self: stretch;
+  margin: 16px 0 0;
+}
+
+/* Individual Milestone Card */
+.journey-milestone-card {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border-radius: 0;
+  transition: transform 0.25s ease;
+}
+
+.journey-milestone-card:hover {
+  transform: translateY(-4px);
+}
+
+.journey-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+  margin-bottom: 14px;
+}
+
+.journey-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+
+.journey-milestone-card:hover .journey-card-media img {
+  transform: scale(1.04);
+}
+
+.journey-card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.journey-card-title {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.28;
+  color: #10211c;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.journey-card-desc {
+  font-size: 14.5px;
+  line-height: 1.58;
+  color: #536b62;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.journey-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #104336;
+  text-decoration: none;
+  border-bottom: 1.5px solid #104336;
+  padding-bottom: 2px;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+}
+
+.journey-card-cta:hover {
+  gap: 10px;
+  color: #1ea868;
+  border-color: #1ea868;
+}
+
+/* Bottom Bar Controls */
+.journey-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #edf2ee;
+}
+
+.journey-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.journey-arrow-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid #d4dfd8;
+  background: #ffffff;
+  color: #104336;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 18px;
+}
+
+.journey-arrow-btn.active {
+  background: #ffffff;
+  color: #104336;
+  border-color: #104336;
+}
+
+.journey-arrow-btn:hover:not(:disabled) {
+  background: #104336;
+  color: #ffffff;
+  border-color: #104336;
+  transform: scale(1.06);
+}
+
+.journey-arrow-btn.primary {
+  background: #104336;
+  color: #ffffff;
+  border-color: #104336;
+}
+
+.journey-arrow-btn.primary:hover:not(:disabled) {
+  background: #17634f;
+  border-color: #17634f;
+  transform: scale(1.06);
+}
+
+.journey-arrow-btn:disabled {
+  background: #f4f6f4 !important;
+  border-color: #e2ede6 !important;
+  color: #a3b8ad !important;
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.journey-progress-indicator {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 340px;
+}
+
+.journey-progress-track {
+  flex: 1;
+  height: 2px;
+  background: #e2ede6;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.journey-progress-fill {
+  height: 100%;
+  background: #104336;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.journey-counter-display {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #104336;
+  letter-spacing: 0.04em;
+}
+
+.journey-counter-display .counter-divider {
+  font-weight: 400;
+  color: #879e94;
+}
+
+@media (max-width: 960px) {
+  .journey-milestone-card {
+    width: 280px;
+  }
+
+  .journey-years-tabs {
+    overflow-x: auto;
+    max-width: calc(100vw - 80px);
+    padding-bottom: 6px;
+  }
+
+  .journey-progress-indicator {
+    width: 180px;
+  }
+
+  .journey-vertical-divider {
+    display: none;
   }
 }
