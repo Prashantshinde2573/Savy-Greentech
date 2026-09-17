@@ -1,0 +1,10 @@
+{
+  "name": "savy-greentech-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix prototype run dev",
+    "build": "npm --prefix prototype run build",
+    "preview": "npm --prefix prototype run preview"
+  }
+}
