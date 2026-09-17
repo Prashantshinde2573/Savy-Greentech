@@ -97,7 +97,7 @@ export function SustainabilityPage() {
       />
 
       {/* Impact Metrics Overview */}
-      <section className="intro intro-impact section-white" aria-label="Environmental impact in numbers">
+      <section className="intro intro-impact" aria-label="Environmental impact in numbers">
         <div className="container impact-layout">
           <h2>Tangible Environmental &amp; Community Impact</h2>
           <div className="impact-numbers">

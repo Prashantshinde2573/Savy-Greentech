@@ -227,7 +227,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">SAVY ELECTRIC VEHICLES</p>
-                          <h3 className="pane-title">Purpose-Built for a Cleaner, Smarter Tomorrow</h3>
+                          <h3 className="pane-title">All Vehicle Categories</h3>
                         </div>
                         <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View All Vehicles</span>
@@ -236,212 +236,347 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       </div>
 
                       <div className="all-vehicles-grid">
-                        <a href="/products/classic-golf" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('golf')}
+                          onClick={() => setActiveProductTab('golf')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/classic-golf.jpeg" alt="Golf Carts" />
                           </div>
                           <span className="overview-card-label">Golf Carts</span>
-                        </a>
+                        </div>
 
-                        <a href="/products/electruck" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('loading')}
+                          onClick={() => setActiveProductTab('loading')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/electruck.jpg" alt="Loading Rickshaws" />
                           </div>
                           <span className="overview-card-label">Loading Rickshaws</span>
-                        </a>
+                        </div>
 
-                        <a href="/products/dump-truck" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('garbage')}
+                          onClick={() => setActiveProductTab('garbage')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/dump-truck.jpg" alt="Garbage Collection" />
                           </div>
                           <span className="overview-card-label">Garbage Collection</span>
-                        </a>
+                        </div>
 
-                        <a href="/products/tuk-tuk-e" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('passenger')}
+                          onClick={() => setActiveProductTab('passenger')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/tuk-tuk.jpg" alt="Passenger Vehicles" />
                           </div>
                           <span className="overview-card-label">Passenger Vehicles</span>
-                        </a>
+                        </div>
 
-                        <a href="/products/custom-electruck-900kg" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('custom')}
+                          onClick={() => setActiveProductTab('custom')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/vintage-elite.jpg" alt="Custom / Industrial" />
                           </div>
                           <span className="overview-card-label">Custom / Industrial</span>
-                        </a>
+                        </div>
 
-                        <a href="/products/city-pod" className="overview-card" onClick={closeAllMenus}>
+                        <div
+                          className="overview-card"
+                          style={{ cursor: 'pointer' }}
+                          onMouseEnter={() => setActiveProductTab('upcoming')}
+                          onClick={() => setActiveProductTab('upcoming')}
+                        >
                           <div className="overview-card-img">
                             <img src="/assets/coming-soon-vehicle.png" alt="Upcoming Vehicles" />
                           </div>
                           <span className="overview-card-label">Upcoming Vehicles</span>
-                        </a>
+                        </div>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: GOLF CARTS */}
                   {activeProductTab === 'golf' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/classic-golf.jpeg" alt="Golf Carts" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">CAMPUS &amp; RESORT MOBILITY</p>
-                          <h3 className="single-cat-title">Golf Carts</h3>
-                          <p className="single-cat-desc">
-                            Silent, comfortable 2 to 8-seater electric carts engineered for resorts, universities, airports, and luxury VIP campus transit.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/classic-golf" onClick={closeAllMenus}>Golf Carts (Classic &amp; Club)</a></li>
-                            <li><a href="/products/vintage-elite" onClick={closeAllMenus}>Elite Vintage Cart</a></li>
-                            <li><a href="/products/club-cart" onClick={closeAllMenus}>Electric Club Cart</a></li>
-                            <li><a href="/products/classic-golf" onClick={closeAllMenus}>Custom Seating &amp; Cargo Carts</a></li>
-                          </ul>
-                          <a href="/products/classic-golf" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Golf Carts</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Golf Carts</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Golf Carts</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-3">
+                        <a href="/products/classic-golf" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/classic-golf.jpeg" alt="Classic Golf" />
+                          </div>
+                          <strong className="product-tab-card-title">Classic Golf</strong>
+                          <span className="product-tab-card-sub">High-efficiency 2 to 8-seater campus transit cart</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/club-cart" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/club-cart.jpg" alt="Club Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Club Cart</strong>
+                          <span className="product-tab-card-sub">Luxury executive resort and VIP guest vehicle</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/vintage-elite" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/vintage-elite.jpg" alt="Elite Vintage Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Elite Vintage Cart</strong>
+                          <span className="product-tab-card-sub">Timeless heritage aesthetic with electric powertrain</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: LOADING RICKSHAWS */}
                   {activeProductTab === 'loading' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/electruck.jpg" alt="Loading Rickshaws" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">COMMERCIAL CARGO</p>
-                          <h3 className="single-cat-title">Loading Rickshaws</h3>
-                          <p className="single-cat-desc">
-                            Heavy-duty three-wheel electric cargo vehicles designed for FMCG delivery, internal factory logistics, laundry services, and urban freight.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/electruck" onClick={closeAllMenus}>Electruck Standard Loader</a></li>
-                            <li><a href="/products/electruck" onClick={closeAllMenus}>Nano Compact Loader</a></li>
-                            <li><a href="/products/classic-golf" onClick={closeAllMenus}>Golf Loader Cart</a></li>
-                            <li><a href="/products/electruck" onClick={closeAllMenus}>DLX High-Deck Loader</a></li>
-                          </ul>
-                          <a href="/products/electruck" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Loading Rickshaws</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Loading Rickshaws</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Loading Rickshaws</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-3">
+                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Electruck Standard" />
+                          </div>
+                          <strong className="product-tab-card-title">Electruck Standard</strong>
+                          <span className="product-tab-card-sub">Heavy-duty commercial cargo 3-wheeler</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Nano Compact Loader" />
+                          </div>
+                          <strong className="product-tab-card-title">Nano Compact Loader</strong>
+                          <span className="product-tab-card-sub">Agile inner-facility materials and package delivery</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="DLX High-Deck Loader" />
+                          </div>
+                          <strong className="product-tab-card-title">DLX High-Deck Loader</strong>
+                          <span className="product-tab-card-sub">High-volume freight deck for FMCG &amp; laundry</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: GARBAGE COLLECTION */}
                   {activeProductTab === 'garbage' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/dump-truck.jpg" alt="Garbage Collection" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">MUNICIPAL SANITATION</p>
-                          <h3 className="single-cat-title">Garbage Collection Vehicles</h3>
-                          <p className="single-cat-desc">
-                            Purpose-built electric waste collection tippers supporting Swachh Bharat missions across municipalities, smart cities, and Gram Panchayats.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/dump-truck" onClick={closeAllMenus}>Dual Compartment Waste Tipper</a></li>
-                            <li><a href="/products/dump-truck" onClick={closeAllMenus}>Hydraulic High-Lift Tipper</a></li>
-                            <li><a href="/products/dump-truck" onClick={closeAllMenus}>Wet &amp; Dry Segregated Tipper</a></li>
-                          </ul>
-                          <a href="/products/dump-truck" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Garbage Vehicles</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Garbage Collection Vehicles</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Garbage Vehicles</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-2">
+                        <a href="/products/dump-truck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/dump-truck.jpg" alt="Dual Compartment Tipper" />
+                          </div>
+                          <strong className="product-tab-card-title">Dual Compartment Waste Tipper</strong>
+                          <span className="product-tab-card-sub">Segregated wet &amp; dry collection for Swachh Bharat</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/dump-truck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/dump-truck.jpg" alt="Hydraulic Tipper" />
+                          </div>
+                          <strong className="product-tab-card-title">Hydraulic High-Lift Tipper</strong>
+                          <span className="product-tab-card-sub">Electro-hydraulic tipping bin for municipal disposal</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: PASSENGER VEHICLES */}
                   {activeProductTab === 'passenger' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/tuk-tuk.jpg" alt="Passenger Vehicles" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">PASSENGER &amp; STUDENT TRANSIT</p>
-                          <h3 className="single-cat-title">Passenger &amp; Other Vehicles</h3>
-                          <p className="single-cat-desc">
-                            Safe, approved electric passenger mobility solutions ranging from child-safe school rickshaws to mobile retail food carts.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/school-rickshaw" onClick={closeAllMenus}>Electric School Rickshaw (Child-Safe)</a></li>
-                            <li><a href="/products/tuk-tuk-e" onClick={closeAllMenus}>Passenger Rickshaw (Tuk Tuk ë — 2+1 to 8+1)</a></li>
-                            <li><a href="/products/food-cart-rickshaw" onClick={closeAllMenus}>Rickshaw Food Cart</a></li>
-                            <li><a href="/products/vintage-elite" onClick={closeAllMenus}>Electric Vintage Car</a></li>
-                          </ul>
-                          <a href="/products/tuk-tuk-e" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Passenger Vehicles</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Passenger Vehicles</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Passenger Vehicles</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-4">
+                        <a href="/products/school-rickshaw" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/tuk-tuk.jpg" alt="School Rickshaw" />
+                          </div>
+                          <strong className="product-tab-card-title">School Rickshaw</strong>
+                          <span className="product-tab-card-sub">Child-safe speed-governed student transport</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/tuk-tuk-e" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/tuk-tuk.jpg" alt="Passenger Rickshaw" />
+                          </div>
+                          <strong className="product-tab-card-title">Passenger Rickshaw (Tuk Tuk ë)</strong>
+                          <span className="product-tab-card-sub">Approved 4+1 on-road passenger 3-wheeler</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/food-cart-rickshaw" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Rickshaw Food Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Rickshaw Food Cart</strong>
+                          <span className="product-tab-card-sub">Mobile retail and food dispensing station</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/vintage-elite" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/vintage-elite.jpg" alt="Electric Vintage Car" />
+                          </div>
+                          <strong className="product-tab-card-title">Electric Vintage Car</strong>
+                          <span className="product-tab-card-sub">VIP campus and destination wedding transport</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: CUSTOM / INDUSTRIAL */}
                   {activeProductTab === 'custom' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/vintage-elite.jpg" alt="Custom Builds" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">SPECIALIZED BUILDS</p>
-                          <h3 className="single-cat-title">Custom / Industrial Vehicles</h3>
-                          <p className="single-cat-desc">
-                            Engineered from the ground up for specific operational duty cycles, heavy payload requirements, and custom client superstructures.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/electruck" onClick={closeAllMenus}>Electruck Heavy Cargo</a></li>
-                            <li><a href="/products/custom-electruck-900kg" onClick={closeAllMenus}>Ramdev Foods 900kg Custom Build</a></li>
-                            <li><a href="/products/custom-electruck-900kg" onClick={closeAllMenus}>Mobile ATM Banking Vehicle</a></li>
-                            <li><a href="/products/custom-electruck-900kg" onClick={closeAllMenus}>Dairy &amp; Milk Distribution Cart</a></li>
-                          </ul>
-                          <a href="/products/custom-electruck-900kg" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Custom Builds</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Custom / Industrial Vehicles</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Custom Vehicles</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-4">
+                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Electruck Heavy Cargo" />
+                          </div>
+                          <strong className="product-tab-card-title">Electruck Heavy Cargo</strong>
+                          <span className="product-tab-card-sub">Reinforced factory and industrial platform</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/custom-electruck-900kg" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Ramdev Foods 900kg Build" />
+                          </div>
+                          <strong className="product-tab-card-title">Ramdev Foods 900kg Build</strong>
+                          <span className="product-tab-card-sub">Custom reinforced heavy factory hauler</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/atm-vehicle" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Mobile ATM Vehicle" />
+                          </div>
+                          <strong className="product-tab-card-title">Mobile ATM Vehicle</strong>
+                          <span className="product-tab-card-sub">Secure mobile banking and cash distribution</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/milk-cart" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Dairy & Milk Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Dairy &amp; Milk Cart</strong>
+                          <span className="product-tab-card-sub">Insulated crate distribution vehicle</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
 
                   {/* TAB: UPCOMING VEHICLES */}
                   {activeProductTab === 'upcoming' && (
-                    <div className="tab-pane active-pane single-cat-pane">
-                      <div className="single-cat-layout">
-                        <div className="single-cat-media">
-                          <img src="/assets/coming-soon-vehicle.png" alt="Upcoming Vehicles" />
-                        </div>
-                        <div className="single-cat-details">
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
                           <p className="pane-eyebrow">NEXT-GEN CONCEPTS</p>
-                          <h3 className="single-cat-title">Upcoming Vehicles</h3>
-                          <p className="single-cat-desc">
-                            Next-generation electric mobility concepts designed for sustainable global tourism and modern smart city transit.
-                          </p>
-                          <ul className="single-cat-list">
-                            <li><a href="/products/city-pod" onClick={closeAllMenus}>City Pod (Amsterdam E-Mobility Expo Debut)</a></li>
-                            <li><a href="/products/city-pod" onClick={closeAllMenus}>Electric Mini Bus Shuttle</a></li>
-                          </ul>
-                          <a href="/products/city-pod" className="single-cat-cta-btn" onClick={closeAllMenus}>
-                            <span>View Upcoming Vehicles</span>
-                            <PiArrowRight />
-                          </a>
+                          <h3 className="pane-title">Upcoming Vehicles</h3>
                         </div>
+                        <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View All Upcoming Vehicles</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-2">
+                        <a href="/products/city-pod" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/coming-soon-vehicle.png" alt="SAVY City Pod" />
+                          </div>
+                          <strong className="product-tab-card-title">SAVY City Pod</strong>
+                          <span className="product-tab-card-sub">Amsterdam E-Mobility Expo international debut</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/city-pod" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/coming-soon-vehicle.png" alt="Electric Mini Bus Shuttle" />
+                          </div>
+                          <strong className="product-tab-card-title">Electric Mini Bus Shuttle</strong>
+                          <span className="product-tab-card-sub">High-capacity zero-emission campus shuttle</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
                       </div>
                     </div>
                   )}
@@ -450,159 +585,23 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
             </div>
           </div>
 
-          {/* 3. Applications Dropdown — Clean Visual Card Grid */}
-          <div
-            className="nav-dropdown-trigger vehicle-menu-trigger"
-            onMouseEnter={() => handleMouseEnter('applications')}
-            onMouseLeave={handleMouseLeave}
-            onBlur={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget)) setOpenDropdown(null);
-            }}
+          {/* 3. Applications (Direct Link) */}
+          <a
+            className={isCurrent('/applications') ? 'active' : ''}
+            href="/applications"
+            onClick={closeAllMenus}
           >
-            <button
-              type="button"
-              className={`dropdown-nav-button vehicle-nav-button ${isCategoryActive('applications') ? 'active' : ''}`}
-              aria-expanded={openDropdown === 'applications'}
-              onClick={() => handleDropdownToggle('applications')}
-            >
-              <span>Applications</span> <PiCaretDown aria-hidden="true" />
-            </button>
+            Applications
+          </a>
 
-            <div className={`clean-visual-dropdown vehicle-mega ${openDropdown === 'applications' ? 'open' : ''}`}>
-              <div className="container clean-dropdown-shell">
-                <div className="clean-dropdown-grid clean-grid-6">
-                  <a href="/applications#municipal-government" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/government.jpg" alt="Municipal & Government" />
-                    </div>
-                    <strong className="clean-card-title">Municipal &amp; Government</strong>
-                    <span className="clean-card-sub">Swachh Bharat &amp; civic services</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/applications#hospitality-tourism" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/tourism.jpg" alt="Hospitality & Tourism" />
-                    </div>
-                    <strong className="clean-card-title">Hospitality &amp; Tourism</strong>
-                    <span className="clean-card-sub">Resorts &amp; luxury guest mobility</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/applications#healthcare" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/campus.jpg" alt="Healthcare & Hospitals" />
-                    </div>
-                    <strong className="clean-card-title">Healthcare &amp; Hospitals</strong>
-                    <span className="clean-card-sub">Quiet patient &amp; campus transit</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/applications#industrial-logistics" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/logistics.jpg" alt="Industrial & Logistics" />
-                    </div>
-                    <strong className="clean-card-title">Industrial &amp; Logistics</strong>
-                    <span className="clean-card-sub">Factory cargo &amp; warehouse flow</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/applications#defence-campuses" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/airport.jpg" alt="Defence & Institutional" />
-                    </div>
-                    <strong className="clean-card-title">Defence &amp; Institutional</strong>
-                    <span className="clean-card-sub">Air bases &amp; university campuses</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/applications#food-retail" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/applications/community.jpg" alt="Food, Retail & FMCG" />
-                    </div>
-                    <strong className="clean-card-title">Food, Retail &amp; FMCG</strong>
-                    <span className="clean-card-sub">Mobile vending &amp; last-mile delivery</span>
-                    <span className="clean-card-link-text">Explore <PiArrowRight /></span>
-                  </a>
-                </div>
-
-                <div className="clean-dropdown-footer">
-                  <a href="/applications" className="clean-footer-cta" onClick={closeAllMenus}>
-                    <span>View All Industry Applications &amp; Case Studies</span>
-                    <PiArrowRight />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 4. Technology Dropdown — Clean 4-Card Visual Dropdown */}
-          <div
-            className="nav-dropdown-trigger vehicle-menu-trigger"
-            onMouseEnter={() => handleMouseEnter('technology')}
-            onMouseLeave={handleMouseLeave}
-            onBlur={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget)) setOpenDropdown(null);
-            }}
+          {/* 4. Technology (Direct Link) */}
+          <a
+            className={isCurrent('/technology') ? 'active' : ''}
+            href="/technology"
+            onClick={closeAllMenus}
           >
-            <button
-              type="button"
-              className={`dropdown-nav-button vehicle-nav-button ${isCategoryActive('technology') ? 'active' : ''}`}
-              aria-expanded={openDropdown === 'technology'}
-              onClick={() => handleDropdownToggle('technology')}
-            >
-              <span>Technology</span> <PiCaretDown aria-hidden="true" />
-            </button>
-
-            <div className={`clean-visual-dropdown vehicle-mega ${openDropdown === 'technology' ? 'open' : ''}`}>
-              <div className="container clean-dropdown-shell">
-                <div className="clean-dropdown-grid clean-grid-4">
-                  <a href="/technology" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/process/customization-design.jpg" alt="Technology & Platform" />
-                    </div>
-                    <strong className="clean-card-title">Technology &amp; Powertrain</strong>
-                    <span className="clean-card-sub">High-torque indigenous motors &amp; BMS</span>
-                    <span className="clean-card-link-text">Learn more <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/technology#manufacturing-process" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/process/consultation-external.jpg" alt="In-House Manufacturing" />
-                    </div>
-                    <strong className="clean-card-title">In-House Manufacturing</strong>
-                    <span className="clean-card-sub">5-stage design to assembly Ahmedabad plant</span>
-                    <span className="clean-card-link-text">Learn more <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/technology#quality-heading" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/process/deployment-external.jpg" alt="Quality & Testing" />
-                    </div>
-                    <strong className="clean-card-title">Quality &amp; Testing</strong>
-                    <span className="clean-card-sub">Rigorous dyno, gradient &amp; ARAI tests</span>
-                    <span className="clean-card-link-text">Learn more <PiArrowRight /></span>
-                  </a>
-
-                  <a href="/technology#service-heading" className="clean-card" onClick={closeAllMenus}>
-                    <div className="clean-card-img">
-                      <img src="/assets/process/support-external.jpg" alt="After-Sales Service" />
-                    </div>
-                    <strong className="clean-card-title">After-Sales Service</strong>
-                    <span className="clean-card-sub">Pan-India doorstep support &amp; genuine parts</span>
-                    <span className="clean-card-link-text">Learn more <PiArrowRight /></span>
-                  </a>
-                </div>
-
-                <div className="clean-dropdown-footer">
-                  <a href="/technology" className="clean-footer-cta" onClick={closeAllMenus}>
-                    <span>Explore Full Engineering &amp; Technology Stack</span>
-                    <PiArrowRight />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+            Technology
+          </a>
 
           {/* 5. Company Dropdown — Clean Editorial Visual Dropdown */}
           <div
