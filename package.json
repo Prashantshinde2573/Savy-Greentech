@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm --prefix prototype run dev",
-    "build": "npm --prefix prototype run build",
+    "build": "npm --prefix prototype install && npm --prefix prototype run build",
     "preview": "npm --prefix prototype run preview"
   }
 }

@@ -20,7 +20,10 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.63.3",
-    "@rollup/rollup-darwin-arm64": "^4.63.3"
+    "@rollup/rollup-linux-x64-musl": "^4.63.3",
+    "@rollup/rollup-darwin-arm64": "^4.63.3",
+    "@esbuild/linux-x64": "^0.28.2",
+    "@esbuild/darwin-arm64": "^0.28.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.9",
