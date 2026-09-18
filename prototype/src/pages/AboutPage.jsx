@@ -34,6 +34,17 @@ export function AboutPage() {
   const videoRef = useRef(null);
   const metricsRef = useRef(null);
   const journeyScrollRef = useRef(null);
+  const missionVisionSectionRef = useRef(null);
+  const missionVisionGridRef = useRef(null);
+  const missionCardRef = useRef(null);
+  const visionCardRef = useRef(null);
+  const manufacturingSectionRef = useRef(null);
+  const manufacturingGridRef = useRef(null);
+  const manufacturingMediaWrapRef = useRef(null);
+  const manufacturingVideoBoxRef = useRef(null);
+  const manufacturingVideoRef = useRef(null);
+  const manufacturingCopyRef = useRef(null);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [activeGroupIndex, setActiveGroupIndex] = useState(0);
@@ -64,7 +75,7 @@ export function AboutPage() {
             }
           });
 
-          setActiveGroupIndex((prev) => (prev !== closestIdx ? closestIdx : prev));
+          setActiveGroupIndex(closestIdx);
           ticking = false;
         });
         ticking = true;
@@ -120,9 +131,9 @@ export function AboutPage() {
         .from('.about-hero h1', { autoAlpha: 0, y: 34 }, 0.24)
         .from('.about-hero-copy, .hero-actions', { autoAlpha: 0, y: 22, clearProps: 'transform' }, 0.42);
 
-      // Section Headings & Card Groups Reveal
+      // Section Headings & Card Groups Reveal (excluding pinned Mission-Vision & Manufacturing sections)
       gsap.utils.toArray(
-        '.about-story-content, .founder-profile-card, .founding-story-content, .journey-timeline-grid, .mission-vision-grid, .engineering-grid, .about-team-grid, .partners-title, .contact-inner'
+        '.about-story-content, .founder-profile-card, .founding-story-content, .journey-timeline-grid, .about-team-grid, .partners-title, .contact-inner'
       ).forEach((group) => {
         gsap.from(group, {
           autoAlpha: 0,
@@ -160,6 +171,231 @@ export function AboutPage() {
     }, storySequenceRef);
 
     return () => context.revert();
+  }, []);
+
+  // Mission & Vision: Scroll-Driven Sticky Storytelling Animation (Scrubbed with Zero Autoplay)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const section = missionVisionSectionRef.current;
+    const grid = missionVisionGridRef.current;
+    const missionCard = missionCardRef.current;
+    const visionCard = visionCardRef.current;
+
+    if (!section || !grid || !missionCard || !visionCard) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      // DESKTOP: Mission starts centered on top; Vision starts directly BEHIND Mission in the center
+      mm.add('(min-width: 961px)', () => {
+        // Shift amount to center both cards in the 2-column grid
+        const getCenterShift = () => {
+          const gridW = grid.offsetWidth;
+          const cardW = missionCard.offsetWidth;
+          return (gridW - cardW) / 2;
+        };
+
+        // Initial setup at scroll progress = 0:
+        // Mission card starts centered on top (+shift)
+        // Vision card starts centered directly behind Mission (-shift)
+        gsap.set(missionCard, {
+          x: () => getCenterShift(),
+          force3D: true,
+        });
+        gsap.set(visionCard, {
+          x: () => -getCenterShift(),
+          force3D: true,
+        });
+
+        // Sticky Pin Timeline directly driven by user scroll
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=1600',
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Phase 1 (0 -> 0.12): Focal hold on centered Mission card as section sticks
+        tl.to({}, { duration: 0.12 })
+        // Phase 2 (0.12 -> 0.76): Simultaneous split — Mission slides LEFT to its column, Vision reveals from behind and slides RIGHT to its column
+        .to(
+          missionCard,
+          {
+            x: 0,
+            ease: 'power2.inOut',
+            duration: 0.64,
+          },
+          0.12
+        )
+        .to(
+          visionCard,
+          {
+            x: 0,
+            ease: 'power2.inOut',
+            duration: 0.64,
+          },
+          0.12
+        )
+        // Phase 3 (0.76 -> 1.0): Both cards held settled side-by-side before releasing sticky pin
+        .to({}, { duration: 0.24 });
+      });
+
+      // MOBILE & TABLET (max-width: 960px): Smooth scroll-controlled sequential reveal
+      mm.add('(max-width: 960px)', () => {
+        gsap.set(missionCard, { clearProps: 'x,y,transform' });
+        gsap.set(visionCard, {
+          y: 40,
+          autoAlpha: 0,
+          force3D: true,
+          clearProps: 'x',
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 75%',
+            end: 'bottom 60%',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.to(visionCard, {
+          y: 0,
+          autoAlpha: 1,
+          ease: 'power1.out',
+        });
+      });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Technology / In-House Manufacturing: Scroll-Driven Full-Width Edge-to-Edge Video to Grid Transformation
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const section = manufacturingSectionRef.current;
+    const mediaWrap = manufacturingMediaWrapRef.current;
+    const videoBox = manufacturingVideoBoxRef.current;
+    const copy = manufacturingCopyRef.current;
+
+    if (!section || !mediaWrap || !videoBox || !copy) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      // DESKTOP: 100% Viewport Edge-to-Edge Video -> Left Media Slot Transformation
+      mm.add('(min-width: 961px)', () => {
+        const getTargetMetrics = () => {
+          const viewportEl = section.querySelector('.manufacturing-pin-viewport');
+          if (!viewportEl) return { top: 0, left: 0, width: 500, height: 380 };
+          const viewportRect = viewportEl.getBoundingClientRect();
+          const targetRect = mediaWrap.getBoundingClientRect();
+          return {
+            top: targetRect.top - viewportRect.top,
+            left: targetRect.left - viewportRect.left,
+            width: targetRect.width,
+            height: targetRect.height,
+          };
+        };
+
+        // Initial state at scroll progress = 0: 100% edge-to-edge full viewport
+        gsap.set(videoBox, {
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          borderRadius: 0,
+          force3D: true,
+        });
+
+        // Hide copy initially so it does NOT obscure the full-width video
+        gsap.set(copy, {
+          autoAlpha: 0,
+          x: 48,
+          pointerEvents: 'none',
+          force3D: true,
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '+=1300',
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // Phase 1: Video shrinks and moves to left (0 -> 0.72)
+        tl.to(
+          videoBox,
+          {
+            top: () => getTargetMetrics().top,
+            left: () => getTargetMetrics().left,
+            width: () => getTargetMetrics().width,
+            height: () => getTargetMetrics().height,
+            borderRadius: '20px',
+            ease: 'power2.inOut',
+            duration: 0.72,
+          },
+          0
+        )
+        // Text starts revealing later (at 0.40) once the video has cleared the right-side area
+        .to(
+          copy,
+          {
+            autoAlpha: 1,
+            x: 0,
+            pointerEvents: 'auto',
+            ease: 'power2.out',
+            duration: 0.34,
+          },
+          0.40
+        )
+        // Phase 2 (0.74 -> 1.0): Settled Hold state before unpinning
+        .to({}, { duration: 0.26 });
+      });
+
+      // MOBILE & TABLET (max-width: 960px): Clean scroll-controlled entrance
+      mm.add('(max-width: 960px)', () => {
+        gsap.set(videoBox, { clearProps: 'top,left,width,height,borderRadius,transform' });
+        gsap.set(copy, {
+          autoAlpha: 0,
+          y: 30,
+          pointerEvents: 'auto',
+          force3D: true,
+          clearProps: 'x',
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            end: 'top 45%',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.to(copy, {
+          autoAlpha: 1,
+          y: 0,
+          ease: 'power1.out',
+        });
+      });
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -299,18 +535,12 @@ export function AboutPage() {
                     <span className="founder-badge-detail">25+ Years Automotive Engineering</span>
                   </div>
                 </div>
-
-                <div className="founder-meta-bar">
-                  <span className="founder-est-badge">EST. 2014</span>
-                  <span className="founder-location-text">Ahmedabad, Gujarat</span>
-                </div>
               </div>
             </div>
 
             {/* RIGHT COLUMN: Section Eyebrow, Heading, Lead & Expandable Story */}
             <div className="founding-story-content">
               <div className="founding-story-eyebrow-wrap">
-                <span className="founding-story-eyebrow-dot" />
                 <span className="founding-story-eyebrow">OUR FOUNDING STORY</span>
               </div>
 
@@ -490,67 +720,97 @@ export function AboutPage() {
       </section>
 
       {/* =========================================================================
-          SECTION 6: MISSION & VISION
+          SECTION 6: MISSION & VISION (SCROLL-DRIVEN STICKY STORYTELLING ANIMATION)
           ========================================================================= */}
-      <section className="section-cream mission-vision-section" aria-labelledby="mission-title">
-        <div className="container">
-          <div className="mission-vision-grid">
-            <article className="mission-card">
-              <div className="mission-icon"><PiLeaf /></div>
-              <p className="eyebrow">Our Mission</p>
-              <h2 id="mission-title">Accelerate Purpose-Built Clean Mobility</h2>
-              <p>
-                To design, engineer, and manufacture reliable, high-performance, and custom-tailored electric vehicles that eliminate carbon emissions, slash operational overheads, and empower Indian enterprises with sustainable transportation.
-              </p>
-              <ul className="mission-list">
-                <li><PiCheckCircle /> 100% Zero tailpipe emission engineering</li>
-                <li><PiCheckCircle /> Customer-centric bespoke custom vehicle fabrication</li>
-                <li><PiCheckCircle /> Long-term reliability and nationwide doorstep service support</li>
-              </ul>
-            </article>
+      <section
+        className="section-cream mission-vision-section"
+        id="mission-vision"
+        ref={missionVisionSectionRef}
+        aria-labelledby="mission-title"
+      >
+        <div className="mission-vision-pin-viewport">
+          <div className="container">
+            <div className="mission-vision-grid" ref={missionVisionGridRef}>
+              <article className="mission-card" ref={missionCardRef}>
+                <div className="mission-icon"><PiLeaf /></div>
+                <p className="eyebrow">Our Mission</p>
+                <h2 id="mission-title">Accelerate Purpose-Built Clean Mobility</h2>
+                <p>
+                  To design, engineer, and manufacture reliable, high-performance, and custom-tailored electric vehicles that eliminate carbon emissions, slash operational overheads, and empower Indian enterprises with sustainable transportation.
+                </p>
+                <ul className="mission-list">
+                  <li><PiCheckCircle /> 100% Zero tailpipe emission engineering</li>
+                  <li><PiCheckCircle /> Customer-centric bespoke custom vehicle fabrication</li>
+                  <li><PiCheckCircle /> Long-term reliability and nationwide doorstep service support</li>
+                </ul>
+              </article>
 
-            <article className="mission-card highlight">
-              <div className="mission-icon"><PiTrendUp /></div>
-              <p className="eyebrow mint">Our Vision</p>
-              <h2>Setting the Global Benchmark for Custom EVs</h2>
-              <p>
-                To become India’s most trusted manufacturer of special-purpose and commercial electric vehicles, recognized internationally for engineering precision, ecological impact, and transformative micro-mobility solutions.
-              </p>
-              <ul className="mission-list">
-                <li><PiCheckCircle /> Pioneer modular electric platforms for commercial adoption</li>
-                <li><PiCheckCircle /> Expand global presence with innovative platforms like City Pod</li>
-                <li><PiCheckCircle /> Foster one-tree restoration for every delivered vehicle</li>
-              </ul>
-            </article>
+              <article className="mission-card highlight" ref={visionCardRef}>
+                <div className="mission-icon"><PiTrendUp /></div>
+                <p className="eyebrow mint">Our Vision</p>
+                <h2>Setting the Global Benchmark for Custom EVs</h2>
+                <p>
+                  To become India’s most trusted manufacturer of special-purpose and commercial electric vehicles, recognized internationally for engineering precision, ecological impact, and transformative micro-mobility solutions.
+                </p>
+                <ul className="mission-list">
+                  <li><PiCheckCircle /> Pioneer modular electric platforms for commercial adoption</li>
+                  <li><PiCheckCircle /> Expand global presence with innovative platforms like City Pod</li>
+                  <li><PiCheckCircle /> Foster one-tree restoration for every delivered vehicle</li>
+                </ul>
+              </article>
+            </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 7: IN-HOUSE MANUFACTURING FACILITY
+          SECTION 7: IN-HOUSE MANUFACTURING FACILITY (SCROLL-DRIVEN VIDEO TRANSITION)
           ========================================================================= */}
-      <section className="section-white manufacturing-overview-section" aria-labelledby="plant-title">
-        <div className="container">
-          <div className="engineering-grid">
-            <div className="engineering-image">
-              <img src="/assets/process/customization-design.jpg" alt="SAVY Greentech manufacturing and assembly plant" loading="lazy" />
-            </div>
-            <div className="engineering-copy">
-              <p className="eyebrow">In-House Manufacturing</p>
-              <h2 id="plant-title">End-to-End Design to Assembly Facility</h2>
-              <p>
-                SAVY operates a dedicated manufacturing facility in Ahmedabad, Gujarat, integrating computerized structural design, heavy tubular chassis fabrication, precision wire harness assembly, advanced battery pack integration, and multi-point quality assurance testing.
-              </p>
-              <ul>
-                <li><PiGear /> <span><strong>In-House CAD &amp; Fabrication:</strong> Rapid prototyping and custom chassis modifications.</span></li>
-                <li><PiFactory /> <span><strong>Verified Quality Standards:</strong> Multi-stage safety testing and electrical validation.</span></li>
-                <li><PiWrench /> <span><strong>Doorstep Service Network:</strong> Dedicated field service technicians for client fleets.</span></li>
-              </ul>
-              <div style={{ marginTop: '32px' }}>
-                <a className="button-link primary" href="/technology">
-                  <span>Explore Technology &amp; Plant</span>
-                  <PiArrowRight aria-hidden="true" />
-                </a>
+      <section
+        className="section-white manufacturing-overview-section"
+        id="manufacturing-plant"
+        ref={manufacturingSectionRef}
+        aria-labelledby="plant-title"
+      >
+        <div className="manufacturing-pin-viewport">
+          {/* Edge-to-Edge Full-Width Animated Video Stage */}
+          <div className="manufacturing-video-stage" ref={manufacturingVideoBoxRef}>
+            <video
+              ref={manufacturingVideoRef}
+              className="manufacturing-plant-video"
+              src="/assets/manufacturing-plant.mp4"
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+            />
+          </div>
+
+          {/* Target Grid Layout with Placeholder on Left and Text on Right */}
+          <div className="container manufacturing-container">
+            <div className="engineering-grid" ref={manufacturingGridRef}>
+              {/* Left Column: Target Media Placeholder */}
+              <div className="engineering-media-placeholder" ref={manufacturingMediaWrapRef} />
+
+              {/* Right Column: Copy & Details (Tighter Vertical Spacing) */}
+              <div className="engineering-copy" ref={manufacturingCopyRef}>
+                <p className="eyebrow">In-House Manufacturing</p>
+                <h2 id="plant-title">End-to-End Design to Assembly Facility</h2>
+                <p>
+                  SAVY operates a dedicated manufacturing facility in Ahmedabad, Gujarat, integrating computerized structural design, heavy tubular chassis fabrication, precision wire harness assembly, advanced battery pack integration, and multi-point quality assurance testing.
+                </p>
+                <ul>
+                  <li><PiGear /> <span><strong>In-House CAD &amp; Fabrication:</strong> Rapid prototyping and custom chassis modifications.</span></li>
+                  <li><PiFactory /> <span><strong>Verified Quality Standards:</strong> Multi-stage safety testing and electrical validation.</span></li>
+                  <li><PiWrench /> <span><strong>Doorstep Service Network:</strong> Dedicated field service technicians for client fleets.</span></li>
+                </ul>
+                <div className="engineering-cta-wrap">
+                  <a className="button-link primary" href="/technology">
+                    <span>Explore Technology &amp; Plant</span>
+                    <PiArrowRight aria-hidden="true" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

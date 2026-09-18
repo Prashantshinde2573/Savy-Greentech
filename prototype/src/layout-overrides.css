@@ -1315,8 +1315,8 @@ main#top:not(.home-old) :focus-visible {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(16, 67, 54, 0.12);
-  border-radius: 20px;
-  padding: 14px;
+  border-radius: 18px;
+  padding: 10px;
   box-shadow: 0 20px 48px rgba(16, 67, 54, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.95);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
   overflow: hidden;
@@ -1343,7 +1343,7 @@ main#top:not(.home-old) :focus-visible {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 4.4;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   background: #0f2d24;
 }
@@ -1395,32 +1395,6 @@ main#top:not(.home-old) :focus-visible {
   font-weight: 400;
 }
 
-.founder-meta-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 4px 2px;
-}
-
-.founder-est-badge {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #104336;
-  background: #e1f3ea;
-  padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(16, 67, 54, 0.1);
-}
-
-.founder-location-text {
-  font-size: 12px;
-  font-weight: 500;
-  color: #4b675c;
-}
-
 /* RIGHT COLUMN: Content */
 .founding-story-content {
   display: flex;
@@ -1429,18 +1403,8 @@ main#top:not(.home-old) :focus-visible {
 }
 
 .founding-story-eyebrow-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: block;
   margin-bottom: 12px;
-}
-
-.founding-story-eyebrow-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #1ea868;
-  box-shadow: 0 0 0 3px rgba(30, 168, 104, 0.25);
 }
 
 .founding-story-eyebrow {
@@ -2625,36 +2589,67 @@ main#top:not(.home-old) :focus-visible {
   margin: 0;
 }
 
-/* Mission & Vision Section */
+/* Mission & Vision Section: Scroll-Driven Sticky Storytelling Animation */
 .mission-vision-section {
-  padding: 100px 0;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  background: var(--cream);
 }
+
+.mission-vision-pin-viewport {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(60px, 8vh, 100px) 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
 .mission-vision-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: clamp(24px, 3.5vw, 40px);
+  width: 100%;
+  align-items: stretch;
+  position: relative;
 }
+
 .mission-card {
+  position: relative;
+  z-index: 2;
   border: 1px solid var(--sage);
-  border-radius: 16px;
-  padding: 48px 40px;
+  border-radius: 20px;
+  padding: clamp(36px, 4vw, 48px) clamp(28px, 3.5vw, 40px);
   background: var(--cream);
   display: flex;
   flex-direction: column;
+  box-shadow: 0 16px 36px rgba(16, 67, 54, 0.05);
+  will-change: transform;
 }
+
 .mission-card.highlight {
+  position: relative;
+  z-index: 1;
   background: var(--canopy);
   color: #ffffff;
   border-color: transparent;
+  box-shadow: 0 20px 48px rgba(16, 67, 54, 0.16);
 }
+
 .mission-card.highlight h2,
 .mission-card.highlight p {
   color: #ffffff;
 }
+
 .mission-card.highlight .mission-icon {
   background: rgba(255, 255, 255, 0.12);
   color: var(--mint);
 }
+
 .mission-icon {
   width: 56px;
   height: 56px;
@@ -2666,40 +2661,211 @@ main#top:not(.home-old) :focus-visible {
   font-size: 28px;
   margin-bottom: 24px;
 }
+
 .mission-card h2 {
   font-size: 28px;
   margin: 0 0 16px;
   line-height: 1.2;
 }
+
 .mission-card > p {
   font-size: 16px;
   line-height: 1.6;
   color: var(--slate);
   margin-bottom: 24px;
 }
+
 .mission-list {
   list-style: none;
   padding: 0;
   margin: auto 0 0;
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
+
 .mission-list li {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 12px;
+  font-size: 14.5px;
   font-weight: 500;
-}
-.mission-list li svg {
-  color: var(--mint);
-  font-size: 18px;
-  flex: none;
+  line-height: 1.45;
 }
 
-/* Manufacturing Overview Section (About Page) */
+.mission-list li svg {
+  color: var(--canopy);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  flex: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mission-card.highlight .mission-list li svg {
+  color: var(--mint);
+}
+
+@media (max-width: 960px) {
+  .mission-vision-pin-viewport {
+    min-height: auto;
+    padding: 60px 0;
+  }
+  .mission-vision-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* =========================================================================
+   Manufacturing Overview Section: Scroll-Driven Full-Width Video to Grid Transition
+   ========================================================================= */
 .manufacturing-overview-section {
-  padding: 100px 0;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  background: var(--white);
+  width: 100%;
+}
+
+.manufacturing-pin-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Edge-to-Edge Animated Video Stage */
+.manufacturing-video-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0px;
+  background: #0c201a;
+  box-shadow: 0 24px 60px rgba(16, 67, 54, 0.14);
+  z-index: 5;
+  will-change: top, left, width, height, border-radius, transform;
+}
+
+.manufacturing-plant-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Container & Grid */
+.manufacturing-container {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+.manufacturing-overview-section .engineering-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.05fr) minmax(360px, 0.95fr);
+  gap: clamp(36px, 5vw, 64px);
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.engineering-media-placeholder {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Right-side Copy with Tighter Vertical Spacing & Clean Composition */
+.manufacturing-overview-section .engineering-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  max-width: 540px;
+  will-change: transform, opacity;
+}
+
+.manufacturing-overview-section .engineering-copy .eyebrow {
+  margin-bottom: 8px;
+}
+
+.manufacturing-overview-section .engineering-copy h2 {
+  font-size: clamp(28px, 2.6vw, 36px);
+  line-height: 1.2;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+
+.manufacturing-overview-section .engineering-copy > p:not(.eyebrow) {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--slate);
+  margin: 0 0 16px;
+}
+
+.manufacturing-overview-section .engineering-copy ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.manufacturing-overview-section .engineering-copy li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--bark);
+}
+
+.manufacturing-overview-section .engineering-copy li svg {
+  color: var(--canopy);
+  font-size: 18px;
+  flex: none;
+  margin-top: 1px;
+}
+
+.engineering-cta-wrap {
+  margin-top: 4px;
+}
+
+@media (max-width: 960px) {
+  .manufacturing-pin-viewport {
+    min-height: auto;
+    padding: 60px 0;
+    display: block;
+  }
+  
+  .manufacturing-video-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    margin-bottom: 28px;
+  }
+
+  .manufacturing-overview-section .engineering-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .engineering-media-placeholder {
+    display: none;
+  }
 }
 
 /* Team Card Expanded */
@@ -5893,7 +6059,7 @@ main#top:not(.home-old) :focus-visible {
 
 @media (max-width: 960px) {
   .journey-milestone-card {
-    width: 280px;
+    width: 250px;
   }
 
   .journey-years-tabs {
@@ -5903,10 +6069,540 @@ main#top:not(.home-old) :focus-visible {
   }
 
   .journey-progress-indicator {
-    width: 180px;
+    width: 140px;
   }
 
   .journey-vertical-divider {
     display: none;
+  }
+}
+
+/* =========================================================================
+   ABOUT US PAGE — MOBILE & TABLET RESPONSIVE REFINEMENTS
+   (Strictly scoped to <= 960px and <= 680px to preserve locked desktop)
+   ========================================================================= */
+
+@media (max-width: 960px) {
+  /* Section Padding Rhythm */
+  .about-page section:not(.hero):not(.manufacturing-overview-section):not(.mission-vision-section) {
+    padding: clamp(48px, 8vw, 72px) 0;
+  }
+
+  /* Section 2: About Story */
+  .about-story {
+    padding: 48px 0 36px !important;
+  }
+  .about-story-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .about-story-heading h2 {
+    font-size: clamp(24px, 5.5vw, 32px);
+    line-height: 1.25;
+  }
+  .about-story-copy p.about-story-lead {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .about-story-copy p {
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  /* Section 3: Impact Numbers */
+  .impact-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .impact-layout h2 {
+    font-size: clamp(28px, 6vw, 38px);
+    line-height: 1.25;
+  }
+  .intro .metrics {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px 16px;
+    margin-top: 0;
+  }
+  .intro .metrics strong {
+    font-size: clamp(34px, 7vw, 44px);
+  }
+  .intro .metrics span {
+    font-size: 13px;
+  }
+
+  /* Section 4: Founding Story */
+  .founding-story-section {
+    padding: clamp(48px, 8vw, 72px) 0;
+  }
+  .founding-story-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .founder-card-column {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .founder-profile-card {
+    max-width: 270px;
+    margin: 0 auto;
+  }
+  .founding-story-heading {
+    font-size: clamp(23px, 5.5vw, 30px);
+    line-height: 1.24;
+    margin: 0 0 14px;
+  }
+  .founding-story-lead {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+  .founding-story-expandable-inner p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* Section 5: SAVY Journey */
+  .journey-section {
+    padding: clamp(48px, 8vw, 72px) 0;
+    overflow: hidden;
+  }
+  .journey-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eef3f0;
+  }
+  .journey-title-block {
+    width: 100%;
+  }
+  .journey-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1e7d5d;
+    margin: 0 0 6px;
+    display: block;
+  }
+  .journey-main-heading {
+    font-size: clamp(26px, 5.5vw, 34px);
+    margin: 0 0 6px;
+    line-height: 1.15;
+  }
+  .journey-subtitle {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #5a7368;
+    margin: 0;
+  }
+  .journey-years-nav-block {
+    width: 100%;
+  }
+  .journey-years-tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    display: flex;
+    gap: 8px;
+    padding: 2px 0 4px;
+  }
+  .journey-years-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .journey-year-tab {
+    padding: 6px 14px;
+    font-size: 13.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: #f2f7f4;
+    border-radius: 6px;
+    color: #536b62;
+    border: none;
+  }
+  .journey-year-tab.active {
+    background: #104336;
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .journey-year-tab.active::after {
+    display: none;
+  }
+  .journey-full-bleed-viewport {
+    width: 100% !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+    padding: 0 0 16px 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+  }
+  .journey-full-bleed-viewport::-webkit-scrollbar {
+    display: none !important;
+  }
+  .journey-scroll-track {
+    display: flex !important;
+    gap: 20px !important;
+    width: max-content !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin: 0 !important;
+  }
+  .journey-year-group {
+    display: flex !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    scroll-snap-align: start !important;
+    scroll-margin-left: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .journey-group-content {
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .journey-group-year {
+    font-size: clamp(32px, 7vw, 42px) !important;
+    line-height: 1.1 !important;
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+    font-weight: 600 !important;
+    color: #0c2b22 !important;
+  }
+  .journey-cards-grid {
+    display: flex !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .journey-milestone-card {
+    width: 240px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    scroll-snap-align: start !important;
+    margin: 0 !important;
+  }
+  .journey-card-media {
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    margin-bottom: 12px !important;
+  }
+  .journey-card-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin: 0 0 6px 0 !important;
+  }
+  .journey-card-desc {
+    font-size: 13.5px !important;
+    line-height: 1.52 !important;
+    color: #536b62 !important;
+    margin: 0 0 12px 0 !important;
+  }
+  .journey-card-cta {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #104336 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .journey-vertical-divider {
+    width: 1px !important;
+    background: #dce7e1 !important;
+    align-self: stretch !important;
+    margin: 10px 0 0 !important;
+  }
+  .journey-bottom-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eef3f0;
+  }
+  .journey-nav-arrows {
+    display: flex;
+    gap: 8px;
+  }
+  .journey-arrow-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 18px;
+  }
+  .journey-progress-indicator {
+    width: 120px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Section 6: Mission & Vision */
+  .mission-vision-section {
+    padding: clamp(48px, 8vw, 72px) 0 !important;
+    min-height: auto;
+  }
+  .mission-vision-pin-viewport {
+    min-height: auto;
+    padding: 0;
+    display: block;
+  }
+  .mission-vision-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .mission-card {
+    padding: 28px 20px;
+    border-radius: 18px;
+    transform: none !important;
+  }
+  .mission-card h2 {
+    font-size: clamp(22px, 5vw, 26px);
+  }
+
+  /* Section 7: Manufacturing Plant (Uniform 20px Side Padding & Clean Content Alignment) */
+  .manufacturing-overview-section {
+    padding: clamp(48px, 8vw, 72px) 0 !important;
+    min-height: auto;
+  }
+  .manufacturing-pin-viewport {
+    min-height: auto;
+    padding: 0 20px !important;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .manufacturing-video-stage {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10;
+    border-radius: 14px !important;
+    margin: 0 0 24px 0 !important;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(16, 67, 54, 0.12);
+  }
+  .manufacturing-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .manufacturing-overview-section .engineering-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    width: 100%;
+  }
+  .engineering-media-placeholder {
+    display: none;
+  }
+  .manufacturing-overview-section .engineering-copy {
+    max-width: 100%;
+    width: 100%;
+    transform: none !important;
+    padding: 0;
+  }
+  .manufacturing-overview-section .engineering-copy .eyebrow {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .manufacturing-overview-section .engineering-copy h2 {
+    font-size: clamp(23px, 5.5vw, 30px);
+    line-height: 1.25;
+    margin: 0 0 14px;
+  }
+  .manufacturing-overview-section .engineering-copy p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--slate);
+  }
+  .manufacturing-overview-section .engineering-copy ul {
+    margin: 18px 0 24px;
+    padding: 0;
+    gap: 12px;
+  }
+  .manufacturing-overview-section .engineering-copy li {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .manufacturing-overview-section .engineering-cta-wrap .button-link {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Section 8: Executive Leadership / Founder Profile Cards (Horizontally Swipeable Rail) */
+  .about-team {
+    padding: clamp(48px, 8vw, 72px) 0;
+    overflow: hidden;
+  }
+  .about-team .section-heading {
+    margin-bottom: 24px;
+    text-align: left;
+  }
+  .about-team .section-heading h2 {
+    font-size: clamp(24px, 5.5vw, 32px);
+    margin: 0 0 6px;
+  }
+  .about-team .about-section-intro {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--slate);
+    margin: 0;
+  }
+  .about-team-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    gap: 16px !important;
+    padding: 6px 20px 24px !important;
+    margin: 0 -20px !important;
+    scrollbar-width: none !important;
+  }
+  .about-team-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+  .about-team-grid .team-card-expanded {
+    flex: 0 0 270px !important;
+    width: 270px !important;
+    max-width: 80vw !important;
+    scroll-snap-align: start !important;
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2ede6 !important;
+    box-shadow: 0 4px 16px rgba(16, 67, 54, 0.05) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .about-team-grid .team-card-media {
+    aspect-ratio: 1 / 1 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .about-team-grid .team-card-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .about-team-grid .team-card-copy {
+    padding: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+  }
+  .about-team-grid .team-card-copy h3 {
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    margin: 0 0 4px !important;
+    color: #10211c !important;
+  }
+  .about-team-grid .team-role {
+    font-size: 12.5px !important;
+    color: #1e7d5d !important;
+    font-weight: 600 !important;
+    margin: 0 0 8px !important;
+  }
+  .about-team-grid .team-bio {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    color: #536b62 !important;
+    margin: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  /* Section 9: Partners */
+  .trusted {
+    padding: clamp(40px, 6vw, 60px) 0;
+  }
+  .partners-title {
+    font-size: clamp(22px, 5vw, 28px);
+    margin-bottom: 24px;
+  }
+  .sponsor-logo {
+    width: 130px;
+    height: 80px;
+    padding: 10px;
+  }
+
+  /* Section 10: Contact CTA */
+  .about-page .contact {
+    padding: clamp(56px, 9vw, 84px) 0;
+  }
+  .contact-inner h2 {
+    font-size: clamp(28px, 6.5vw, 40px);
+    line-height: 1.2;
+  }
+  .contact-inner > div {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 12px;
+  }
+  .contact-inner .button-link {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-actions {
+    width: 100%;
+    max-width: 320px;
+  }
+  .hero-actions .button-link {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .intro .metrics {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px 12px;
+  }
+  .intro .metrics strong {
+    font-size: 32px;
+  }
+  .journey-milestone-card {
+    width: 220px;
+  }
+  .about-team-grid .team-card-expanded {
+    flex: 0 0 255px !important;
+    width: 255px !important;
+  }
+  .founder-profile-card {
+    max-width: 270px;
   }
 }
