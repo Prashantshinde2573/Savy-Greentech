@@ -29,7 +29,7 @@ export function usePageAnimations(scopeRef) {
 
       // Staggered card grids
       gsap.utils.toArray(
-        '.catalog-grid, .press-articles-grid, .blog-articles-grid, .case-studies-cards-grid, .dealer-benefits-grid, .culture-grid, .quality-cards-grid, .tech-pillars-grid, .journey-timeline-grid, .jobs-list, .mission-vision-grid'
+        '.catalog-grid, .press-articles-grid, .blog-articles-grid, .case-studies-cards-grid, .dealer-benefits-grid, .culture-grid, .quality-cards-grid, .journey-timeline-grid, .jobs-list, .mission-vision-grid'
       ).forEach((group) => {
         const cards = group.querySelectorAll('article, .journey-card, .job-card, .case-study-card, .quality-card, .dealer-benefit-card, .culture-card, .mission-card');
         if (!cards.length) return;
@@ -40,6 +40,17 @@ export function usePageAnimations(scopeRef) {
           stagger: 0.08,
           ease: 'power4.out',
           scrollTrigger: { trigger: group, start: 'top 84%', once: true },
+        });
+      });
+
+      // Process Editorial rows reveal on scroll
+      gsap.utils.toArray('.process-editorial-row').forEach((row) => {
+        gsap.from(row, {
+          autoAlpha: 0,
+          y: 35,
+          duration: 0.85,
+          ease: 'power4.out',
+          scrollTrigger: { trigger: row, start: 'top 85%', once: true },
         });
       });
     }, scopeRef);

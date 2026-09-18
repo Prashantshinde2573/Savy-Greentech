@@ -5,6 +5,7 @@ import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
+import { TechScrollTimeline } from '../components/TechScrollTimeline';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 const manufacturingStages = [
@@ -69,84 +70,61 @@ export function TechnologyPage() {
         secondaryCtaHref="#manufacturing-process"
       />
 
-      {/* Core Engineering Pillars */}
-      <section className="section-white tech-pillars-section" aria-labelledby="tech-pillars-heading">
-        <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">Indigenous Technology</p>
-            <h2 id="tech-pillars-heading">Built for Indian Roads &amp; Duty Cycles</h2>
-            <p className="section-subtitle">Engineered to withstand extreme ambient temperatures, continuous multi-shift usage, and heavy payload demands.</p>
-          </div>
+      {/* Core Engineering Pillars — 100% Scroll-Driven Interaction */}
+      <TechScrollTimeline />
 
-          <div className="tech-pillars-grid">
-            <article className="tech-pillar-card">
-              <div className="tech-pillar-icon-box"><PiCpu /></div>
-              <h3>Smart Motor Controllers</h3>
-              <p>Programmable intelligent motor controllers with regenerative braking, dynamic torque vectoring, and smooth low-speed throttle modulation for effortless maneuvering in confined spaces.</p>
-              <ul>
-                <li><PiCheckCircle /> Regenerative braking energy recapture</li>
-                <li><PiCheckCircle /> Over-current, over-voltage &amp; thermal protection</li>
-                <li><PiCheckCircle /> Programmable acceleration curves</li>
-              </ul>
-            </article>
-
-            <article className="tech-pillar-card">
-              <div className="tech-pillar-icon-box"><PiEngine /></div>
-              <h3>High-Torque Indigenous Motors</h3>
-              <p>Custom-wound electric motors delivering peak low-end torque for steep gradients, heavy passenger groups, and industrial payloads up to 900kg without thermal derating.</p>
-              <ul>
-                <li><PiCheckCircle /> High-efficiency AC Induction / BLDC options</li>
-                <li><PiCheckCircle /> Sealed IP65/IP67 waterproof rating</li>
-                <li><PiCheckCircle /> Zero-maintenance brushless design</li>
-              </ul>
-            </article>
-
-            <article className="tech-pillar-card">
-              <div className="tech-pillar-icon-box"><PiBatteryCharging /></div>
-              <h3>Advanced Battery Technology</h3>
-              <p>Flexible power storage options including ultra-safe Lithium Iron Phosphate (LiFePO4) with active BMS telemetry, or cost-effective heavy-duty deep cycle lead-acid packs.</p>
-              <ul>
-                <li><PiCheckCircle /> Fast charging capability (2.5–4 hours)</li>
-                <li><PiCheckCircle /> 2000+ lifecycle rated LiFePO4 cells</li>
-                <li><PiCheckCircle /> Intelligent Battery Management System (BMS)</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* Battery Technology Deep Dive */}
+      {/* Battery Technology Deep Dive — Edge-to-Edge Image Panel */}
       <section className="section-cream battery-deep-dive-section" aria-labelledby="battery-heading">
-        <div className="container">
-          <div className="engineering-grid">
-            <div className="engineering-image">
-              <img src="/assets/about-purpose/electric-future.jpg" alt="SAVY electric vehicle battery pack engineering" loading="lazy" />
-            </div>
-            <div className="engineering-copy">
+        <div className="battery-split-layout">
+          <div className="battery-image-panel">
+            <img
+              src="/assets/battery-chassis-tech.jpg"
+              alt="SAVY electric vehicle chassis battery and powertrain architecture"
+              loading="lazy"
+            />
+          </div>
+          <div className="battery-content-panel">
+            <div className="battery-content-inner engineering-copy">
               <p className="eyebrow">Power &amp; Energy Storage</p>
               <h2 id="battery-heading">Battery Systems &amp; Thermal Safety</h2>
-              <p>
+              <p className="battery-lead-p">
                 At SAVY Greentech, we match battery chemistry to your exact operational economics and charging infrastructure.
               </p>
 
               <div className="battery-compare-cards">
-                <div className="battery-type-box">
+                <div className="battery-type-box battery-lifepo4-card">
+                  <div className="battery-card-header">
+                    <div className="battery-card-icon">
+                      <PiLightning aria-hidden="true" />
+                    </div>
+                    <span className="battery-tag">High Performance</span>
+                  </div>
                   <h4>Lithium Iron Phosphate (LiFePO4)</h4>
-                  <p><strong>Ideal for:</strong> High-utilization fleets, 24/7 industrial shifts, fast-charging requirements.</p>
-                  <ul>
-                    <li>High thermal stability in 45°C+ Indian summers</li>
-                    <li>Lightweight, maximizing vehicle range and payload</li>
-                    <li>Long lifespan exceeding 2,000+ deep discharge cycles</li>
+                  <div className="battery-ideal-badge">
+                    <strong className="ideal-label">Ideal for:</strong> High-utilization fleets, 24/7 industrial shifts, fast-charging requirements.
+                  </div>
+                  <ul className="battery-specs-list">
+                    <li><PiCheckCircle aria-hidden="true" /> <span>High thermal stability in 45°C+ Indian summers</span></li>
+                    <li><PiCheckCircle aria-hidden="true" /> <span>Lightweight, maximizing vehicle range &amp; payload</span></li>
+                    <li><PiCheckCircle aria-hidden="true" /> <span>Long lifespan exceeding 2,000+ deep discharge cycles</span></li>
                   </ul>
                 </div>
 
-                <div className="battery-type-box">
+                <div className="battery-type-box battery-leadacid-card">
+                  <div className="battery-card-header">
+                    <div className="battery-card-icon">
+                      <PiBatteryCharging aria-hidden="true" />
+                    </div>
+                    <span className="battery-tag">Cost-Optimized</span>
+                  </div>
                   <h4>Deep-Cycle Heavy-Duty Lead-Acid</h4>
-                  <p><strong>Ideal for:</strong> Budget-conscious campus carts, rural Gram Panchayat sanitation, predictable short routes.</p>
-                  <ul>
-                    <li>Lower initial capital expenditure</li>
-                    <li>Proven, reliable performance on predictable campus loops</li>
-                    <li>100% recyclable and easy nationwide replacement</li>
+                  <div className="battery-ideal-badge">
+                    <strong className="ideal-label">Ideal for:</strong> Budget-conscious campus carts, rural Gram Panchayat sanitation, predictable short routes.
+                  </div>
+                  <ul className="battery-specs-list">
+                    <li><PiCheckCircle aria-hidden="true" /> <span>Lower initial capital expenditure</span></li>
+                    <li><PiCheckCircle aria-hidden="true" /> <span>Proven, reliable performance on campus loops</span></li>
+                    <li><PiCheckCircle aria-hidden="true" /> <span>100% recyclable &amp; easy nationwide replacement</span></li>
                   </ul>
                 </div>
               </div>
@@ -164,19 +142,22 @@ export function TechnologyPage() {
             <p className="section-subtitle">Complete vertical integration in Ahmedabad ensures stringent quality control and custom agility.</p>
           </div>
 
-          <div className="process-stages-vertical">
-            {manufacturingStages.map((stage) => {
-              const Icon = stage.icon;
+          <div className="process-editorial-timeline">
+            {manufacturingStages.map((stage, idx) => {
+              const isReversed = idx % 2 === 1; // Stages 02 and 04 are reversed (content left, image right)
               return (
-                <article className="process-stage-item" key={stage.step}>
-                  <div className="stage-step-badge">{stage.step}</div>
-                  <div className="stage-image-preview">
+                <article
+                  className={`process-editorial-row ${isReversed ? 'row-reversed' : ''}`}
+                  key={stage.step}
+                >
+                  <div className="process-step-number mobile-step-badge">{stage.step}</div>
+                  <div className="process-editorial-media">
                     <img src={stage.image} alt={stage.title} loading="lazy" />
                   </div>
-                  <div className="stage-content">
-                    <div className="stage-icon"><Icon /></div>
-                    <h3>{stage.title}</h3>
-                    <p>{stage.description}</p>
+                  <div className="process-editorial-content">
+                    <div className="process-step-number desktop-step-badge">{stage.step}</div>
+                    <h3 className="process-step-title">{stage.title}</h3>
+                    <p className="process-step-desc">{stage.description}</p>
                   </div>
                 </article>
               );
@@ -230,6 +211,13 @@ export function TechnologyPage() {
       <section className="section-white after-sales-section" aria-labelledby="service-heading">
         <div className="container">
           <div className="after-sales-box">
+            <div className="after-sales-bg-vehicle" aria-hidden="true">
+              <img
+                src="/assets/service-vehicle-wireframe.png"
+                alt=""
+                loading="lazy"
+              />
+            </div>
             <div className="after-sales-copy">
               <p className="eyebrow mint">Nationwide Network</p>
               <h2 id="service-heading">Doorstep Service &amp; Lifetime Support</h2>
@@ -260,6 +248,19 @@ export function TechnologyPage() {
 
       {/* Final Conversion CTA */}
       <section className="contact" aria-labelledby="tech-final-cta">
+        <video
+          className="contact-video"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="contact-video-shade" aria-hidden="true" />
+
         <div className="container contact-inner">
           <p className="eyebrow mint">Consult Our Technical Team</p>
           <h2 id="tech-final-cta">Discuss your custom engineering requirement</h2>
