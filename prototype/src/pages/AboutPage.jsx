@@ -404,7 +404,7 @@ export function AboutPage() {
         title="About Us | Driving Innovation. Delivering Sustainability."
         description="Learn about SAVY Greentech, India's trusted custom electric vehicle manufacturer founded by Chandan Mundhra. Engineering purpose-built EVs since 2014."
       />
-      <SiteHeader currentPath="/about" transparentInitially={false} />
+      <SiteHeader currentPath="/about" transparentInitially={true} />
 
       {/* =========================================================================
           SECTION 1 + SECTION 2: HERO (100vh) + OVERLAPPING STORY SEQUENCE (MASTER EFFECT)

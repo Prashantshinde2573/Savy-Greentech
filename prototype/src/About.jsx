@@ -121,7 +121,7 @@ export function About() {
   }, []);
 
   return <main id="top" className="about-page">
-    <GlobalNavbar currentPath="/about" transparentInitially={false} />
+    <GlobalNavbar currentPath="/about" transparentInitially={true} />
 
     <div className="about-story-sequence" ref={storySequenceRef}>
       <section className="hero about-hero" aria-labelledby="about-title"><video ref={videoRef} className="hero-video" muted autoPlay loop playsInline preload="metadata"><source src="/assets/about-hero.mp4" type="video/mp4" /></video><div className="hero-shade" /><div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" /><div className="hero-content container"><p className="eyebrow mint">About SAVYGREENTECH</p><h1 id="about-title">Building India’s electric future.</h1><p className="about-hero-copy">Over a decade of purpose-built electric mobility.</p></div></section>
