@@ -78,8 +78,8 @@ export function TechnologyPage() {
         <div className="battery-split-layout">
           <div className="battery-image-panel">
             <img
-              src="/assets/battery-chassis-tech.jpg"
-              alt="SAVY electric vehicle chassis battery and powertrain architecture"
+              src="/assets/ev-charging-connector.jpg"
+              alt="SAVY electric vehicle charging infrastructure and battery connector"
               loading="lazy"
             />
           </div>
@@ -138,7 +138,10 @@ export function TechnologyPage() {
         <div className="container">
           <div className="section-heading center">
             <p className="eyebrow">Design to Assembly</p>
-            <h2 id="process-heading">Our 5-Stage In-House Manufacturing Process</h2>
+            <h2 id="process-heading">
+              Our 5-Stage In-House <br />
+              Manufacturing Process
+            </h2>
             <p className="section-subtitle">Complete vertical integration in Ahmedabad ensures stringent quality control and custom agility.</p>
           </div>
 
