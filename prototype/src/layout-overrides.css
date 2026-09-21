@@ -3777,9 +3777,9 @@ body.menu-backdrop-open {
   margin: 0 0 10px;
 }
 .custom-box-cta p {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
-  line-height: 1.5;
+  color: #d4e8df;
+  font-size: 14.5px;
+  line-height: 1.55;
   margin-bottom: 24px;
 }
 
@@ -4613,12 +4613,59 @@ body.menu-backdrop-open {
   }
 
   .story-mobile-stream {
-    display: block;
+    display: block !important;
+    width: 100% !important;
   }
 
+  /* 1. Mobile Tabs Nav Strip */
+  .sector-jump-nav-strip {
+    top: 72px;
+    padding: 8px 0 !important;
+    overflow: hidden !important;
+  }
+
+  .sector-jump-container {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .sector-jump-grid {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-padding-left: 16px !important;
+    padding: 4px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .sector-jump-link {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 7px 15px !important;
+    font-size: 12px !important;
+    border-radius: 99px !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* 2. Application Sector Block & Cards */
   .application-sector-block {
-    padding: 48px 0;
+    padding: 40px 0 !important;
     border-bottom: 1px solid var(--pale);
+    scroll-margin-top: 130px;
+  }
+
+  .sector-mobile-card {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .sector-image-wrap {
@@ -4626,17 +4673,105 @@ body.menu-backdrop-open {
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid var(--sage);
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .sector-image-wrap img {
-    width: 100%;
+    width: 100% !important;
     aspect-ratio: 16/10;
     object-fit: cover;
     display: block;
   }
 
+  /* 3. Mobile Card Typography */
+  .sector-mobile-card h2 {
+    font-size: clamp(24px, 5.5vw, 28px) !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em !important;
+    margin: 0 0 10px 0 !important;
+    color: var(--bark) !important;
+    text-wrap: balance;
+  }
+
+  .sector-mobile-card .sector-lead-copy {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    color: var(--slate) !important;
+    margin-bottom: 14px !important;
+    max-width: none !important;
+  }
+
+  .sector-mobile-card .sector-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 4px 10px !important;
+    border-radius: 99px !important;
+    background: var(--pale) !important;
+    color: var(--canopy) !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+  }
+
   .problem-solution-box {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+    max-width: none !important;
+  }
+
+  .ps-block {
+    padding: 12px 14px !important;
+  }
+
+  .ps-block h4 {
+    font-size: 11px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .ps-block p {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .sector-vehicles-strip {
+    margin-bottom: 14px !important;
+  }
+
+  .sector-proof-points {
+    margin-bottom: 18px !important;
+  }
+
+  .sector-proof-points li {
+    font-size: 12.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .sector-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .sector-actions .button-link,
+  .sector-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .sector-jump-nav-strip {
+    top: 66px !important;
+  }
+  .application-sector-block {
+    scroll-margin-top: 118px;
   }
 }
 
@@ -4648,25 +4783,50 @@ body.menu-backdrop-open {
 }
 
 /* 100% Scroll-Driven Indigenous Technology Timeline */
-.tech-scroll-section {
+.indigenous-technology-section {
   position: relative;
   width: 100%;
   background-color: var(--white);
+  padding: 0 0 100px;
+  margin: 0;
 }
 
-.tech-scroll-pin-inner {
-  min-height: 100vh;
+.indigenous-heading {
+  padding: 80px 0 0;
+  background-color: var(--white);
+  position: relative;
+  z-index: 1;
+}
+
+.indigenous-heading .section-heading {
+  margin-bottom: clamp(48px, 5vw, 60px);
+}
+
+.car-animation-scroll-area {
+  position: relative;
+  width: 100%;
+  height: 220vh;
+  min-height: 1800px;
+  background-color: var(--white);
+}
+
+.car-animation-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 80px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(50px, 7vh, 90px) 0;
+  justify-content: flex-start;
   box-sizing: border-box;
+  padding: 24px 0 32px;
+  z-index: 2;
 }
 
 .tech-scroll-interactive-stage {
-  margin-top: clamp(20px, 3vh, 36px);
   position: relative;
   width: 100%;
+  margin: 0;
 }
 
 .tech-single-vehicle-track {
@@ -4751,9 +4911,25 @@ body.menu-backdrop-open {
 }
 
 @media (max-width: 960px) {
-  .tech-scroll-pin-inner {
-    min-height: auto;
-    padding: 60px 0;
+  .indigenous-technology-section {
+    padding-bottom: 72px;
+  }
+  .indigenous-heading {
+    padding: 56px 0 0;
+  }
+  .indigenous-heading .section-heading {
+    margin-bottom: 36px;
+  }
+  .car-animation-scroll-area {
+    height: 180vh;
+    min-height: 1400px;
+  }
+  .car-animation-sticky {
+    top: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 24px 0 24px;
   }
   .tech-desktop-cards-grid.desktop-only {
     display: none !important;
@@ -8810,3 +8986,83 @@ body.menu-backdrop-open {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   GLOBAL MOBILE-ONLY RESPONSIVE REFINEMENTS (<= 768px / <= 680px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Global 16px horizontal container gutter without nested double-padding */
+  .container {
+    width: calc(100% - 32px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Horizontal Carousels Mobile Edge Behavior:
+     - 16px left starting gutter
+     - Cards extend naturally to the right viewport edge
+     - Final item reaches right edge flush with 0 trailing gap
+     - No page-level horizontal overflow */
+  .application-carousel {
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-padding-left: 16px !important;
+    scroll-padding-right: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 0 !important;
+    padding-bottom: 12px !important;
+    scrollbar-width: none !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .application-carousel::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .application-carousel .application-card {
+    flex: 0 0 82vw !important;
+    max-width: 320px !important;
+    scroll-snap-align: start !important;
+    box-sizing: border-box !important;
+  }
+
+  .application-carousel .application-card:last-child {
+    margin-right: 0 !important;
+  }
+
+  /* Journey Horizontal Timeline (About Page) */
+  .journey-full-bleed-viewport {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+    padding: 0 0 16px 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .journey-scroll-track {
+    display: flex !important;
+    gap: 16px !important;
+    width: max-content !important;
+    padding-left: 16px !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .journey-year-group:last-child {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+

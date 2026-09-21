@@ -40,8 +40,53 @@ export function ApplicationsScrollStory({ onInquireSector }) {
   const containerRef = useRef(null);
   const stRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const tabRefs = useRef([]);
+  const isClickScrollingRef = useRef(false);
 
   const totalSlides = applicationsData.length;
+
+  // Auto-scroll active tab into view horizontally whenever activeIndex changes
+  useEffect(() => {
+    const activeTab = tabRefs.current[activeIndex];
+    if (activeTab && typeof activeTab.scrollIntoView === 'function') {
+      activeTab.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'nearest'
+      });
+    }
+  }, [activeIndex]);
+
+  // Mobile scroll tracking: update activeIndex and tabs when user scrolls through cards
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -40% 0px',
+      threshold: [0.1, 0.5]
+    };
+
+    const observerCallback = (entries) => {
+      if (isClickScrollingRef.current) return;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = Number(entry.target.getAttribute('data-index'));
+          if (!isNaN(idx) && idx >= 0 && idx < totalSlides) {
+            setActiveIndex(idx);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const elements = document.querySelectorAll('.story-mobile-stream .application-sector-block');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [totalSlides]);
 
   useEffect(() => {
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -176,8 +221,10 @@ export function ApplicationsScrollStory({ onInquireSector }) {
   }, [totalSlides]);
 
   const handleJumpClick = (e, index, slug) => {
+    e.preventDefault();
+    setActiveIndex(index);
+
     if (window.innerWidth >= 961 && stRef.current) {
-      e.preventDefault();
       const st = stRef.current;
       const progress = index / (totalSlides - 1);
       const targetY = st.start + progress * (st.end - st.start);
@@ -188,8 +235,21 @@ export function ApplicationsScrollStory({ onInquireSector }) {
     } else {
       const targetElem = document.getElementById(`mob-${slug}`) || document.getElementById(slug);
       if (targetElem) {
-        e.preventDefault();
-        targetElem.scrollIntoView({ behavior: 'smooth' });
+        isClickScrollingRef.current = true;
+        const navStrip = document.querySelector('.sector-jump-nav-strip');
+        const navHeight = navStrip ? navStrip.getBoundingClientRect().height : 48;
+        const totalHeaderOffset = navHeight + (window.innerWidth <= 680 ? 66 : 72) + 8;
+        const elementPosition = targetElem.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - totalHeaderOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+
+        setTimeout(() => {
+          isClickScrollingRef.current = false;
+        }, 750);
       }
     }
   };
@@ -197,7 +257,7 @@ export function ApplicationsScrollStory({ onInquireSector }) {
   return (
     <div className="applications-story-wrapper">
       {/* 1. SINGLE, PERMANENT TOP APPLICATION NAVIGATION LAYER */}
-      <nav className="sector-jump-nav-strip" aria-label="Applications navigation">
+      <nav className="sector-jump-nav-strip" aria-label="Applications navigation" role="tablist">
         <div className="sector-jump-container">
           <div className="sector-jump-grid">
             {applicationsData.map((app, index) => {
@@ -207,10 +267,13 @@ export function ApplicationsScrollStory({ onInquireSector }) {
               return (
                 <a
                   key={app.id}
+                  ref={(el) => (tabRefs.current[index] = el)}
                   href={`#${app.slug}`}
                   onClick={(e) => handleJumpClick(e, index, app.slug)}
                   className={`sector-jump-link ${isActive ? 'is-active' : ''}`}
                   title={app.title}
+                  role="tab"
+                  aria-selected={isActive}
                 >
                   <Icon className="sector-icon" />
                   <span>{label}</span>
@@ -359,6 +422,7 @@ export function ApplicationsScrollStory({ onInquireSector }) {
               <section
                 key={`mob-${app.id}`}
                 id={`mob-${app.slug}`}
+                data-index={index}
                 className={`application-sector-block ${isEven ? 'section-white' : 'section-cream'}`}
               >
                 <div className="container">
