@@ -22,6 +22,7 @@ import { GlobalNavbar } from './components/SiteHeader';
 import { GlobalFooter } from './components/SiteFooter';
 import { SEOHead } from './components/SEOHead';
 import { QuoteModal } from './components/QuoteModal';
+import { VehiclePrototypeHoverCard } from './components/VehiclePrototypeHoverCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,7 +97,6 @@ const vehicles = [
   {
     name: 'Coming Soon',
     image: '/assets/coming-soon-vehicle.png',
-    copy: 'Next-generation purpose-built modular commercial electric vehicle platform in active development.',
     comingSoon: true
   }
 ];
@@ -517,9 +517,9 @@ export function App() {
       </section>
 
       {/* =========================================================================
-          03. EXISTING PRODUCT SECTION
+          03. EXISTING PRODUCT SECTION (ORIGINAL - TEMPORARILY HIDDEN)
           ========================================================================= */}
-      <section className="vehicles section-cream" id="vehicles" aria-labelledby="vehicles-title">
+      <section className="vehicles section-cream" id="vehicles" aria-labelledby="vehicles-title" style={{ display: 'none' }}>
         <div className="container">
           <div className="section-heading center">
             <p className="eyebrow">SAVY VEHICLE LINEUP</p>
@@ -556,6 +556,31 @@ export function App() {
                   )}
                 </div>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          03.B. DUPLICATE VEHICLE SECTION (SAVY PROTOTYPE WITH 4-FRAME ROTATION)
+          All 4 cards use original SAVY content and 4-frame hover animation
+          ========================================================================= */}
+      <section className="savy-proto-section" id="vehicles-prototype" aria-labelledby="vehicles-proto-title">
+        <div className="container">
+          <div className="section-heading center">
+            <p className="eyebrow">SAVY VEHICLE LINEUP</p>
+            <h2 id="vehicles-proto-title">Electric Vehicle Range</h2>
+            <p className="section-subtitle">
+              A purpose-built platform for every operation.
+            </p>
+          </div>
+
+          <div className="savy-proto-grid">
+            {vehicles.slice(0, 4).map((vehicle) => (
+              <VehiclePrototypeHoverCard
+                key={vehicle.slug}
+                vehicle={vehicle}
+              />
             ))}
           </div>
         </div>

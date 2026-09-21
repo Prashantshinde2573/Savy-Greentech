@@ -421,7 +421,7 @@ export function AboutPage() {
             <p className="eyebrow mint">Electric mobility · Since 2014</p>
             <h1 id="about-title">Building India’s electric future.</h1>
             <p className="about-hero-copy">Over a decade of purpose-built electric mobility.</p>
-            <div className="hero-actions" style={{ marginTop: '24px' }}>
+            <div className="hero-actions">
               <a className="button-link mint" href="/technology">
                 <span>Explore Manufacturing Capability</span>
                 <PiArrowRight aria-hidden="true" />

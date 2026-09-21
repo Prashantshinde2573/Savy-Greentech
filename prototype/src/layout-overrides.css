@@ -287,57 +287,107 @@ h1, h2, h3, h4, h5, h6,
 
 /* =========================================================================
    GLOBAL HERO COMPONENT & ALIGNMENT SYSTEM
+/* =========================================================================
+   GLOBAL HERO SECTION CONTENT ALIGNMENT & SYSTEM
+   All major hero content elements (Eyebrow, Heading, Description, CTA Actions)
+   share the EXACT same vertical left alignment axis.
    ========================================================================= */
-.hero {
+.hero,
+.page-hero,
+.about-hero {
   background-color: var(--canopy);
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  padding-bottom: 72px;
+  padding-bottom: clamp(56px, 7vh, 80px);
   position: relative;
   overflow: hidden;
   color: #fff;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
   height: auto;
-  margin-block: 0;
-  padding-top: 0;
+  margin: 0 auto;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-content.container {
   width: min(1200px, calc(100% - 64px));
+  max-width: 1200px;
   margin-inline: auto;
-  padding-inline: 0;
+  padding-inline: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Strict Single Vertical Left Edge Alignment for All Hero Direct Children */
+.hero-content > * {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+  box-sizing: border-box !important;
 }
 
 .hero-content .eyebrow {
-  color: var(--mint);
-  margin: 0 0 16px;
-  text-align: left;
-  align-self: flex-start;
+  color: var(--mint) !important;
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  display: block !important;
 }
 
 .hero-content h1,
 .hero h1,
 .page-hero h1,
 .about-hero h1 {
+  font-size: clamp(44px, 5.8vw, 76px);
   font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   text-align: left;
   align-self: flex-start;
-  margin: 0 0 24px;
+  margin: 0 0 24px 0 !important;
+  margin-left: -4px !important;
+  padding: 0 !important;
   max-width: min(920px, 100%);
   text-wrap: balance;
   text-wrap: pretty;
+  color: #ffffff;
+}
+
+.page-hero h1 {
+  font-size: clamp(38px, 4.8vw, 62px);
+  line-height: 1.08;
+  max-width: min(900px, 100%);
+  margin: 0 0 20px 0 !important;
+  margin-left: -4px !important;
+}
+
+@media (max-width: 767px) {
+  .hero-content h1,
+  .hero h1,
+  .page-hero h1,
+  .about-hero h1 {
+    margin-left: -2px !important;
+  }
 }
 
 .hero-content p,
@@ -346,23 +396,29 @@ h1, h2, h3, h4, h5, h6,
   text-align: left;
   align-self: flex-start;
   max-width: min(760px, 100%);
-  margin: 0 0 32px;
+  margin: 0 0 32px 0 !important;
+  padding: 0 !important;
   font-size: clamp(16px, 1.6vw, 20px);
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.88);
 }
 
 .hero-actions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  align-self: flex-start;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  width: auto;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  align-self: flex-start !important;
+  gap: 14px !important;
+  flex-wrap: wrap !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+.hero-actions .button-link {
+  margin: 0 !important;
 }
 
 .hero-video-reveal {
@@ -1283,7 +1339,6 @@ h1, h2, h3, h4, h5, h6,
 }
 .original-footer .footer-bottom { margin-top: 64px; }
 .contact .eyebrow { color: #fff; }
-.original-footer .footer-grid > div:first-child p { margin-top: 24px; }
 .contact .button-link > svg { transition: transform .35s ease; }
 .contact .button-link:hover > svg,
 .contact .button-link:focus-visible > svg { transform: rotate(-45deg); }
@@ -2764,6 +2819,7 @@ body.menu-backdrop-open {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 36px;
+  align-items: start;
 }
 .footer-col {
   display: flex;
@@ -2771,6 +2827,22 @@ body.menu-backdrop-open {
   align-items: flex-start;
   gap: 12px;
   font-size: 14px;
+  margin-top: 0;
+  padding-top: 0;
+}
+.footer-col .eyebrow,
+.footer-grid .footer-col .eyebrow,
+.footer-grid > div:first-child p.eyebrow,
+.footer-grid > div.footer-col:first-child p.eyebrow {
+  color: var(--mint) !important;
+  margin: 0 0 16px 0 !important;
+  padding: 0 !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  max-width: none !important;
+  line-height: 1.2;
 }
 .footer-col a {
   color: rgba(255, 255, 255, 0.72);
@@ -9060,9 +9132,179 @@ body.menu-backdrop-open {
     box-sizing: border-box !important;
   }
 
-  .journey-year-group:last-child {
-    padding-right: 0 !important;
-    margin-right: 0 !important;
+}
+
+/* =========================================================================
+   Vehicle Hover Animation Prototype (Mercedes-Benz Inspired)
+   ========================================================================= */
+/* =========================================================================
+   SAVY Vehicle Lineup Prototype Cards & Hover Animation
+   ========================================================================= */
+.savy-proto-section {
+  padding: 80px 0 100px;
+  background: #ffffff;
+  position: relative;
+}
+
+.savy-proto-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px 36px;
+}
+
+.savy-proto-card {
+  position: relative;
+  min-height: 190px;
+  padding: 32px 32px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f2f5f7 0%, #e5ebef 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  outline: none;
+  overflow: visible;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.savy-proto-card:hover,
+.savy-proto-card:focus-visible {
+  border-color: rgba(16, 67, 54, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.savy-proto-content {
+  position: relative;
+  z-index: 2;
+  max-width: 54%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.savy-proto-title {
+  font-family: var(--font-heading, Outfit, -apple-system, sans-serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: #15221d;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0 0 10px 0;
+}
+
+.savy-proto-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #52605b;
+  margin: 0 0 20px 0;
+}
+
+.savy-proto-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #104336;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  margin-top: auto;
+  transition: color 0.18s ease;
+}
+
+.savy-proto-link svg {
+  transition: transform 0.2s ease;
+}
+
+.savy-proto-card:hover .savy-proto-link,
+.savy-proto-card:focus-visible .savy-proto-link {
+  color: #0c614b;
+}
+
+.savy-proto-card:hover .savy-proto-link svg,
+.savy-proto-card:focus-visible .savy-proto-link svg {
+  transform: translateX(4px);
+}
+
+.savy-proto-vehicle-slot {
+  position: absolute;
+  top: -38px;
+  right: -12px;
+  width: 260px;
+  height: 165px;
+  pointer-events: none;
+  overflow: visible;
+  mix-blend-mode: multiply;
+  z-index: 2;
+}
+
+.savy-proto-frame-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.savy-proto-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right bottom;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 60ms ease-out;
+  will-change: opacity;
+}
+
+.savy-proto-frame.frame-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 960px) {
+  .savy-proto-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
   }
 }
+
+@media (max-width: 680px) {
+  .savy-proto-card {
+    min-height: auto;
+    padding: 24px 20px;
+  }
+  .savy-proto-content {
+    max-width: 100%;
+    margin-top: 60px;
+  }
+  .savy-proto-title {
+    font-size: 22px;
+  }
+  .savy-proto-vehicle-slot {
+    width: 200px;
+    height: 130px;
+    top: -28px;
+    right: -6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .savy-proto-frame {
+    transition: none !important;
+  }
+  .savy-proto-frame:not(.savy-frame-1) {
+    display: none !important;
+  }
+  .savy-proto-frame.savy-frame-1 {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+
+
+
 
