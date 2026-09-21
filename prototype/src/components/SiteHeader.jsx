@@ -43,6 +43,18 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Lock body scrolling when a mega dropdown or mobile menu is open
+  useEffect(() => {
+    if (openDropdown !== null || menuOpen) {
+      document.body.classList.add('menu-backdrop-open');
+    } else {
+      document.body.classList.remove('menu-backdrop-open');
+    }
+    return () => {
+      document.body.classList.remove('menu-backdrop-open');
+    };
+  }, [openDropdown, menuOpen]);
+
   const isCurrent = (path) => {
     if (path === '/' && currentPath === '/') return true;
     if (path !== '/' && currentPath.startsWith(path)) return true;
@@ -91,10 +103,17 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
   };
 
   return (
-    <header
-      ref={headerRef}
-      className={`site-header ${isScrolledOrActive ? 'scrolled' : ''} ${openDropdown ? 'menu-active' : ''}`}
-    >
+    <>
+      {/* Background Dim & Soft Blur Overlay when Dropdown is Open */}
+      <div
+        className={`nav-dropdown-backdrop ${openDropdown ? 'is-active' : ''}`}
+        onClick={closeAllMenus}
+        aria-hidden="true"
+      />
+      <header
+        ref={headerRef}
+        className={`site-header ${isScrolledOrActive ? 'scrolled' : ''} ${openDropdown ? 'menu-active' : ''}`}
+      >
       <div className="container nav-shell">
         <a
           className={`brand brand-lockup ${!isScrolledOrActive ? 'inverse' : ''}`}
@@ -626,56 +645,68 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                 <div className="clean-dropdown-grid clean-grid-6">
                   <a href="/about" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/team/chandan-mundhra.jpg" alt="About Us" />
+                      <img className="clean-img-about" src="/assets/process/consultation.jpg" alt="About Us Leadership & Story" />
                     </div>
-                    <strong className="clean-card-title">About Us</strong>
-                    <span className="clean-card-sub">Founding story, timeline &amp; leadership</span>
-                    <span className="clean-card-link-text">View story <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">About Us</strong>
+                      <span className="clean-card-sub">Founding story, timeline &amp; leadership</span>
+                      <span className="clean-card-link-text">View story <PiArrowRight /></span>
+                    </div>
                   </a>
 
                   <a href="/sustainability" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/about-purpose/electric-future.jpg" alt="Sustainability / ESG" />
+                      <img className="clean-img-sustainability" src="/assets/about-purpose/electric-future.jpg" alt="Sustainability / ESG" />
                     </div>
-                    <strong className="clean-card-title">Sustainability / ESG</strong>
-                    <span className="clean-card-sub">One Vehicle, One Tree &amp; carbon metrics</span>
-                    <span className="clean-card-link-text">View impact <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">Sustainability / ESG</strong>
+                      <span className="clean-card-sub">One Vehicle, One Tree &amp; carbon metrics</span>
+                      <span className="clean-card-link-text">View impact <PiArrowRight /></span>
+                    </div>
                   </a>
 
                   <a href="/case-studies" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/news/ads-foundation-partnership.png" alt="Case Studies" />
+                      <img className="clean-img-casestudies" src="/assets/news/ads-foundation-partnership.png" alt="Case Studies" />
                     </div>
-                    <strong className="clean-card-title">Case Studies</strong>
-                    <span className="clean-card-sub">Proven deployments across India</span>
-                    <span className="clean-card-link-text">View cases <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">Case Studies</strong>
+                      <span className="clean-card-sub">Proven deployments across India</span>
+                      <span className="clean-card-link-text">View cases <PiArrowRight /></span>
+                    </div>
                   </a>
 
                   <a href="/media" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/news/city-pod-netherlands.jpg" alt="Media & Press" />
+                      <img className="clean-img-media" src="/assets/news/city-pod-netherlands.jpg" alt="Media & Press" />
                     </div>
-                    <strong className="clean-card-title">Media &amp; Press</strong>
-                    <span className="clean-card-sub">News coverage &amp; Amsterdam expo</span>
-                    <span className="clean-card-link-text">View news <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">Media &amp; Press</strong>
+                      <span className="clean-card-sub">News coverage &amp; Amsterdam expo</span>
+                      <span className="clean-card-link-text">View news <PiArrowRight /></span>
+                    </div>
                   </a>
 
                   <a href="/careers" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/team/dhawal-soni.jpg" alt="Careers" />
+                      <img className="clean-img-careers" src="/assets/process/customization-design.jpg" alt="Careers at SAVY" />
                     </div>
-                    <strong className="clean-card-title">Careers</strong>
-                    <span className="clean-card-sub">Join our engineering &amp; plant team</span>
-                    <span className="clean-card-link-text">View roles <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">Careers</strong>
+                      <span className="clean-card-sub">Join our engineering &amp; plant team</span>
+                      <span className="clean-card-link-text">View roles <PiArrowRight /></span>
+                    </div>
                   </a>
 
                   <a href="/blog" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img src="/assets/about-purpose/sustainability.jpg" alt="Blog & Insights" />
+                      <img className="clean-img-blog" src="/assets/about-purpose/sustainability.jpg" alt="Blog & Insights" />
                     </div>
-                    <strong className="clean-card-title">Blog / Insights</strong>
-                    <span className="clean-card-sub">Commercial EV economics &amp; TCO</span>
-                    <span className="clean-card-link-text">Read blog <PiArrowRight /></span>
+                    <div className="clean-card-body">
+                      <strong className="clean-card-title">Blog / Insights</strong>
+                      <span className="clean-card-sub">Commercial EV economics &amp; TCO</span>
+                      <span className="clean-card-link-text">Read blog <PiArrowRight /></span>
+                    </div>
                   </a>
                 </div>
 
@@ -715,6 +746,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
         </button>
       </div>
     </header>
+    </>
   );
 }
 

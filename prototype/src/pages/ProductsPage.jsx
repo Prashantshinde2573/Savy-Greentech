@@ -82,26 +82,12 @@ export function ProductsPage() {
           <div className="section-heading center">
             <p className="eyebrow">Vehicle Catalog</p>
             <h2 id="catalog-title">Explore Purpose-Built Platforms</h2>
-            <p className="section-subtitle">Select a category or filter by technical capacity to find your vehicle.</p>
+            <p className="section-subtitle">Filter by vehicle category, seating capacity, or payload duty cycle to find your exact fleet model.</p>
           </div>
 
-          {/* Category Tabs */}
-          <div className="category-filter-tabs" role="tablist" aria-label="Vehicle Categories">
-            {productCategories.map((cat) => (
-              <button
-                key={cat.id}
-                role="tab"
-                aria-selected={selectedCategory === cat.id}
-                className={`category-tab-btn ${selectedCategory === cat.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Advanced Filter Bar */}
+          {/* Unified Filter Bar */}
           <div className="catalog-filters-bar">
+            {/* Search Input */}
             <div className="search-filter-input">
               <PiMagnifyingGlass aria-hidden="true" />
               <input
@@ -118,10 +104,32 @@ export function ProductsPage() {
               )}
             </div>
 
+            {/* Filter Dropdowns Grid */}
             <div className="filter-dropdowns">
+              {/* Vehicle Type Dropdown (Replaces old horizontal tabs) */}
               <div className="filter-select-wrap">
-                <label htmlFor="filter-seating">Seating:</label>
-                <select id="filter-seating" value={seatingFilter} onChange={(e) => setSeatingFilter(e.target.value)}>
+                <select
+                  id="filter-category"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  aria-label="Filter by Vehicle Type"
+                >
+                  {productCategories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.id === 'all' ? 'All Vehicle Types' : cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Seating Dropdown */}
+              <div className="filter-select-wrap">
+                <select
+                  id="filter-seating"
+                  value={seatingFilter}
+                  onChange={(e) => setSeatingFilter(e.target.value)}
+                  aria-label="Filter by Seating Capacity"
+                >
                   <option value="all">All Seating</option>
                   <option value="1-2">1–2 Seats / Driver</option>
                   <option value="4-6">4–6 Seats</option>
@@ -129,9 +137,14 @@ export function ProductsPage() {
                 </select>
               </div>
 
+              {/* Payload Dropdown */}
               <div className="filter-select-wrap">
-                <label htmlFor="filter-load">Payload:</label>
-                <select id="filter-load" value={loadFilter} onChange={(e) => setLoadFilter(e.target.value)}>
+                <select
+                  id="filter-load"
+                  value={loadFilter}
+                  onChange={(e) => setLoadFilter(e.target.value)}
+                  aria-label="Filter by Payload Capacity"
+                >
                   <option value="all">All Payloads</option>
                   <option value="standard">Standard Duty</option>
                   <option value="heavy">Heavy Duty (500kg+)</option>
@@ -190,32 +203,28 @@ export function ProductsPage() {
                     <h3>{vehicle.name}</h3>
                     <p className="catalog-card-tagline">{vehicle.tagline || vehicle.shortCopy}</p>
 
-                    {/* Spec Highlights Badges */}
+                    {/* Spec Highlights Grid */}
                     <div className="catalog-spec-badges">
-                      {vehicle.specs.power && (
-                        <div className="spec-badge">
-                          <span className="spec-label">Motor</span>
-                          <span className="spec-val">{vehicle.specs.power.split(' ')[0]} {vehicle.specs.power.split(' ')[1]}</span>
-                        </div>
-                      )}
-                      {vehicle.specs.topSpeed && (
-                        <div className="spec-badge">
-                          <span className="spec-label">Speed</span>
-                          <span className="spec-val">{vehicle.specs.topSpeed}</span>
-                        </div>
-                      )}
-                      {vehicle.specs.range && (
-                        <div className="spec-badge">
-                          <span className="spec-label">Range</span>
-                          <span className="spec-val">{vehicle.specs.range.split(' ')[0]} km</span>
-                        </div>
-                      )}
-                      {vehicle.specs.loadCapacity && (
-                        <div className="spec-badge">
-                          <span className="spec-label">Payload</span>
-                          <span className="spec-val">{vehicle.specs.loadCapacity.split(' ')[0]} {vehicle.specs.loadCapacity.split(' ')[1] || ''}</span>
-                        </div>
-                      )}
+                      <div className="spec-badge">
+                        <span className="spec-label">Motor</span>
+                        <span className="spec-val">
+                          {vehicle.specs.power ? `${vehicle.specs.power.split(' ')[0]} ${vehicle.specs.power.split(' ')[1] || ''}` : 'Electric'}
+                        </span>
+                      </div>
+                      <div className="spec-badge">
+                        <span className="spec-label">Speed</span>
+                        <span className="spec-val">{vehicle.specs.topSpeed || '25 km/h'}</span>
+                      </div>
+                      <div className="spec-badge">
+                        <span className="spec-label">Range</span>
+                        <span className="spec-val">{vehicle.specs.range ? `${vehicle.specs.range.split(' ')[0]} km` : '75 km'}</span>
+                      </div>
+                      <div className="spec-badge">
+                        <span className="spec-label">Payload</span>
+                        <span className="spec-val">
+                          {vehicle.specs.loadCapacity ? `${vehicle.specs.loadCapacity.split(' ')[0]} ${vehicle.specs.loadCapacity.split(' ')[1] || ''}` : vehicle.specs.seatingCapacity?.split(' ')[0] + ' Seats' || 'Standard'}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="catalog-card-actions">
