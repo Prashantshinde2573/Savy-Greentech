@@ -576,7 +576,7 @@ export function App() {
           </div>
 
           <div className="savy-proto-grid">
-            {vehicles.slice(0, 4).map((vehicle) => (
+            {vehicles.slice(0, 6).map((vehicle) => (
               <VehiclePrototypeHoverCard
                 key={vehicle.slug}
                 vehicle={vehicle}

@@ -5,6 +5,8 @@ import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { usePageAnimations } from '../hooks/usePageAnimations';
+import { PanIndiaTerritoryMap } from '../components/PanIndiaTerritoryMap';
+import { DealerJourneyScrollSection } from '../components/DealerJourneyScrollSection';
 
 const dealerBenefits = [
   {
@@ -101,65 +103,11 @@ export function BecomeDealerPage() {
         </div>
       </section>
 
-      {/* Territory Availability Map Section */}
-      <section className="section-cream territory-section" aria-labelledby="territory-title">
-        <div className="container">
-          <div className="territory-grid">
-            <div className="territory-copy">
-              <div className="territory-badge">
-                <PiMapPin />
-                <span>Pan-India Expansion</span>
-              </div>
-              <h2 id="territory-title">Available Territories &amp; Regional Presence</h2>
-              <p>
-                SAVY is actively expanding its authorized dealer and service touchpoint network across key regional hubs in Western, Southern, Northern, and Central India.
-              </p>
-              <div className="territory-regions-list">
-                <div className="region-box">
-                  <strong>Western Region:</strong>
-                  <span>Gujarat, Maharashtra, Goa, Rajasthan (Selected Districts Open)</span>
-                </div>
-                <div className="region-box">
-                  <strong>Southern Region:</strong>
-                  <span>Karnataka, Andhra Pradesh, Telangana, Tamil Nadu, Kerala (Open)</span>
-                </div>
-                <div className="region-box">
-                  <strong>Northern &amp; Central Region:</strong>
-                  <span>Madhya Pradesh, Uttar Pradesh, Delhi NCR, Punjab, Haryana (Open)</span>
-                </div>
-              </div>
-            </div>
+      {/* Redesigned Interactive Pan-India Expansion & Territory Map Section */}
+      <PanIndiaTerritoryMap />
 
-            <div className="territory-map-card">
-              <img src="/assets/india-dotted-map.png" alt="SAVY India Dealer Network Map" />
-              <div className="map-caption">
-                <span>🟢 Active Deployments &amp; Dealership Hubs Across 10+ States</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dealer Journey Process */}
-      <section className="section-white dealer-journey-section" aria-labelledby="journey-title">
-        <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">Onboarding Roadmap</p>
-            <h2 id="journey-title">The 5-Step Dealer Journey</h2>
-            <p className="section-subtitle">A streamlined, transparent partnership process from application to showroom launch.</p>
-          </div>
-
-          <div className="dealer-steps-grid">
-            {dealerSteps.map((step) => (
-              <div className="dealer-step-card" key={step.step}>
-                <span className="step-num">{step.step}</span>
-                <h4>{step.title}</h4>
-                <p>{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Redesigned Premium Dark-Green Onboarding Roadmap / 5-Step Dealer Journey */}
+      <DealerJourneyScrollSection />
 
       {/* Dealer Application Form */}
       <section className="section-cream dealer-form-section" id="dealer-form" aria-labelledby="form-heading">
