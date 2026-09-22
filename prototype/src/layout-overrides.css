@@ -296,12 +296,15 @@ h1, h2, h3, h4, h5, h6,
 .page-hero,
 .about-hero {
   height: 100svh;
-  min-height: 650px;
+  min-height: 680px;
   background-color: var(--canopy);
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  padding-bottom: clamp(56px, 7vh, 80px);
+  padding-top: max(88px, calc(66px + 24px));
+  padding-bottom: clamp(64px, 8vh, 80px);
+  padding-left: 0;
+  padding-right: 0;
   position: relative;
   overflow: hidden;
   color: #fff;
@@ -318,7 +321,7 @@ h1, h2, h3, h4, h5, h6,
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: flex-end;
   text-align: left;
   width: 100%;
   box-sizing: border-box;
@@ -375,15 +378,6 @@ h1, h2, h3, h4, h5, h6,
   color: #ffffff;
 }
 
-@media (max-width: 767px) {
-  .hero-content h1,
-  .hero h1,
-  .page-hero h1,
-  .about-hero h1 {
-    margin-left: -2px !important;
-  }
-}
-
 .hero-content p,
 .page-hero-copy,
 .about-hero-copy {
@@ -413,6 +407,72 @@ h1, h2, h3, h4, h5, h6,
 
 .hero-actions .button-link {
   margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .hero,
+  .page-hero,
+  .about-hero {
+    height: 100svh;
+    min-height: 680px;
+    padding-top: max(88px, calc(66px + 20px));
+    padding-bottom: clamp(64px, 8vh, 80px) !important;
+  }
+
+  .hero-content.container {
+    width: calc(100% - 32px) !important;
+  }
+
+  .hero-content .eyebrow {
+    margin: 0 0 14px 0 !important;
+    font-size: 12.5px !important;
+  }
+
+  .hero-content h1,
+  .hero h1,
+  .page-hero h1,
+  .about-hero h1 {
+    font-size: clamp(34px, 8vw, 48px);
+    line-height: 1.08;
+    margin: 0 0 16px 0 !important;
+    margin-left: -2px !important;
+  }
+
+  .hero-content p,
+  .page-hero-copy,
+  .about-hero-copy {
+    font-size: 15.5px !important;
+    line-height: 1.5 !important;
+    margin: 0 0 24px 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero,
+  .page-hero,
+  .about-hero {
+    height: 100svh;
+    min-height: 680px;
+    padding-bottom: 72px !important;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 0 !important;
+  }
+
+  .hero-actions .button-link {
+    width: 100% !important;
+    min-height: 48px !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
 }
 
 .hero-video-reveal {
@@ -2552,48 +2612,7 @@ main#top:not(.home-old) :focus-visible {
 }
 
 .overview-card {
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border: 1px solid #e8ede9;
-  border-radius: 10px;
-  padding: 10px;
-  text-decoration: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.overview-card:hover {
-  border-color: #104336;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-}
-
-.overview-card-img {
-  width: 100%;
-  aspect-ratio: 16/10;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #f4f6f4;
-  margin-bottom: 8px;
-}
-
-.overview-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.overview-card:hover .overview-card-img img {
-  transform: scale(1.05);
-}
-
-.overview-card-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #101f1e;
-  text-align: center;
-  padding-top: 2px;
+  cursor: pointer;
 }
 
 /* Product Cards Tab Grids (Inside Products Mega Menu) */
@@ -3017,17 +3036,8 @@ body.menu-backdrop-open {
 
 /* Page Hero Component (Inner Pages) - Uniform Full-Screen Consistent with Homepage */
 .page-hero {
-  height: 100svh;
-  min-height: 650px;
-  padding: 100px 0 clamp(56px, 7vh, 80px);
-  position: relative;
-  overflow: hidden;
   background: #071c1b;
   color: #ffffff;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  box-sizing: border-box;
 }
 .page-hero-shade {
   position: absolute;
@@ -5144,60 +5154,165 @@ body.menu-backdrop-open {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-top: 48px;
+  margin-top: 40px;
+  align-items: stretch;
 }
+
 .tech-pillar-card {
-  background: var(--white);
-  border: 1px solid var(--sage);
-  border-radius: 16px;
-  padding: 36px;
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2ebe5;
+  border-radius: 26px;
+  padding: 28px 28px 30px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s, border-color 0.2s;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(16, 67, 54, 0.04);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
 .tech-pillar-card:hover {
   transform: translateY(-4px);
-  border-color: var(--canopy);
+  border-color: #9eccb5;
+  box-shadow: 0 12px 32px rgba(16, 67, 54, 0.09);
 }
+
+.tech-card-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  min-height: 110px;
+}
+
+.tech-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  z-index: 2;
+}
+
+.tech-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #557065;
+  background: #f4f8f5;
+  border: 1px solid #dce8e0;
+  border-radius: 100px;
+  padding: 3px 10px;
+  line-height: 1.4;
+}
+
 .tech-pillar-icon-box {
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
-  background: var(--cream);
-  color: var(--canopy);
+  background: #edf6f1;
+  border: 1px solid #dbece1;
+  color: #104336;
   display: grid;
   place-items: center;
-  font-size: 26px;
-  margin-bottom: 24px;
-}
-.tech-pillar-card h3 {
   font-size: 22px;
-  margin: 0 0 12px;
+  margin: 0;
+  transition: transform 0.25s ease, background-color 0.25s ease;
 }
+
+.tech-pillar-card:hover .tech-pillar-icon-box {
+  background: #e2f0e8;
+  transform: scale(1.04);
+}
+
+.tech-card-visual {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(170px, 16vw, 210px);
+  height: clamp(165px, 15.5vw, 200px);
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.tech-card-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+  display: block;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.tech-pillar-card:hover .tech-card-visual img {
+  transform: scale(1.03);
+}
+
+.tech-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tech-pillar-card h3 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #0d211a;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  letter-spacing: -0.015em;
+}
+
 .tech-pillar-card p {
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.55;
-  color: var(--slate);
+  color: #556c62;
   margin: 0 0 20px;
 }
+
+.tech-card-divider {
+  width: 100%;
+  height: 1px;
+  background: #edf3ef;
+  margin-top: auto;
+  margin-bottom: 18px;
+}
+
 .tech-pillar-card ul {
   list-style: none;
   padding: 0;
-  margin: auto 0 0;
-  display: grid;
-  gap: 8px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
 .tech-pillar-card li {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--bark);
+  color: #142820;
+  line-height: 1.45;
 }
-.tech-pillar-card li svg {
-  color: var(--canopy);
+
+.tech-check-icon {
+  flex-shrink: 0;
+  color: #1e7d5d;
   font-size: 16px;
+  margin-top: 1px;
 }
 /* ==========================================================================
    BATTERY SYSTEMS & THERMAL SAFETY (EDGE-TO-EDGE IMAGE PANEL)

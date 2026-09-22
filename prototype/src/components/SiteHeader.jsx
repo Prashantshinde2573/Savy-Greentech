@@ -256,75 +256,93 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                       <div className="all-vehicles-grid">
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('golf')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('golf')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('golf'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/classic-golf.jpeg" alt="Golf Carts" />
                           </div>
-                          <span className="overview-card-label">Golf Carts</span>
+                          <strong className="product-tab-card-title">Golf Carts</strong>
+                          <span className="product-tab-card-sub">High-efficiency campus transit &amp; resort carts</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
 
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('loading')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('loading')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('loading'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/electruck.jpg" alt="Loading Rickshaws" />
                           </div>
-                          <span className="overview-card-label">Loading Rickshaws</span>
+                          <strong className="product-tab-card-title">Loading Rickshaws</strong>
+                          <span className="product-tab-card-sub">Heavy-duty commercial cargo &amp; last-mile delivery</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
 
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('garbage')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('garbage')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('garbage'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/dump-truck.jpg" alt="Garbage Collection" />
                           </div>
-                          <span className="overview-card-label">Garbage Collection</span>
+                          <strong className="product-tab-card-title">Garbage Collection</strong>
+                          <span className="product-tab-card-sub">Municipal waste &amp; hydraulic tipper vehicles</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
 
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('passenger')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('passenger')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('passenger'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/tuk-tuk.jpg" alt="Passenger Vehicles" />
                           </div>
-                          <span className="overview-card-label">Passenger Vehicles</span>
+                          <strong className="product-tab-card-title">Passenger Vehicles</strong>
+                          <span className="product-tab-card-sub">Approved student transit &amp; on-road 3-wheelers</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
 
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('custom')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('custom')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('custom'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/vintage-elite.jpg" alt="Custom / Industrial" />
                           </div>
-                          <span className="overview-card-label">Custom / Industrial</span>
+                          <strong className="product-tab-card-title">Custom / Industrial</strong>
+                          <span className="product-tab-card-sub">Tailor-made utility platforms &amp; special EVs</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
 
                         <div
-                          className="overview-card"
-                          style={{ cursor: 'pointer' }}
-                          onMouseEnter={() => setActiveProductTab('upcoming')}
+                          className="product-tab-card overview-card"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => setActiveProductTab('upcoming')}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveProductTab('upcoming'); }}
                         >
-                          <div className="overview-card-img">
+                          <div className="product-tab-card-img">
                             <img src="/assets/coming-soon-vehicle.png" alt="Upcoming Vehicles" />
                           </div>
-                          <span className="overview-card-label">Upcoming Vehicles</span>
+                          <strong className="product-tab-card-title">Upcoming Vehicles</strong>
+                          <span className="product-tab-card-sub">Next-generation electric mobility concepts</span>
+                          <span className="product-tab-card-link">View Category <PiArrowRight /></span>
                         </div>
                       </div>
                     </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { PiCpu, PiEngine, PiBatteryCharging, PiCheckCircle } from 'react-icons/pi';
+import { PiCpu, PiEngine, PiBatteryCharging, PiCheckCircleFill } from 'react-icons/pi';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +10,7 @@ const techItems = [
     id: '01',
     step: '01',
     icon: PiCpu,
+    visual: '/assets/tech/smart-controller.png',
     title: 'Smart Motor Controllers',
     description: 'Programmable intelligent motor controllers with regenerative braking, dynamic torque vectoring, and smooth low-speed throttle modulation for effortless maneuvering in confined spaces.',
     features: [
@@ -22,6 +23,7 @@ const techItems = [
     id: '02',
     step: '02',
     icon: PiEngine,
+    visual: '/assets/tech/indigenous-motor.png',
     title: 'High-Torque Indigenous Motors',
     description: 'Custom-wound electric motors delivering peak low-end torque for steep gradients, heavy passenger groups, and industrial payloads up to 900kg without thermal derating.',
     features: [
@@ -34,6 +36,7 @@ const techItems = [
     id: '03',
     step: '03',
     icon: PiBatteryCharging,
+    visual: '/assets/tech/advanced-battery.png',
     title: 'Advanced Battery Technology',
     description: 'Flexible power storage options including ultra-safe Lithium Iron Phosphate (LiFePO4) with active BMS telemetry, or cost-effective heavy-duty deep cycle lead-acid packs.',
     features: [
@@ -236,18 +239,32 @@ export function TechScrollTimeline() {
                   const Icon = item.icon;
                   return (
                     <article className="tech-pillar-card tech-desktop-card" key={item.id}>
-                      <div className="tech-pillar-icon-box">
-                        <Icon aria-hidden="true" />
+                      {item.visual && (
+                        <div className="tech-card-visual" aria-hidden="true">
+                          <img src={item.visual} alt="" loading="lazy" />
+                        </div>
+                      )}
+                      <div className="tech-card-header">
+                        <div className="tech-card-meta">
+                          <span className="tech-step-badge">{item.step}</span>
+                          <div className="tech-pillar-icon-box">
+                            <Icon aria-hidden="true" />
+                          </div>
+                        </div>
                       </div>
-                      <h3>{item.title}</h3>
-                      <p>{item.description}</p>
-                      <ul>
-                        {item.features.map((feat, fIdx) => (
-                          <li key={fIdx}>
-                            <PiCheckCircle aria-hidden="true" /> {feat}
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="tech-card-body">
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        <div className="tech-card-divider" />
+                        <ul>
+                          {item.features.map((feat, fIdx) => (
+                            <li key={fIdx}>
+                              <PiCheckCircleFill className="tech-check-icon" aria-hidden="true" />
+                              <span>{feat}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </article>
                   );
                 })}
@@ -259,18 +276,32 @@ export function TechScrollTimeline() {
                   const Icon = item.icon;
                   return (
                     <article className="tech-pillar-card tech-mobile-card" key={item.id}>
-                      <div className="tech-pillar-icon-box">
-                        <Icon aria-hidden="true" />
+                      {item.visual && (
+                        <div className="tech-card-visual" aria-hidden="true">
+                          <img src={item.visual} alt="" loading="lazy" />
+                        </div>
+                      )}
+                      <div className="tech-card-header">
+                        <div className="tech-card-meta">
+                          <span className="tech-step-badge">{item.step}</span>
+                          <div className="tech-pillar-icon-box">
+                            <Icon aria-hidden="true" />
+                          </div>
+                        </div>
                       </div>
-                      <h3>{item.title}</h3>
-                      <p>{item.description}</p>
-                      <ul>
-                        {item.features.map((feat, fIdx) => (
-                          <li key={fIdx}>
-                            <PiCheckCircle aria-hidden="true" /> {feat}
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="tech-card-body">
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        <div className="tech-card-divider" />
+                        <ul>
+                          {item.features.map((feat, fIdx) => (
+                            <li key={fIdx}>
+                              <PiCheckCircleFill className="tech-check-icon" aria-hidden="true" />
+                              <span>{feat}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </article>
                   );
                 })}
