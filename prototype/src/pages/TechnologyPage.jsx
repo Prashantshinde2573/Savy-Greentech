@@ -57,7 +57,7 @@ export function TechnologyPage() {
         title="Technology & Manufacturing | Indigenous EV Engineering"
         description="Explore SAVY Greentech’s engineering: In-house manufacturing plant in Ahmedabad, smart battery technology, high-torque motors, and multi-stage testing."
       />
-      <SiteHeader currentPath="/technology" transparentInitially={false} />
+      <SiteHeader currentPath="/technology" transparentInitially={true} />
 
       <PageHero
         eyebrow="Engineering Excellence"

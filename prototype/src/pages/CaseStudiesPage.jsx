@@ -28,7 +28,7 @@ export function CaseStudiesPage() {
         title="Case Studies & Deployments | Proven Electric Vehicle Fleets"
         description="Explore documented institutional deployments of SAVY electric vehicles across Ramdev Foods, Civil Hospital Ahmedabad, Andhra Pradesh Tourism, and Defence installations."
       />
-      <SiteHeader currentPath="/case-studies" transparentInitially={false} />
+      <SiteHeader currentPath="/case-studies" transparentInitially={true} />
 
       <PageHero
         eyebrow="Verified Field Deployments"

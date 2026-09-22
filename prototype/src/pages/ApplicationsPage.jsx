@@ -26,7 +26,7 @@ export function ApplicationsPage() {
         title="Applications & Use Cases | Purpose-Built Electric Mobility"
         description="Discover SAVY Greentech electric vehicle solutions across Municipal Sanitation, Luxury Resorts, Hospitals, Industrial Logistics, Defence Bases, and Campus transit."
       />
-      <SiteHeader currentPath="/applications" transparentInitially={false} />
+      <SiteHeader currentPath="/applications" transparentInitially={true} />
 
       <PageHero
         eyebrow="Real-World Mobility Solutions"

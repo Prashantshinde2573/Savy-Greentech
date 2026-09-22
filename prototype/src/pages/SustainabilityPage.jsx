@@ -83,7 +83,7 @@ export function SustainabilityPage() {
         title="Sustainability & ESG | EV vs Diesel Calculator & One Tree Initiative"
         description="Calculate fuel and CO2 savings with SAVY EVs. Learn about our One Vehicle One Tree initiative, sustainable manufacturing, and circular energy principles."
       />
-      <SiteHeader currentPath="/sustainability" transparentInitially={false} />
+      <SiteHeader currentPath="/sustainability" transparentInitially={true} />
 
       <PageHero
         eyebrow="Sustainability &amp; ESG"

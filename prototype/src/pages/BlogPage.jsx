@@ -36,7 +36,7 @@ export function BlogPage() {
         title="Blog & Insights | Commercial EV Adoption & Mobility Technology"
         description="Thought leadership, total cost of ownership analysis, campus transit case insights, and municipal sanitation electrification articles by SAVY Greentech."
       />
-      <SiteHeader currentPath="/blog" transparentInitially={false} />
+      <SiteHeader currentPath="/blog" transparentInitially={true} />
 
       <PageHero
         eyebrow="Knowledge &amp; Insights"

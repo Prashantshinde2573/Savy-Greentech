@@ -66,7 +66,7 @@ export function BecomeDealerPage() {
         title="Become a Dealer | SAVY Electric Vehicle Dealership Opportunities"
         description="Partner with SAVY Greentech as an authorized electric vehicle dealer. Access high-demand golf carts, cargo rickshaws, municipal tippers, and complete OEM support."
       />
-      <SiteHeader currentPath="/become-a-dealer" transparentInitially={false} />
+      <SiteHeader currentPath="/become-a-dealer" transparentInitially={true} />
 
       <PageHero
         eyebrow="Channel Partnership"

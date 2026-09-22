@@ -63,7 +63,7 @@ export function ProductsPage() {
         title="SAVY Electric Vehicles | Commercial & Campus EV Catalog"
         description="Browse SAVY Greentech purpose-built electric vehicles: Golf carts, loading rickshaws, garbage tippers, passenger tuk-tuks, vintage cars, and custom industrial builds."
       />
-      <SiteHeader currentPath="/products" transparentInitially={false} />
+      <SiteHeader currentPath="/products" transparentInitially={true} />
 
       <PageHero
         eyebrow="SAVY Electric Vehicles"

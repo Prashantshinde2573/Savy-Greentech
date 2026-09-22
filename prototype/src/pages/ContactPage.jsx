@@ -31,7 +31,7 @@ export function ContactPage() {
         title="Contact Us | Let's Build a Greener Tomorrow, Together"
         description="Get in touch with SAVY Greentech. Request EV quotes, schedule campus demos, apply for dealerships, or connect with our Ahmedabad headquarters."
       />
-      <SiteHeader currentPath="/contact" transparentInitially={false} />
+      <SiteHeader currentPath="/contact" transparentInitially={true} />
 
       <PageHero
         eyebrow="Get in Touch"

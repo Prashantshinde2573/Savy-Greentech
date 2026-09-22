@@ -23,7 +23,7 @@ export function MediaPage() {
         title="Media & Press | Recognised Today. Trusted Everyday."
         description="Read latest news coverage, international exhibitions, and press releases about SAVY Greentech electric vehicles and the City Pod European launch."
       />
-      <SiteHeader currentPath="/media" transparentInitially={false} />
+      <SiteHeader currentPath="/media" transparentInitially={true} />
 
       <PageHero
         eyebrow="News &amp; Recognition"

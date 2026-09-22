@@ -295,6 +295,8 @@ h1, h2, h3, h4, h5, h6,
 .hero,
 .page-hero,
 .about-hero {
+  height: 100svh;
+  min-height: 650px;
   background-color: var(--canopy);
   display: flex;
   justify-content: flex-start;
@@ -371,14 +373,6 @@ h1, h2, h3, h4, h5, h6,
   text-wrap: balance;
   text-wrap: pretty;
   color: #ffffff;
-}
-
-.page-hero h1 {
-  font-size: clamp(38px, 4.8vw, 62px);
-  line-height: 1.08;
-  max-width: min(900px, 100%);
-  margin: 0 0 20px 0 !important;
-  margin-left: -4px !important;
 }
 
 @media (max-width: 767px) {
@@ -2903,11 +2897,11 @@ body.menu-backdrop-open {
   color: var(--mint);
 }
 
-/* Page Hero Component (Inner Pages) */
+/* Page Hero Component (Inner Pages) - Uniform Full-Screen Consistent with Homepage */
 .page-hero {
-  min-height: 480px;
-  height: auto;
-  padding: 160px 0 92px;
+  height: 100svh;
+  min-height: 650px;
+  padding: 100px 0 clamp(56px, 7vh, 80px);
   position: relative;
   overflow: hidden;
   background: #071c1b;
@@ -2915,22 +2909,17 @@ body.menu-backdrop-open {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
+  box-sizing: border-box;
 }
 .page-hero-shade {
-  background: linear-gradient(0deg, rgba(4, 20, 17, 0.82), rgba(5, 28, 23, 0.54) 65%, rgba(5, 28, 23, 0.76));
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(4, 20, 17, 0.65), rgba(5, 28, 23, 0.42) 65%, rgba(5, 28, 23, 0.58));
 }
 .page-hero-fallback-bg {
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #071c1b 0%, #103330 60%, #0d2826 100%);
-}
-.page-hero h1 {
-  font-size: clamp(38px, 4.8vw, 60px);
-  line-height: 1.08;
-  max-width: min(900px, 100%);
-  margin: 0 0 24px;
-  text-align: left;
-  align-self: flex-start;
 }
 .page-hero-copy {
   font-size: clamp(16px, 1.6vw, 20px);
@@ -6291,7 +6280,19 @@ body.menu-backdrop-open {
   border: 1px solid var(--sage);
   border-radius: 16px;
   padding: 32px;
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.dealer-benefit-card:hover {
+  background: var(--canopy);
+  border-color: var(--canopy);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(7, 28, 27, 0.18);
+}
+
 .db-icon-wrap,
 .culture-icon-wrap {
   width: 52px;
@@ -6303,18 +6304,37 @@ body.menu-backdrop-open {
   place-items: center;
   font-size: 26px;
   margin-bottom: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.dealer-benefit-card:hover .db-icon-wrap {
+  background: var(--mint);
+  color: var(--midnight);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
 .dealer-benefit-card h3,
 .culture-card h3 {
   font-size: 19px;
   margin: 0 0 10px;
+  transition: color 0.3s ease;
 }
+
+.dealer-benefit-card:hover h3 {
+  color: #ffffff;
+}
+
 .dealer-benefit-card p,
 .culture-card p {
   font-size: 13px;
   line-height: 1.55;
   color: var(--slate);
   margin: 0;
+  transition: color 0.3s ease;
+}
+
+.dealer-benefit-card:hover p {
+  color: #d1e5df;
 }
 .territory-section {
   padding: 90px 0;

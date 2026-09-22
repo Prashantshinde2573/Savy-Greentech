@@ -41,7 +41,7 @@ export function CareersPage() {
         title="Careers | Build the Future of Electric Mobility With SAVY"
         description="Join the SAVY Greentech engineering, production, and after-sales team. Explore open roles in Ahmedabad and across regional service networks."
       />
-      <SiteHeader currentPath="/careers" transparentInitially={false} />
+      <SiteHeader currentPath="/careers" transparentInitially={true} />
 
       <PageHero
         eyebrow="Join Our Team"
