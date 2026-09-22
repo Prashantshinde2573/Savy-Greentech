@@ -18,13 +18,18 @@ export function usePageAnimations(scopeRef) {
 
       // Section Headings and lead paragraphs reveal
       gsap.utils.toArray('.section-heading, .sector-badge, .active-cs-header, .form-header, .engineering-copy').forEach((element) => {
-        gsap.from(element, {
-          autoAlpha: 0,
-          y: 30,
-          duration: 0.85,
-          ease: 'power4.out',
-          scrollTrigger: { trigger: element, start: 'top 86%', once: true },
-        });
+        gsap.fromTo(
+          element,
+          { autoAlpha: 0, y: 30 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.85,
+            ease: 'power4.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: element, start: 'top 86%', once: true },
+          }
+        );
       });
 
       // Staggered card grids
@@ -33,25 +38,35 @@ export function usePageAnimations(scopeRef) {
       ).forEach((group) => {
         const cards = group.querySelectorAll('article, .journey-card, .job-card, .case-study-card, .quality-card, .dealer-benefit-card, .culture-card, .mission-card');
         if (!cards.length) return;
-        gsap.from(cards, {
-          autoAlpha: 0,
-          y: 36,
-          duration: 0.75,
-          stagger: 0.08,
-          ease: 'power4.out',
-          scrollTrigger: { trigger: group, start: 'top 84%', once: true },
-        });
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 36 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.75,
+            stagger: 0.08,
+            ease: 'power4.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: group, start: 'top 84%', once: true },
+          }
+        );
       });
 
       // Process Editorial rows reveal on scroll
       gsap.utils.toArray('.process-editorial-row').forEach((row) => {
-        gsap.from(row, {
-          autoAlpha: 0,
-          y: 35,
-          duration: 0.85,
-          ease: 'power4.out',
-          scrollTrigger: { trigger: row, start: 'top 85%', once: true },
-        });
+        gsap.fromTo(
+          row,
+          { autoAlpha: 0, y: 35 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.85,
+            ease: 'power4.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: row, start: 'top 85%', once: true },
+          }
+        );
       });
     }, scopeRef);
 

@@ -3,29 +3,39 @@ export const leadershipTeam = [
     name: 'Chandan Mundhra',
     role: 'Founder & CEO',
     copy: 'Driving innovation in electric vehicle manufacturing with 25+ years of expertise in reliable, efficient, and customized EV solutions.',
-    image: '/assets/team/chandan-mundhra.jpg',
+    image: '/assets/team/Chandan mundhra (ceo)Team.webp',
     linkedin: 'https://www.linkedin.com/in/chandanmundhra/'
   },
   {
     name: 'Dhawal Soni',
     role: 'Chief Operating Officer',
     copy: 'Overseeing strategic operations, production planning, supply chain excellence, and business growth for purpose-built electric vehicle platforms.',
-    image: '/assets/team/dhawal-soni.jpg',
+    image: '/assets/team/Dhawal Soni (chief operation officer)Team.webp',
     linkedin: 'https://www.linkedin.com/in/dhawalsoni01/'
   },
   {
-    name: 'Lokendra Agarwal',
+    name: 'Lokendra Agrawal',
     role: 'Chief Technology Officer',
     copy: 'Leading R&D for indigenous electric motors, smart motor controllers, high-density battery management systems, and smart vehicle telematics.',
-    image: '/assets/team/team-placeholder-1.jpg',
-    placeholder: true
+    image: '/assets/team/LOKENDRA AGRAWAL (chief technology officer)Team.webp'
   },
   {
     name: 'Jitendra Adhyaru',
     role: 'Chief Financial Officer',
     copy: 'Directing financial strategy, corporate governance, capital allocation, and investment partnerships to fuel sustainable enterprise expansion.',
-    image: '/assets/team/team-placeholder-2.jpg',
-    placeholder: true
+    image: '/assets/team/Jitendra Adhyaru (CFO) team.webp'
+  },
+  {
+    name: 'Shivansh Tamrakar',
+    role: 'Chief Sustainability Officer',
+    copy: 'Spearheading ESG initiatives, life-cycle carbon reduction, and circular battery sustainability frameworks across all product lines.',
+    image: '/assets/team/Shivansh Tamrakar (chief sustainability officer)team.webp'
+  },
+  {
+    name: 'Ajay Sharma',
+    role: 'Head of Administration',
+    copy: 'Managing plant administration, regulatory statutory compliance, infrastructure logistics, and corporate operational workflows.',
+    image: '/assets/team/AJAY SHARMA(Admin) Team.webp'
   }
 ];
 

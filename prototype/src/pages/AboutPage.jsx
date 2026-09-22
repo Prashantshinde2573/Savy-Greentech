@@ -50,6 +50,41 @@ export function AboutPage() {
   const [activeGroupIndex, setActiveGroupIndex] = useState(0);
   const [storyExpanded, setStoryExpanded] = useState(false);
 
+  // Executive Leadership Carousel Ref and State
+  const teamScrollRef = useRef(null);
+  const [canScrollTeamLeft, setCanScrollTeamLeft] = useState(false);
+  const [canScrollTeamRight, setCanScrollTeamRight] = useState(true);
+
+  const updateTeamScrollState = () => {
+    const el = teamScrollRef.current;
+    if (!el) return;
+    setCanScrollTeamLeft(el.scrollLeft > 10);
+    setCanScrollTeamRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+  };
+
+  useEffect(() => {
+    const el = teamScrollRef.current;
+    if (!el) return;
+    updateTeamScrollState();
+    el.addEventListener('scroll', updateTeamScrollState, { passive: true });
+    window.addEventListener('resize', updateTeamScrollState);
+    return () => {
+      el.removeEventListener('scroll', updateTeamScrollState);
+      window.removeEventListener('resize', updateTeamScrollState);
+    };
+  }, []);
+
+  const handleTeamScroll = (direction) => {
+    const el = teamScrollRef.current;
+    if (!el) return;
+    const card = el.querySelector('.team-card-expanded');
+    const scrollAmount = card ? card.offsetWidth + 20 : 300;
+    el.scrollBy({
+      left: direction === 'next' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
   // Sync active year tab and bottom counter indicator on horizontal scroll
   useEffect(() => {
     const viewport = journeyScrollRef.current;
@@ -822,11 +857,36 @@ export function AboutPage() {
           ========================================================================= */}
       <section className="about-team section-cream" aria-labelledby="leadership-title">
         <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">Executive Leadership</p>
-            <h2 id="leadership-title">The Minds Behind SAVY</h2>
-            <p className="about-section-intro">Automotive veterans, engineering specialists, and operational leaders driving sustainable mobility.</p>
+          <div className="team-carousel-header">
+            <div className="section-heading left">
+              <p className="eyebrow">Executive Leadership</p>
+              <h2 id="leadership-title">The Minds Behind SAVY</h2>
+              <p className="about-section-intro">Automotive veterans, engineering specialists, and operational leaders driving sustainable mobility.</p>
+            </div>
+            <div className="team-carousel-controls" aria-label="Leadership Carousel Navigation">
+              <button
+                type="button"
+                className={`team-nav-btn ${canScrollTeamLeft ? 'active' : 'disabled'}`}
+                onClick={() => handleTeamScroll('prev')}
+                disabled={!canScrollTeamLeft}
+                aria-label="Previous leadership member"
+              >
+                <PiArrowLeft aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className={`team-nav-btn ${canScrollTeamRight ? 'active' : 'disabled'}`}
+                onClick={() => handleTeamScroll('next')}
+                disabled={!canScrollTeamRight}
+                aria-label="Next leadership member"
+              >
+                <PiArrowRight aria-hidden="true" />
+              </button>
+            </div>
           </div>
+        </div>
+
+        <div className="about-team-viewport" ref={teamScrollRef}>
           <div className="about-team-grid">
             {leadershipTeam.map(({ name, role, copy, image, linkedin, placeholder }) => (
               <article key={name} className="team-card-expanded">

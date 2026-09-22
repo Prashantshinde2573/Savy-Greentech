@@ -1995,80 +1995,198 @@ main#top:not(.home-old) :focus-visible {
   line-height: 1.5;
 }
 
-.about-team-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+/* Leadership Carousel Layout */
+.team-carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
   gap: 24px;
 }
 
-.about-team-grid article {
-  min-width: 0;
+.team-carousel-header .section-heading {
+  margin-bottom: 0;
+  text-align: left;
 }
 
-.team-card-media {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
-  background: var(--pale);
+.team-carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
-.team-card-media img {
+.team-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--sage, #dcece3);
+  background: var(--white, #ffffff);
+  color: var(--canopy, #104336);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(16, 67, 54, 0.04);
+}
+
+.team-nav-btn:hover:not(:disabled) {
+  background: var(--canopy, #104336);
+  color: var(--white, #ffffff);
+  border-color: var(--canopy, #104336);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(16, 67, 54, 0.15);
+}
+
+.team-nav-btn:disabled,
+.team-nav-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.about-team-viewport {
+  --carousel-gutter: max(32px, calc((100% - 1200px) / 2));
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 28%;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--carousel-gutter);
+  scrollbar-width: none;
+  padding: 10px 0 32px;
 }
 
-.about-team-grid article:hover .team-card-media img {
-  transform: scale(1.025);
+.about-team-viewport::-webkit-scrollbar {
+  display: none;
 }
 
-.team-linkedin {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 100px;
-  background: var(--white);
-  color: var(--deep-teal);
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+.about-team-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  width: max-content !important;
+  padding-left: var(--carousel-gutter) !important;
+  padding-right: var(--carousel-gutter) !important;
+  gap: 24px !important;
+  margin: 0 !important;
+  scrollbar-width: none !important;
 }
 
-.team-linkedin:hover,
-.team-linkedin:focus-visible {
-  background: var(--electric-blue);
-  color: var(--midnight);
-  transform: translateY(-2px);
+.about-team-grid::-webkit-scrollbar {
+  display: none !important;
 }
 
-.team-linkedin svg {
-  width: 20px;
-  height: 20px;
+.about-team-grid .team-card-expanded,
+.about-team-grid article {
+  flex: 0 0 clamp(290px, 20.5vw, 320px) !important;
+  width: clamp(290px, 20.5vw, 320px) !important;
+  scroll-snap-align: start !important;
+  background: var(--white, #ffffff) !important;
+  border: 1px solid var(--sage, #dcece3) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: 0 4px 16px rgba(16, 67, 54, 0.05) !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease !important;
 }
 
-.team-card-copy {
-  padding: 20px 0 0;
+.about-team-grid .team-card-expanded:hover,
+.about-team-grid article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(16, 67, 54, 0.12) !important;
+  border-color: #a3d4bd !important;
 }
 
-.team-role {
-  margin: 8px 0 0;
-  color: var(--slate);
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
+.about-team-grid .team-card-media {
+  position: relative !important;
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  background: #0d211a !important;
+}
+
+.about-team-grid .team-card-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.about-team-grid article:hover .team-card-media img,
+.about-team-grid .team-card-expanded:hover .team-card-media img {
+  transform: scale(1.04) !important;
+}
+
+.about-team-grid .team-linkedin {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: var(--canopy, #104336) !important;
+  backdrop-filter: blur(6px) !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  z-index: 2 !important;
+}
+
+.about-team-grid .team-linkedin:hover {
+  background: var(--canopy, #104336) !important;
+  color: var(--white, #ffffff) !important;
+  transform: scale(1.1) !important;
+}
+
+.about-team-grid .team-linkedin svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.about-team-grid .team-card-copy {
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+}
+
+.about-team-grid .team-role {
+  margin: 0 0 10px !important;
+  color: #1e7d5d !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  line-height: 1.35 !important;
 }
 
 .about-team-grid h3 {
-  margin: 0;
-  font-size: 22px;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  margin: 0 0 4px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.015em !important;
+  color: #10211c !important;
+}
+
+.about-team-grid .team-bio {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #536b62 !important;
+  margin: 0 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
 
 .about-page .nav > a.active {
@@ -2103,14 +2221,14 @@ main#top:not(.home-old) :focus-visible {
     order: initial;
   }
 
-  .about-team-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .about-team-viewport {
+    --carousel-gutter: 20px;
   }
 }
 
 @media (max-width: 680px) {
-  .about-team-grid {
-    grid-template-columns: 1fr;
+  .about-team-viewport {
+    --carousel-gutter: 16px;
   }
 }
 
@@ -6271,15 +6389,22 @@ body.menu-backdrop-open {
 .culture-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 24px;
+  align-items: stretch;
   margin-top: 48px;
 }
 .dealer-benefit-card,
 .culture-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  box-sizing: border-box;
   background: var(--cream);
   border: 1px solid var(--sage);
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 18px;
+  padding: 32px 28px;
   transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
@@ -6303,7 +6428,8 @@ body.menu-backdrop-open {
   display: grid;
   place-items: center;
   font-size: 26px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  flex-shrink: 0;
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -6315,8 +6441,15 @@ body.menu-backdrop-open {
 
 .dealer-benefit-card h3,
 .culture-card h3 {
-  font-size: 19px;
-  margin: 0 0 10px;
+  font-family: var(--font-heading, Outfit, -apple-system, sans-serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.28;
+  color: var(--bark);
+  margin: 0 0 12px 0;
+  min-height: 52px;
+  display: flex;
+  align-items: flex-start;
   transition: color 0.3s ease;
 }
 
@@ -6326,10 +6459,11 @@ body.menu-backdrop-open {
 
 .dealer-benefit-card p,
 .culture-card p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--slate);
   margin: 0;
+  flex-grow: 1;
   transition: color 0.3s ease;
 }
 
@@ -7086,6 +7220,10 @@ body.menu-backdrop-open {
   .culture-grid,
   .quality-cards-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .dealer-benefit-card h3,
+  .culture-card h3 {
+    min-height: auto;
   }
   .dealer-steps-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -8058,13 +8196,22 @@ body.menu-backdrop-open {
     text-align: center;
   }
 
-  /* Section 8: Executive Leadership / Founder Profile Cards (Horizontally Swipeable Rail) */
+  /* Section 8: Executive Leadership Carousel */
   .about-team {
     padding: clamp(48px, 8vw, 72px) 0;
     overflow: hidden;
   }
-  .about-team .section-heading {
+  .team-carousel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 24px;
+  }
+  .team-carousel-controls {
+    align-self: flex-end;
+  }
+  .about-team .section-heading {
+    margin-bottom: 0;
     text-align: left;
   }
   .about-team .section-heading h2 {
@@ -8078,72 +8225,15 @@ body.menu-backdrop-open {
     margin: 0;
   }
   .about-team-grid {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    scroll-snap-type: x mandatory !important;
+    padding-left: 20px !important;
+    padding-right: 24px !important;
     gap: 16px !important;
-    padding: 6px 20px 24px !important;
-    margin: 0 -20px !important;
-    scrollbar-width: none !important;
   }
-  .about-team-grid::-webkit-scrollbar {
-    display: none !important;
-  }
-  .about-team-grid .team-card-expanded {
-    flex: 0 0 270px !important;
-    width: 270px !important;
-    max-width: 80vw !important;
-    scroll-snap-align: start !important;
-    background: #ffffff !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    border: 1px solid #e2ede6 !important;
-    box-shadow: 0 4px 16px rgba(16, 67, 54, 0.05) !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .about-team-grid .team-card-media {
-    aspect-ratio: 1 / 1 !important;
-    width: 100% !important;
-    overflow: hidden !important;
-    position: relative !important;
-  }
-  .about-team-grid .team-card-media img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-  .about-team-grid .team-card-copy {
-    padding: 16px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1 !important;
-  }
-  .about-team-grid .team-card-copy h3 {
-    font-size: 17px !important;
-    font-weight: 600 !important;
-    margin: 0 0 4px !important;
-    color: #10211c !important;
-  }
-  .about-team-grid .team-role {
-    font-size: 12.5px !important;
-    color: #1e7d5d !important;
-    font-weight: 600 !important;
-    margin: 0 0 8px !important;
-  }
-  .about-team-grid .team-bio {
-    font-size: 13px !important;
-    line-height: 1.5 !important;
-    color: #536b62 !important;
-    margin: 0 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 4 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+  .about-team-grid .team-card-expanded,
+  .about-team-grid article {
+    flex: 0 0 clamp(260px, 44vw, 295px) !important;
+    width: clamp(260px, 44vw, 295px) !important;
+    min-width: 240px !important;
   }
 
   /* Section 9: Partners */
@@ -8201,9 +8291,16 @@ body.menu-backdrop-open {
   .journey-milestone-card {
     width: 220px;
   }
-  .about-team-grid .team-card-expanded {
-    flex: 0 0 255px !important;
-    width: 255px !important;
+  .about-team-grid {
+    padding-left: 16px !important;
+    padding-right: 20px !important;
+    gap: 14px !important;
+  }
+  .about-team-grid .team-card-expanded,
+  .about-team-grid article {
+    flex: 0 0 clamp(260px, 78vw, 300px) !important;
+    width: clamp(260px, 78vw, 300px) !important;
+    min-width: 240px !important;
   }
   .founder-profile-card {
     max-width: 270px;
