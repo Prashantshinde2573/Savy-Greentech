@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { PiArrowRight, PiArticle, PiDownloadSimple, PiEnvelopeSimple, PiGlobeHemisphereWest, PiMagnifyingGlass, PiMegaphone, PiTrophy } from 'react-icons/pi';
+import { PiArrowRight, PiArticle, PiCalendarBlank, PiDownloadSimple, PiEnvelopeSimple, PiGlobeHemisphereWest, PiMagnifyingGlass, PiMapPin, PiMegaphone, PiSparkle, PiTrophy } from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
@@ -112,13 +112,34 @@ export function MediaPage() {
           <div className="awards-grid">
             {awardsExhibitions.map((item, idx) => (
               <article className="award-card" key={idx}>
-                <div className="award-header">
-                  <PiTrophy className="award-icon" />
-                  <span className="award-year">{item.year}</span>
+                <div className="award-card-media">
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                  <div className="award-media-overlay" />
+                  <span className="award-year-badge">
+                    <PiCalendarBlank aria-hidden="true" />
+                    <span>{item.year}</span>
+                  </span>
+                  {item.highlight && (
+                    <span className="award-highlight-pill">
+                      <PiSparkle aria-hidden="true" />
+                      <span>{item.highlight}</span>
+                    </span>
+                  )}
                 </div>
-                <span className="award-category">{item.category}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <div className="award-card-body">
+                  <div className="award-meta-row">
+                    <span className="award-category">{item.category}</span>
+                    <span className="award-location">
+                      <PiMapPin aria-hidden="true" />
+                      <span>{item.location}</span>
+                    </span>
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <div className="award-card-footer">
+                    <span className="award-role-tag">{item.role}</span>
+                  </div>
+                </div>
               </article>
             ))}
           </div>
@@ -148,8 +169,21 @@ export function MediaPage() {
         </div>
       </section>
 
-      {/* Final Conversion CTA */}
+      {/* Final Conversion CTA with Video Background */}
       <section className="contact" aria-labelledby="media-final-cta">
+        <video
+          className="contact-video"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="contact-video-shade" aria-hidden="true" />
+
         <div className="container contact-inner">
           <p className="eyebrow mint">Media &amp; Editorial Inquiries</p>
           <h2 id="media-final-cta">Looking for an EV industry spokesperson?</h2>

@@ -272,13 +272,21 @@ export function SustainabilityPage() {
 
       {/* One Vehicle, One Tree Section */}
       <section className="section-white one-tree-section" id="one-tree" aria-labelledby="tree-heading">
-        <div className="container">
-          <div className="one-tree-grid">
+        <div className="one-tree-split">
+          {/* Left Edge-to-Edge Tree Media */}
+          <div className="one-tree-media-col">
+            <img
+              src="/assets/daniel-morris-JaKOhMN0dj8-unsplash.webp"
+              alt="SAVY Greentech One Vehicle One Tree Ecological Commitment"
+              className="one-tree-full-img"
+              loading="lazy"
+            />
+          </div>
+
+          {/* Right Content */}
+          <div className="one-tree-content-col">
             <div className="one-tree-copy">
-              <div className="tree-badge">
-                <PiTree />
-                <span>Ecological Commitment</span>
-              </div>
+              <p className="eyebrow">Ecological Commitment</p>
               <h2 id="tree-heading">One Vehicle. One Tree.</h2>
               <p className="tree-lead-p">
                 At SAVY Greentech, every electric vehicle delivery is accompanied by the planting and nurturing of a native tree sapling in partnership with community restoration drives across India.
@@ -291,26 +299,6 @@ export function SustainabilityPage() {
                 <li><PiCheckCircle /> Multi-year survival and maintenance monitoring with local trusts</li>
                 <li><PiCheckCircle /> Transparent tracking connected to verified vehicle delivery milestones</li>
               </ul>
-            </div>
-
-            {/* Live Counter Card */}
-            <div className="one-tree-counter-card">
-              <div className="tree-icon-large"><PiTree /></div>
-              <h3>Live Restoration Counter</h3>
-              <div className="tree-counter-numbers">
-                <div className="counter-col">
-                  <span className="counter-num">500+</span>
-                  <span className="counter-lbl">Vehicles Delivered</span>
-                </div>
-                <div className="counter-arrow">→</div>
-                <div className="counter-col highlight">
-                  <span className="counter-num">500+</span>
-                  <span className="counter-lbl">Trees Planted</span>
-                </div>
-              </div>
-              <p className="counter-footnote">
-                Live counter reflecting verified SAVY institutional, municipal, and commercial vehicle deliveries nationwide.
-              </p>
             </div>
           </div>
         </div>
@@ -346,8 +334,21 @@ export function SustainabilityPage() {
         </div>
       </section>
 
-      {/* Final Conversion CTA */}
+      {/* Final Conversion CTA with Video Background */}
       <section className="contact" aria-labelledby="sustainability-cta">
+        <video
+          className="contact-video"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="contact-video-shade" aria-hidden="true" />
+
         <div className="container contact-inner">
           <p className="eyebrow mint">Join India’s Green Transition</p>
           <h2 id="sustainability-cta">Partner with SAVY for your ESG fleet goals</h2>

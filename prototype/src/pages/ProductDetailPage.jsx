@@ -1,5 +1,27 @@
-import { useState, useRef } from 'react';
-import { PiArrowLeft, PiArrowRight, PiBatteryCharging, PiCheckCircle, PiDownloadSimple, PiEngine, PiGauge, PiHeadset, PiShieldCheck, PiSparkle, PiUsers } from 'react-icons/pi';
+import { useState, useRef, useEffect } from 'react';
+import {
+  PiArrowLeft,
+  PiArrowRight,
+  PiBatteryCharging,
+  PiCheckCircle,
+  PiDownloadSimple,
+  PiEngine,
+  PiGauge,
+  PiHeadset,
+  PiShieldCheck,
+  PiSparkle,
+  PiUsers,
+  PiBuildings,
+  PiAirplaneTilt,
+  PiTruck,
+  PiTree,
+  PiMapPinLine,
+  PiFirstAid,
+  PiCaretLeft,
+  PiCaretRight
+} from 'react-icons/pi';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { SEOHead } from '../components/SEOHead';
@@ -7,13 +29,117 @@ import { QuoteModal } from '../components/QuoteModal';
 import { products, getProductBySlug } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
+gsap.registerPlugin(ScrollTrigger);
+
+function getUseCaseDetails(appName) {
+  const lower = appName.toLowerCase();
+  if (lower.includes('golf') || lower.includes('resort') || lower.includes('hotel') || lower.includes('wedding')) {
+    return {
+      image: '/assets/applications/golf-course.jpg',
+      tag: 'Hospitality & Leisure',
+      icon: PiSparkle
+    };
+  }
+  if (lower.includes('campus') || lower.includes('university') || lower.includes('school') || lower.includes('daycare')) {
+    return {
+      image: '/assets/applications/campus.jpg',
+      tag: 'Education & Institutional',
+      icon: PiBuildings
+    };
+  }
+  if (lower.includes('airport') || lower.includes('tarmac') || lower.includes('transit hub')) {
+    return {
+      image: '/assets/applications/airport.jpg',
+      tag: 'Aviation & Transit',
+      icon: PiAirplaneTilt
+    };
+  }
+  if (lower.includes('logistics') || lower.includes('fmcg') || lower.includes('delivery') || lower.includes('warehouse') || lower.includes('cargo') || lower.includes('material')) {
+    return {
+      image: '/assets/applications/logistics.jpg',
+      tag: 'Industrial & Logistics',
+      icon: PiTruck
+    };
+  }
+  if (lower.includes('sanitation') || lower.includes('government') || lower.includes('municipal') || lower.includes('smart city') || lower.includes('panchayat')) {
+    return {
+      image: '/assets/applications/government.jpg',
+      tag: 'Civic & Government',
+      icon: PiShieldCheck
+    };
+  }
+  if (lower.includes('farm') || lower.includes('agro') || lower.includes('rural') || lower.includes('agriculture')) {
+    return {
+      image: '/assets/applications/agriculture.jpg',
+      tag: 'Agro & Rural',
+      icon: PiTree
+    };
+  }
+  if (lower.includes('tourism') || lower.includes('heritage') || lower.includes('sightseeing') || lower.includes('theme park')) {
+    return {
+      image: '/assets/applications/tourism.jpg',
+      tag: 'Tourism & Culture',
+      icon: PiMapPinLine
+    };
+  }
+  if (lower.includes('hospital') || lower.includes('health') || lower.includes('medical') || lower.includes('laundry')) {
+    return {
+      image: '/assets/applications/campus.jpg',
+      tag: 'Healthcare & Facilities',
+      icon: PiFirstAid
+    };
+  }
+  return {
+    image: '/assets/applications/community.jpg',
+    tag: 'Community & Mobility',
+    icon: PiMapPinLine
+  };
+}
+
 export function ProductDetailPage({ slug }) {
   const pageRef = useRef(null);
+  const appsTrackRef = useRef(null);
   const product = getProductBySlug(slug) || products[0];
   const [activeImage, setActiveImage] = useState(product.gallery?.[0] || product.image);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('quote');
   usePageAnimations(pageRef);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray('.product-usecase-card');
+      if (cards.length) {
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 35, scale: 0.96 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            stagger: 0.08,
+            ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: {
+              trigger: '.product-apps-section',
+              start: 'top 82%',
+              once: true
+            }
+          }
+        );
+      }
+    }, pageRef);
+
+    return () => ctx.revert();
+  }, [slug]);
+
+  const scrollApps = (direction) => {
+    if (appsTrackRef.current) {
+      const offset = direction === 'left' ? -360 : 360;
+      appsTrackRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
 
   const relatedProducts = products
     .filter((p) => p.slug !== product.slug && (p.category === product.category || !product.category))
@@ -288,22 +414,68 @@ export function ProductDetailPage({ slug }) {
         </div>
       </section>
 
-      {/* Recommended Applications */}
+      {/* Recommended Applications / Use Cases (Full Bleed Right Edge) */}
       <section className="section-cream product-apps-section" aria-labelledby="apps-heading">
         <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">Use Cases</p>
-            <h2 id="apps-heading">Ideal Operating Environments</h2>
-          </div>
-
-          <div className="product-app-tags-grid">
-            {product.applications?.map((app, i) => (
-              <div className="product-app-badge-card" key={i}>
-                <span className="app-dot" />
-                <strong>{app}</strong>
+          <div className="product-apps-header-row">
+            <div className="section-heading left">
+              <p className="eyebrow">Operational Use Cases</p>
+              <h2 id="apps-heading">Ideal Operating Environments</h2>
+              <p className="section-subtitle">
+                Engineered to perform reliably across demanding commercial, institutional, and civic applications.
+              </p>
+            </div>
+            {product.applications && product.applications.length > 2 && (
+              <div className="apps-carousel-controls" aria-label="Use case carousel controls">
+                <button
+                  type="button"
+                  className="carousel-nav-btn prev"
+                  onClick={() => scrollApps('left')}
+                  aria-label="Previous use cases"
+                >
+                  <PiCaretLeft aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="carousel-nav-btn next"
+                  onClick={() => scrollApps('right')}
+                  aria-label="Next use cases"
+                >
+                  <PiCaretRight aria-hidden="true" />
+                </button>
               </div>
-            ))}
+            )}
           </div>
+        </div>
+
+        {/* Carousel Track Bleeds to Right Screen Edge */}
+        <div className="product-apps-carousel-track" ref={appsTrackRef}>
+          {product.applications?.map((app, i) => {
+            const details = getUseCaseDetails(app);
+            const AppIcon = details.icon;
+            return (
+              <article className="product-usecase-card" key={i}>
+                <div className="usecase-card-bg">
+                  <img src={details.image} alt={app} loading="lazy" />
+                  <div className="usecase-card-gradient" />
+                </div>
+                <div className="usecase-card-inner">
+                  <div className="usecase-top-row">
+                    <span className="usecase-tag-badge">
+                      <AppIcon aria-hidden="true" /> {details.tag}
+                    </span>
+                    <span className="usecase-num">0{i + 1}</span>
+                  </div>
+                  <div className="usecase-bottom-content">
+                    <h3 className="usecase-title">{app}</h3>
+                    <p className="usecase-desc">
+                      Purpose-built platform engineered for demanding duty cycles, maximum uptime, and zero emissions.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -338,8 +510,21 @@ export function ProductDetailPage({ slug }) {
         </div>
       </section>
 
-      {/* Final Conversion CTA */}
+      {/* Final Conversion CTA with Video Background */}
       <section className="contact" aria-labelledby="product-final-cta">
+        <video
+          className="contact-video"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="contact-video-shade" aria-hidden="true" />
+
         <div className="container contact-inner">
           <p className="eyebrow mint">Ready to place your order?</p>
           <h2 id="product-final-cta">Get direct OEM pricing for {product.name}</h2>

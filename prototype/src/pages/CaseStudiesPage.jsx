@@ -153,8 +153,21 @@ export function CaseStudiesPage() {
         </div>
       </section>
 
-      {/* Final Conversion CTA */}
+      {/* Final Conversion CTA with Video Background */}
       <section className="contact" aria-labelledby="cs-final-cta">
+        <video
+          className="contact-video"
+          muted
+          autoPlay
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="contact-video-shade" aria-hidden="true" />
+
         <div className="container contact-inner">
           <p className="eyebrow mint">Proven Institutional Track Record</p>
           <h2 id="cs-final-cta">Have a similar fleet requirement?</h2>

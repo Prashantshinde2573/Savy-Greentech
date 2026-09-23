@@ -3,13 +3,17 @@ import {
   PiArrowLeft,
   PiArrowRight,
   PiBuildings,
+  PiCalendarCheck,
+  PiChartBar,
   PiCheckCircle,
+  PiCompassTool,
   PiFactory,
   PiGear,
   PiGraduationCap,
   PiHeadset,
   PiLeaf,
   PiLightning,
+  PiSealCheck,
   PiShieldCheck,
   PiTrendUp,
   PiTruck,
@@ -189,6 +193,83 @@ const whySavyPoints = [
     number: 'Verified',
     title: 'Institutional Proof',
     desc: 'Over 500+ deployed vehicles serving defence installations, state governments, hospitals, and Fortune 500s.'
+  }
+];
+
+// ==========================================
+// 05B. ENGINEERING EXCELLENCE BENTO DATA
+// ==========================================
+const engineeringBentoPoints = [
+  {
+    id: 'years-mfg',
+    title: 'Years of EV Manufacturing',
+    highlight: '10+',
+    subtext: 'Since 2014',
+    isNumber: true,
+    icon: PiCalendarCheck,
+    gridClass: 'bento-row1-left',
+    theme: 'theme-dark-green',
+    imgOverlay: '/assets/bento/ev-chassis.png',
+    imgType: 'ev-chassis'
+  },
+  {
+    id: 'capacity',
+    title: 'Annual Manufacturing Capacity',
+    highlight: '10,000',
+    subtext: 'Annual units',
+    isNumber: true,
+    icon: PiChartBar,
+    gridClass: 'bento-row1-right',
+    theme: 'theme-mint',
+    showBarChart: true
+  },
+  {
+    id: 'service',
+    title: 'Service & Maintenance',
+    highlight: 'DOORSTEP',
+    subtext: 'Nationwide support',
+    isNumber: false,
+    icon: PiWrench,
+    gridClass: 'bento-row2-left',
+    theme: 'theme-mint',
+    imgOverlay: '/assets/bento/india-network.png',
+    imgType: 'india-network'
+  },
+  {
+    id: 'customisation',
+    title: 'Design & Customisation',
+    highlight: 'IN-HOUSE',
+    subtext: 'CAD + Chassis',
+    isNumber: false,
+    icon: PiCompassTool,
+    gridClass: 'bento-row2-right',
+    theme: 'theme-white',
+    imgOverlay: '/assets/bento/cad-chassis.png',
+    imgType: 'cad-chassis'
+  },
+  {
+    id: 'platforms',
+    title: 'Commercial EV Platforms',
+    highlight: 'PURPOSE-BUILT',
+    subtext: 'Indian duty cycles',
+    isNumber: false,
+    icon: PiTruck,
+    gridClass: 'bento-row3-left',
+    theme: 'theme-cream-mint',
+    imgOverlay: '/assets/bento/commercial-ev.png',
+    imgType: 'commercial-ev'
+  },
+  {
+    id: 'institutional',
+    title: 'Institutional Proof',
+    highlight: '500+',
+    subtext: 'Vehicles deployed',
+    isNumber: true,
+    icon: PiShieldCheck,
+    gridClass: 'bento-row3-right',
+    theme: 'theme-dark-green',
+    imgOverlay: '/assets/bento/institutional-gov.png',
+    imgType: 'institutional-gov'
   }
 ];
 
@@ -415,9 +496,9 @@ export function App() {
         });
       });
 
-      // Applications & Rows reveal
-      gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .news-content-layout, .press-articles-grid').forEach((group) => {
-        const cards = group.querySelectorAll('article, .why-savy-row, .news-card, .press-card');
+      // Applications, Rows & Bento Cards reveal
+      gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .engineering-bento-grid, .news-content-layout, .press-articles-grid').forEach((group) => {
+        const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .news-card, .press-card');
         if (!cards.length) return;
         gsap.from(cards, {
           autoAlpha: 0,
@@ -425,6 +506,7 @@ export function App() {
           duration: 0.75,
           stagger: 0.08,
           ease: 'power4.out',
+          clearProps: 'transform',
           scrollTrigger: { trigger: group, start: 'top 84%', once: true }
         });
       });
@@ -665,6 +747,67 @@ export function App() {
                     </span>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          05B. ENGINEERING EXCELLENCE (RESPONSIVE ASYMMETRIC BENTO GRID)
+          ========================================================================= */}
+      <section className="home-engineering-bento-section" id="engineering-bento" aria-labelledby="engineering-bento-title">
+        <div className="bento-container">
+          <div className="section-heading center">
+            <p className="eyebrow">ENGINEERING EXCELLENCE</p>
+            <h2 id="engineering-bento-title">
+              Engineering Mobility Around Your Needs
+            </h2>
+            <p className="section-subtitle">
+              Over a decade of manufacturing capability, indigenous engineering, and nationwide client support.
+            </p>
+          </div>
+
+          <div className="engineering-bento-grid">
+            {engineeringBentoPoints.map((item) => {
+              const Icon = item.icon;
+              return (
+                <article
+                  key={item.id}
+                  className={`bento-card ${item.gridClass} ${item.theme} ${item.imgOverlay ? `has-media-${item.imgType}` : ''}`}
+                >
+                  {item.imgOverlay && (
+                    <div className={`bento-visual-media bento-media-${item.imgType}`} aria-hidden="true">
+                      <img src={item.imgOverlay} alt="" loading="lazy" />
+                      <div className="bento-media-blend" />
+                    </div>
+                  )}
+
+                  {item.showBarChart && (
+                    <div className="bento-bar-chart-visual" aria-hidden="true">
+                      <span className="bento-bar bar-1" />
+                      <span className="bento-bar bar-2" />
+                      <span className="bento-bar bar-3" />
+                      <span className="bento-bar bar-4" />
+                    </div>
+                  )}
+
+                  <div className="bento-card-content">
+                    <div className="bento-header-row">
+                      <span className="bento-card-icon" aria-hidden="true">
+                        <Icon />
+                      </span>
+                      <span className="bento-card-title">{item.title}</span>
+                    </div>
+
+                    <div className="bento-highlight-group">
+                      <div className={`bento-main-highlight ${item.isNumber ? 'is-number' : 'is-word'}`}>
+                        {item.highlight}
+                      </div>
+                      <div className="bento-subtext">{item.subtext}</div>
+                    </div>
+                  </div>
+                </article>
               );
             })}
           </div>

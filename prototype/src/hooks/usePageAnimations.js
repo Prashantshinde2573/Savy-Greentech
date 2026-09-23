@@ -68,6 +68,58 @@ export function usePageAnimations(scopeRef) {
           }
         );
       });
+
+      // One Tree Parallax Image Scroll Effect
+      gsap.utils.toArray('.one-tree-full-img').forEach((img) => {
+        gsap.fromTo(
+          img,
+          { yPercent: -7, scale: 1.05 },
+          {
+            yPercent: 7,
+            scale: 1.0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: img.closest('.one-tree-section') || img,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.2,
+            },
+          }
+        );
+      });
+
+      // One Tree Section reveal
+      gsap.utils.toArray('.one-tree-split').forEach((split) => {
+        const copy = split.querySelector('.one-tree-copy');
+        const media = split.querySelector('.one-tree-media-col');
+        if (copy) {
+          gsap.fromTo(
+            copy,
+            { autoAlpha: 0, y: 30 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: 'power4.out',
+              clearProps: 'transform',
+              scrollTrigger: { trigger: split, start: 'top 82%', once: true },
+            }
+          );
+        }
+        if (media) {
+          gsap.fromTo(
+            media,
+            { autoAlpha: 0 },
+            {
+              autoAlpha: 1,
+              duration: 1,
+              ease: 'power4.out',
+              clearProps: 'transform',
+              scrollTrigger: { trigger: split, start: 'top 82%', once: true },
+            }
+          );
+        }
+      });
     }, scopeRef);
 
     return () => ctx.revert();

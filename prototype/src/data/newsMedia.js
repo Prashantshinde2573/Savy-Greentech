@@ -91,24 +91,40 @@ export const awardsExhibitions = [
     title: 'Netherlands E-Mobility Expo, Amsterdam',
     year: '2024',
     category: 'International Exhibition',
-    description: 'Showcased the City Pod electric passenger vehicle to global fleet operators and sustainable mobility leaders.'
+    location: 'Amsterdam, Netherlands',
+    role: 'Global Launch & Pavilion',
+    image: '/assets/news/city-pod-netherlands.jpg',
+    highlight: 'European Debut',
+    description: 'Showcased the City Pod electric passenger vehicle to European fleet operators, municipal transit leaders, and clean-tech investors.'
   },
   {
     title: 'EV Fleet & Logistics Forum',
     year: '2026',
-    category: 'Industry Leadership',
-    description: 'Participated as key panelist and electric vehicle manufacturing pioneer shaping commercial fleet adoption.'
+    category: 'Industry Leadership Conclave',
+    location: 'New Delhi, India',
+    role: 'Keynote OEM Panelist',
+    image: '/assets/news/ev-fleet-forum.jpg',
+    highlight: 'Keynote Panel',
+    description: 'Participated as key panelist and electric vehicle manufacturing pioneer shaping commercial fleet electrification and logistics adoption.'
   },
   {
     title: 'IITRAM Industry Academia Conclave',
     year: '2023',
-    category: 'Technology & Academic Partnership',
-    description: 'Collaborating on EV engineering curricula, student internships, and indigenous motor drive research.'
+    category: 'Technology & Academic Conclave',
+    location: 'Ahmedabad, Gujarat',
+    role: 'Keynote Speaker & Partner',
+    image: '/assets/news/iitram-conclave.jpg',
+    highlight: 'R&D Initiative',
+    description: 'Collaborating with IITRAM on specialized EV engineering curricula, indigenous motor drive research, and technical internships.'
   },
   {
     title: 'ADS Foundation Skill India Partnership',
     year: '2021',
-    category: 'Workforce Development',
-    description: 'Recognized for training and developing technical talent for India’s growing electric mobility industry.'
+    category: 'National Workforce Mission',
+    location: 'Gandhinagar, Gujarat',
+    role: 'Industry Training Partner',
+    image: '/assets/news/ads-foundation-partnership.png',
+    highlight: '500+ Trained',
+    description: 'Formal partnership equipping India’s workforce with advanced technical assembly and diagnostic skills for the electric mobility sector.'
   }
 ];
