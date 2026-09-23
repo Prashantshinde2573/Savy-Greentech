@@ -20,6 +20,15 @@ const CLUB_CART_FRAMES = [
   '/assets/club-cart/Club Cart - 06.jpg',
 ];
 
+const TUK_TUK_FRAMES = [
+  '/assets/tuk-tuk/tuk-tuk-01.webp',
+  '/assets/tuk-tuk/tuk-tuk-02.webp',
+  '/assets/tuk-tuk/tuk-tuk-03.webp',
+  '/assets/tuk-tuk/tuk-tuk-04.webp',
+  '/assets/tuk-tuk/tuk-tuk-05.webp',
+  '/assets/tuk-tuk/tuk-tuk-06.webp',
+];
+
 const DEFAULT_FRAMES = [
   '/assets/prototype-hover/card-frame-1.png',
   '/assets/prototype-hover/card-frame-2.png',
@@ -28,10 +37,17 @@ const DEFAULT_FRAMES = [
 ];
 
 export function VehicleCategoryCard({ vehicle }) {
-  // Use the 6-frame vehicle animation across all cards in the SAVY Vehicle Lineup
+  const isTukTuk =
+    vehicle?.slug === 'tuk-tuk-e' ||
+    vehicle?.slug === 'tuk-tuk' ||
+    (vehicle?.name && vehicle.name.toLowerCase().includes('tuk'));
+
+  // Use Tuk Tuk frames for Tuk Tuk card, and preloaded animation frames across lineup
   const frames =
     vehicle?.frames && vehicle.frames.length > 0
       ? vehicle.frames
+      : isTukTuk
+      ? TUK_TUK_FRAMES
       : CLUB_CART_FRAMES;
 
   const totalFrames = frames.length;
@@ -133,7 +149,7 @@ export function VehicleCategoryCard({ vehicle }) {
 
     const isForward = targetIdx > startIdx;
     const stepCount = Math.abs(targetIdx - startIdx);
-    const frameIntervalMs = 90; // ~11 FPS for smooth sequential motion
+    const frameIntervalMs = 55; // Fast & responsive animation (~18 FPS, 275ms full turn)
 
     let accumulatedDelay = 0;
 
