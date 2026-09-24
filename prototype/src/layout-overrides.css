@@ -5548,7 +5548,7 @@ body.menu-backdrop-open {
 
 .battery-split-layout {
   display: grid;
-  grid-template-columns: minmax(0, 48%) minmax(0, 52%);
+  grid-template-columns: minmax(0, 46%) minmax(0, 54%);
   width: 100%;
   align-items: stretch;
 }
@@ -5556,7 +5556,7 @@ body.menu-backdrop-open {
 .battery-image-panel {
   width: 100%;
   height: 100%;
-  min-height: 0;
+  min-height: 480px;
   position: relative;
   overflow: hidden;
   margin: 0;
@@ -5564,88 +5564,130 @@ body.menu-backdrop-open {
   background-color: var(--pale);
 }
 
-.battery-image-panel img {
+.battery-image-panel .battery-parallax-img {
   position: absolute;
-  top: 0;
+  top: -5%;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
   display: block;
   border-radius: 0;
+  will-change: transform;
+  transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .battery-content-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px clamp(24px, 4vw, 64px) 80px clamp(40px, 5vw, 80px);
+  padding: 48px clamp(24px, 4vw, 56px) 48px clamp(32px, 4.5vw, 64px);
   box-sizing: border-box;
 }
 
 .battery-content-inner {
   width: 100%;
-  max-width: 620px;
+  max-width: 580px;
 }
 
 .battery-content-inner .eyebrow {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .battery-content-inner h2 {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .battery-lead-p {
   font-family: var(--font-body, 'Noto Sans', sans-serif);
-  font-size: clamp(15px, 1.1vw, 16px);
-  line-height: 1.65;
+  font-size: clamp(14.5px, 1.05vw, 15.5px);
+  line-height: 1.6;
   color: var(--slate);
-  margin: 0 0 28px;
+  margin: 0 0 20px;
 }
 
-.battery-compare-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 24px;
-}
-
-.battery-type-box {
-  background: var(--white);
-  border: 1px solid var(--sage);
-  border-radius: 16px;
-  padding: 22px;
-  box-shadow: 0 6px 20px rgba(16, 67, 54, 0.04);
+/* Compact Tabs Navigation */
+.battery-tabs-nav {
   display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  width: 100%;
 }
 
-.battery-type-box:hover {
-  transform: translateY(-3px);
+.battery-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 67, 54, 0.16);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--bark);
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+
+.battery-tab-btn:hover {
   border-color: var(--canopy);
-  box-shadow: 0 14px 30px rgba(16, 67, 54, 0.08);
+  color: var(--canopy);
+  background: #ffffff;
+  transform: translateY(-1px);
 }
 
-.battery-card-header {
+.battery-tab-btn.active {
+  background: var(--canopy);
+  color: #ffffff;
+  border-color: var(--canopy);
+  box-shadow: 0 4px 14px rgba(16, 67, 54, 0.22);
+  font-weight: 700;
+}
+
+.battery-tab-btn .tab-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.battery-tab-content-area {
+  width: 100%;
+}
+
+.battery-compact-panel {
+  background: var(--white);
+  border: 1px solid rgba(16, 67, 54, 0.12);
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 6px 20px rgba(16, 67, 54, 0.04);
+  animation: batteryTabFade 0.25s ease-out;
+}
+
+.lifepo4-panel {
+  border-top: 3px solid var(--canopy);
+}
+
+.leadacid-panel {
+  border-top: 3px solid #3d5a45;
+}
+
+.battery-panel-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.battery-card-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: rgba(16, 67, 54, 0.08);
-  color: var(--canopy);
-  display: grid;
-  place-items: center;
-  font-size: 20px;
-  border: 1px solid rgba(16, 67, 54, 0.12);
+.battery-panel-subtitle {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--bark);
+  line-height: 1.25;
 }
 
 .battery-tag {
@@ -5653,62 +5695,130 @@ body.menu-backdrop-open {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--canopy);
-  background: rgba(16, 67, 54, 0.06);
-  border: 1px solid rgba(16, 67, 54, 0.12);
-  padding: 3px 10px;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
   border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
 }
 
-.battery-type-box h4 {
+.tag-high-performance {
+  color: #0d543e;
+  background: #e6f6ee;
+  border: 1px solid rgba(13, 84, 62, 0.2);
+}
+
+.tag-cost-optimized {
+  color: #2d4533;
+  background: #edf3ee;
+  border: 1px solid rgba(45, 69, 51, 0.2);
+}
+
+.battery-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: rgba(16, 67, 54, 0.035);
+  border: 1px solid rgba(16, 67, 54, 0.07);
+  border-radius: 12px;
+  padding: 10px 8px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.battery-metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.battery-metric-val {
   font-family: var(--font-heading, 'Outfit', sans-serif);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 800;
   color: var(--bark);
-  margin: 0 0 10px;
-  line-height: 1.3;
+  line-height: 1.1;
+}
+
+.battery-metric-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--slate);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 3px;
 }
 
 .battery-ideal-badge {
   font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--slate);
+  line-height: 1.45;
   background: rgba(16, 67, 54, 0.035);
   border-left: 3px solid var(--canopy);
-  padding: 8px 12px;
-  border-radius: 4px 8px 8px 4px;
+  padding: 10px 14px;
+  border-radius: 4px 10px 10px 4px;
   margin-bottom: 14px;
 }
 
-.battery-ideal-badge .ideal-label {
-  color: var(--bark);
-  font-weight: 700;
-  margin-right: 4px;
+.ideal-tag-pill {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--canopy);
+  margin-bottom: 3px;
 }
 
-.battery-specs-list {
+.ideal-desc-p {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--bark);
+  margin: 0;
+  font-weight: 500;
+}
+
+.battery-specs-list.compact {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
   gap: 8px;
+  border-top: 1px solid rgba(16, 67, 54, 0.08);
+  padding-top: 12px;
 }
 
-.battery-specs-list li {
+.battery-specs-list.compact li {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.45;
   color: var(--slate);
 }
 
-.battery-specs-list li svg {
+.battery-specs-list.compact li strong {
+  color: var(--bark);
+  font-weight: 600;
+  margin-right: 3px;
+}
+
+.spec-check-icon {
   color: var(--canopy);
   font-size: 15px;
   flex-shrink: 0;
   margin-top: 2px;
+}
+
+@keyframes batteryTabFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 1024px) {
@@ -5716,7 +5826,7 @@ body.menu-backdrop-open {
     grid-template-columns: 44% 56%;
   }
   .battery-content-panel {
-    padding: 32px 32px 32px 40px;
+    padding: 36px 28px 36px 36px;
   }
 }
 
@@ -5726,8 +5836,15 @@ body.menu-backdrop-open {
     min-height: auto;
   }
   .battery-image-panel {
-    height: clamp(240px, 45vw, 360px);
+    height: clamp(240px, 45vw, 320px);
+    min-height: auto;
     width: 100%;
+  }
+  .battery-image-panel .battery-parallax-img {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transform: none !important;
   }
   .battery-content-panel {
     padding: clamp(28px, 5vw, 36px) 20px clamp(32px, 5vw, 40px);
@@ -5735,6 +5852,16 @@ body.menu-backdrop-open {
   }
   .battery-content-inner {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .battery-tabs-nav {
+    flex-direction: column;
+  }
+  .battery-tab-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 .manufacturing-process-section {
@@ -6003,14 +6130,20 @@ body.menu-backdrop-open {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 48px;
-  background: var(--cream);
-  border: 1px solid var(--sage);
-  border-radius: 20px;
-  padding: 48px;
+  background: var(--white, #ffffff);
+  border: 1px solid rgba(16, 67, 54, 0.12);
+  border-radius: 24px;
+  padding: 44px;
   margin-top: 48px;
+  box-shadow: 0 8px 30px rgba(16, 67, 54, 0.05);
+}
+.calc-inputs-panel {
+  background: var(--white, #ffffff);
 }
 .calc-inputs-panel h3 {
   font-size: 22px;
+  font-weight: 700;
+  color: var(--bark, #0d211a);
   margin: 0 0 24px;
 }
 .calc-form-group {
@@ -6027,9 +6160,10 @@ body.menu-backdrop-open {
   width: 100%;
   padding: 12px 16px;
   border-radius: 8px;
-  border: 1px solid var(--sage);
-  background: var(--white);
+  border: 1px solid #dce8e0;
+  background: #fbfdfc;
   font-size: 14px;
+  color: var(--bark);
 }
 .slider-header {
   display: flex;
@@ -6314,20 +6448,72 @@ body.menu-backdrop-open {
    SUSTAINABILITY PILLARS / COMPREHENSIVE ESG SECTION
    ========================================================================== */
 .sustainability-pillars-section {
-  padding: 110px 0;
+  padding: 100px 0;
   background: var(--cream, #f7f9f8);
 }
+
 .sustainability-pillars-section .tech-pillars-grid {
-  margin-top: 52px;
+  margin-top: 48px;
 }
+
+.sustainability-pillars-section .tech-pillar-card {
+  padding: 34px 30px;
+  justify-content: flex-start;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 67, 54, 0.1);
+  box-shadow: 0 4px 20px rgba(16, 67, 54, 0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.sustainability-pillars-section .tech-pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--canopy, #104336);
+  box-shadow: 0 14px 32px rgba(16, 67, 54, 0.09);
+}
+
+.sustainability-pillars-section .tech-pillar-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  font-size: 24px;
+  margin-bottom: 24px;
+  background: #edf6f1;
+  border: 1px solid #dbece1;
+  color: #104336;
+}
+
+.sustainability-pillars-section .tech-pillar-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bark, #0d211a);
+  line-height: 1.3;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.sustainability-pillars-section .tech-pillar-card p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--slate, #556c62);
+  margin: 0;
+}
+
 @media (max-width: 960px) {
   .sustainability-pillars-section {
-    padding: 80px 0;
+    padding: 72px 0;
+  }
+  .sustainability-pillars-section .tech-pillar-card {
+    padding: 28px 24px;
+  }
+  .sustainability-pillars-section .tech-pillar-icon-box {
+    margin-bottom: 20px;
   }
 }
+
 @media (max-width: 640px) {
   .sustainability-pillars-section {
-    padding: 64px 0;
+    padding: 60px 0;
   }
 }
 

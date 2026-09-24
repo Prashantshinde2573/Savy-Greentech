@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { PiArrowRight, PiBatteryCharging, PiCheckCircle, PiCpu, PiDrop, PiEngine, PiFactory, PiGauge, PiGear, PiHeadset, PiLightning, PiShieldCheck, PiWrench } from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
@@ -49,7 +49,55 @@ const manufacturingStages = [
 export function TechnologyPage() {
   const pageRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeBatteryTab, setActiveBatteryTab] = useState('lifepo4');
+  const batteryImgRef = useRef(null);
+  const batteryImgContainerRef = useRef(null);
+
   usePageAnimations(pageRef);
+
+  // Subtle smooth parallax scrolling effect on the left-side image
+  useEffect(() => {
+    const container = batteryImgContainerRef.current;
+    const img = batteryImgRef.current;
+    if (!container || !img) return;
+
+    let animFrame = null;
+
+    const updateParallax = () => {
+      // Disable parallax on small screens or when reduced motion is preferred
+      if (
+        window.innerWidth < 768 ||
+        (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      ) {
+        img.style.transform = 'none';
+        return;
+      }
+
+      const rect = container.getBoundingClientRect();
+      const winHeight = window.innerHeight;
+
+      if (rect.bottom >= 0 && rect.top <= winHeight) {
+        const centerOffset = (rect.top + rect.height / 2 - winHeight / 2) / (winHeight / 2);
+        const translateY = centerOffset * 24; // Subtle 24px parallax shift
+        img.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(1.08)`;
+      }
+    };
+
+    const handleScroll = () => {
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animFrame = requestAnimationFrame(updateParallax);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    updateParallax();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (animFrame) cancelAnimationFrame(animFrame);
+    };
+  }, []);
 
   return (
     <main id="top" className="technology-page" ref={pageRef}>
@@ -73,13 +121,15 @@ export function TechnologyPage() {
       {/* Core Engineering Pillars — 100% Scroll-Driven Interaction */}
       <TechScrollTimeline />
 
-      {/* Battery Technology Deep Dive — Edge-to-Edge Image Panel */}
+      {/* Battery Technology Deep Dive — Edge-to-Edge Image Panel with Parallax & Compact Tabs */}
       <section className="section-cream battery-deep-dive-section" aria-labelledby="battery-heading">
         <div className="battery-split-layout">
-          <div className="battery-image-panel">
+          <div className="battery-image-panel" ref={batteryImgContainerRef}>
             <img
+              ref={batteryImgRef}
               src="/assets/ev-charging-connector.jpg"
               alt="SAVY electric vehicle charging infrastructure and battery connector"
+              className="battery-parallax-img"
               loading="lazy"
             />
           </div>
@@ -91,42 +141,139 @@ export function TechnologyPage() {
                 At SAVY Greentech, we match battery chemistry to your exact operational economics and charging infrastructure.
               </p>
 
-              <div className="battery-compare-cards">
-                <div className="battery-type-box battery-lifepo4-card">
-                  <div className="battery-card-header">
-                    <div className="battery-card-icon">
-                      <PiLightning aria-hidden="true" />
-                    </div>
-                    <span className="battery-tag">High Performance</span>
-                  </div>
-                  <h4>Lithium Iron Phosphate (LiFePO4)</h4>
-                  <div className="battery-ideal-badge">
-                    <strong className="ideal-label">Ideal for:</strong> High-utilization fleets, 24/7 industrial shifts, fast-charging requirements.
-                  </div>
-                  <ul className="battery-specs-list">
-                    <li><PiCheckCircle aria-hidden="true" /> <span>High thermal stability in 45°C+ Indian summers</span></li>
-                    <li><PiCheckCircle aria-hidden="true" /> <span>Lightweight, maximizing vehicle range &amp; payload</span></li>
-                    <li><PiCheckCircle aria-hidden="true" /> <span>Long lifespan exceeding 2,000+ deep discharge cycles</span></li>
-                  </ul>
-                </div>
+              {/* Compact Interactive Tabs */}
+              <div className="battery-tabs-nav" role="tablist" aria-label="Battery Chemistries">
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-lifepo4"
+                  aria-selected={activeBatteryTab === 'lifepo4'}
+                  aria-controls="panel-lifepo4"
+                  className={`battery-tab-btn ${activeBatteryTab === 'lifepo4' ? 'active' : ''}`}
+                  onClick={() => setActiveBatteryTab('lifepo4')}
+                >
+                  <PiLightning aria-hidden="true" className="tab-icon" />
+                  <span>Lithium Iron Phosphate</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  id="tab-leadacid"
+                  aria-selected={activeBatteryTab === 'leadacid'}
+                  aria-controls="panel-leadacid"
+                  className={`battery-tab-btn ${activeBatteryTab === 'leadacid' ? 'active' : ''}`}
+                  onClick={() => setActiveBatteryTab('leadacid')}
+                >
+                  <PiBatteryCharging aria-hidden="true" className="tab-icon" />
+                  <span>Deep-Cycle Lead-Acid</span>
+                </button>
+              </div>
 
-                <div className="battery-type-box battery-leadacid-card">
-                  <div className="battery-card-header">
-                    <div className="battery-card-icon">
-                      <PiBatteryCharging aria-hidden="true" />
+              {/* Compact Tab Content Panel */}
+              <div className="battery-tab-content-area">
+                {activeBatteryTab === 'lifepo4' && (
+                  <div
+                    id="panel-lifepo4"
+                    role="tabpanel"
+                    aria-labelledby="tab-lifepo4"
+                    className="battery-compact-panel lifepo4-panel"
+                  >
+                    <div className="battery-panel-header-row">
+                      <div className="battery-panel-title-wrap">
+                        <span className="battery-panel-subtitle">LiFePO4 Smart Modular Chemistry</span>
+                      </div>
+                      <span className="battery-tag tag-high-performance">High Performance</span>
                     </div>
-                    <span className="battery-tag">Cost-Optimized</span>
+
+                    {/* 3-Column Metric Stats */}
+                    <div className="battery-metric-strip">
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">2,000+</span>
+                        <span className="battery-metric-lbl">Cycle Life</span>
+                      </div>
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">2–3 hrs</span>
+                        <span className="battery-metric-lbl">Fast Charge</span>
+                      </div>
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">45°C+</span>
+                        <span className="battery-metric-lbl">Thermal Peak</span>
+                      </div>
+                    </div>
+
+                    {/* Best Suited For Box */}
+                    <div className="battery-ideal-badge">
+                      <span className="ideal-tag-pill">BEST SUITED FOR</span>
+                      <p className="ideal-desc-p">
+                        High-utilization fleets, 24/7 multi-shift logistics, and rapid opportunity charging.
+                      </p>
+                    </div>
+
+                    {/* Compact Specs Highlights */}
+                    <ul className="battery-specs-list compact">
+                      <li>
+                        <PiCheckCircle className="spec-check-icon" aria-hidden="true" />
+                        <div><strong>Thermal Safety:</strong> Exceptional stability in 45°C+ peak Indian summers with zero thermal runaway risk.</div>
+                      </li>
+                      <li>
+                        <PiCheckCircle className="spec-check-icon" aria-hidden="true" />
+                        <div><strong>Payload &amp; Range:</strong> Lightweight cell density saves chassis weight, maximizing vehicle range and payload.</div>
+                      </li>
+                    </ul>
                   </div>
-                  <h4>Deep-Cycle Heavy-Duty Lead-Acid</h4>
-                  <div className="battery-ideal-badge">
-                    <strong className="ideal-label">Ideal for:</strong> Budget-conscious campus carts, rural Gram Panchayat sanitation, predictable short routes.
+                )}
+
+                {activeBatteryTab === 'leadacid' && (
+                  <div
+                    id="panel-leadacid"
+                    role="tabpanel"
+                    aria-labelledby="tab-leadacid"
+                    className="battery-compact-panel leadacid-panel"
+                  >
+                    <div className="battery-panel-header-row">
+                      <div className="battery-panel-title-wrap">
+                        <span className="battery-panel-subtitle">Heavy-Duty Industrial Traction Bank</span>
+                      </div>
+                      <span className="battery-tag tag-cost-optimized">Cost-Optimized</span>
+                    </div>
+
+                    {/* 3-Column Metric Stats */}
+                    <div className="battery-metric-strip">
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">Lowest</span>
+                        <span className="battery-metric-lbl">Initial CapEx</span>
+                      </div>
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">100%</span>
+                        <span className="battery-metric-lbl">Recyclable</span>
+                      </div>
+                      <div className="battery-metric-item">
+                        <span className="battery-metric-val">Plug &amp; Play</span>
+                        <span className="battery-metric-lbl">Maintenance</span>
+                      </div>
+                    </div>
+
+                    {/* Best Suited For Box */}
+                    <div className="battery-ideal-badge">
+                      <span className="ideal-tag-pill">BEST SUITED FOR</span>
+                      <p className="ideal-desc-p">
+                        Budget-conscious campus transit, municipal Gram Panchayat sanitation, and fixed short loops.
+                      </p>
+                    </div>
+
+                    {/* Compact Specs Highlights */}
+                    <ul className="battery-specs-list compact">
+                      <li>
+                        <PiCheckCircle className="spec-check-icon" aria-hidden="true" />
+                        <div><strong>Capital Efficiency:</strong> Lowest upfront acquisition investment for commercial fleets and institutional budgets.</div>
+                      </li>
+                      <li>
+                        <PiCheckCircle className="spec-check-icon" aria-hidden="true" />
+                        <div><strong>Proven Reliability:</strong> Heavy-duty deep-discharge plates delivering dependable daily duty on campus routes.</div>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="battery-specs-list">
-                    <li><PiCheckCircle aria-hidden="true" /> <span>Lower initial capital expenditure</span></li>
-                    <li><PiCheckCircle aria-hidden="true" /> <span>Proven, reliable performance on campus loops</span></li>
-                    <li><PiCheckCircle aria-hidden="true" /> <span>100% recyclable &amp; easy nationwide replacement</span></li>
-                  </ul>
-                </div>
+                )}
               </div>
             </div>
           </div>

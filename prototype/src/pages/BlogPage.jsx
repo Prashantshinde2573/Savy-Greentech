@@ -48,13 +48,19 @@ export function BlogPage() {
     };
   }, []);
 
-  // Compute dynamic categories merged with default categories
+  // Compute dynamic categories merged with default categories (strictly excluding Careers)
   const categoriesList = useMemo(() => {
     const set = new Set(['All']);
     posts.forEach((p) => {
-      if (p.category) set.add(p.category);
+      if (p.category && p.category.toLowerCase() !== 'careers') {
+        set.add(p.category);
+      }
     });
-    blogCategories.forEach((c) => set.add(c));
+    blogCategories.forEach((c) => {
+      if (c.toLowerCase() !== 'careers') {
+        set.add(c);
+      }
+    });
     return Array.from(set);
   }, [posts]);
 

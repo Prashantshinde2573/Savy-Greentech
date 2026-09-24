@@ -1,14 +1,17 @@
-import { useState, useRef } from 'react';
-import { PiArrowRight, PiBriefcase, PiCheckCircle, PiClock, PiFileArrowUp, PiGraduationCap, PiHeart, PiLightning, PiMapPin, PiSparkle, PiUsers, PiX } from 'react-icons/pi';
+import { useState, useRef, useEffect } from 'react';
+import { PiArrowRight, PiBriefcase, PiCheckCircle, PiClock, PiFileArrowUp, PiMapPin, PiSparkle } from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
-import { openPositions, cultureBenefits } from '../data/careers';
+import { openPositions as fallbackPositions, cultureBenefits } from '../data/careers';
+import { fetchCareerPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 export function CareersPage() {
   const pageRef = useRef(null);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -20,6 +23,37 @@ export function CareersPage() {
     message: ''
   });
   usePageAnimations(pageRef);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCareers() {
+      try {
+        setLoading(true);
+        const wpCareers = await fetchCareerPosts(50);
+        if (isMounted) {
+          if (wpCareers && wpCareers.length > 0) {
+            setJobs(wpCareers);
+          } else {
+            setJobs(fallbackPositions);
+          }
+        }
+      } catch (err) {
+        console.warn('WordPress API unavailable for careers, loading fallback roles:', err);
+        if (isMounted) {
+          setJobs(fallbackPositions);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadCareers();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleApplyClick = (job) => {
     setSelectedJob(job);
@@ -85,32 +119,77 @@ export function CareersPage() {
           </div>
 
           <div className="jobs-list">
-            {openPositions.map((job) => (
-              <article className="job-card" key={job.id}>
-                <div className="job-card-header">
-                  <div>
-                    <span className="job-dept-badge">{job.department}</span>
-                    <h3>{job.title}</h3>
+            {loading ? (
+              [1, 2, 3].map((n) => (
+                <article className="job-card" key={n} style={{ opacity: 0.6 }}>
+                  <div className="job-card-header">
+                    <div>
+                      <div style={{ height: '18px', width: '120px', background: '#dce8e0', borderRadius: '4px', marginBottom: '8px' }} />
+                      <div style={{ height: '24px', width: '260px', background: '#dce8e0', borderRadius: '6px' }} />
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    className="button-link primary btn-sm"
-                    onClick={() => handleApplyClick(job)}
-                  >
-                    <span>Apply Now</span>
-                    <PiArrowRight aria-hidden="true" />
-                  </button>
-                </div>
+                  <div style={{ height: '14px', width: '100%', background: '#dce8e0', borderRadius: '4px', marginTop: '16px' }} />
+                </article>
+              ))
+            ) : jobs.length === 0 ? (
+              <div className="no-products-found" style={{ textAlign: 'center', padding: '40px 0' }}>
+                <p>No open positions at the moment. You can submit a general application below.</p>
+              </div>
+            ) : (
+              jobs.map((job) => (
+                <article className="job-card" key={job.id || job.slug}>
+                  <div className="job-card-header">
+                    <div>
+                      {job.department && job.department.toLowerCase() !== 'careers' && (
+                        <span className="job-dept-badge">{job.department}</span>
+                      )}
+                      <h3>
+                        <a href={`/careers/${job.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                          {job.title}
+                        </a>
+                      </h3>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <a
+                        href={`/careers/${job.slug}`}
+                        className="button-link secondary btn-sm"
+                        style={{ padding: '8px 14px', fontSize: '13px' }}
+                      >
+                        <span>Details</span>
+                      </a>
+                      <button
+                        type="button"
+                        className="button-link primary btn-sm"
+                        onClick={() => handleApplyClick(job)}
+                      >
+                        <span>Apply Now</span>
+                        <PiArrowRight aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
 
-                <div className="job-meta-pills">
-                  <span><PiMapPin /> {job.location}</span>
-                  <span><PiBriefcase /> {job.experience}</span>
-                  <span><PiClock /> {job.type}</span>
-                </div>
+                  <div className="job-meta-pills">
+                    {job.location && (
+                      <span>
+                        <PiMapPin /> {job.location}
+                      </span>
+                    )}
+                    {job.experience && (
+                      <span>
+                        <PiBriefcase /> {job.experience}
+                      </span>
+                    )}
+                    {job.type && (
+                      <span>
+                        <PiClock /> {job.type}
+                      </span>
+                    )}
+                  </div>
 
-                <p className="job-desc">{job.description}</p>
-              </article>
-            ))}
+                  <p className="job-desc">{job.description}</p>
+                </article>
+              ))
+            )}
           </div>
         </div>
       </section>

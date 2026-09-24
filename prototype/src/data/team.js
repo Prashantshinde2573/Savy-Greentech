@@ -223,7 +223,7 @@ export const journeyGroups = [
         category: 'Company Founding',
         title: 'Founding of SAVY Greentech',
         description: 'Founded by Chandan Mundhra with 25+ years automotive experience to engineer purpose-built custom EVs.',
-        image: '/assets/team/chandan-mundhra.jpg',
+        image: '/assets/team/Chandan mundhra (ceo)Team.webp',
         alt: 'Chandan Mundhra founding SAVY Greentech in Ahmedabad',
         ctaLabel: 'Explore Founding Story',
         ctaUrl: '#founding-story'

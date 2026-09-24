@@ -1,6 +1,7 @@
 export const openPositions = [
   {
     id: 'ev-design-engineer',
+    slug: 'ev-design-chassis-engineer',
     title: 'EV Design & Chassis Engineer',
     department: 'Engineering & R&D',
     location: 'Ahmedabad, Gujarat',
@@ -10,6 +11,7 @@ export const openPositions = [
   },
   {
     id: 'production-supervisor',
+    slug: 'plant-production-supervisor',
     title: 'Plant Production Supervisor',
     department: 'Manufacturing & Assembly',
     location: 'Ahmedabad Facility, Gujarat',
@@ -19,6 +21,7 @@ export const openPositions = [
   },
   {
     id: 'bms-embedded-engineer',
+    slug: 'battery-systems-bms-engineer',
     title: 'Battery Systems & BMS Engineer',
     department: 'Powertrain & Electronics',
     location: 'Ahmedabad, Gujarat',
@@ -28,6 +31,7 @@ export const openPositions = [
   },
   {
     id: 'institutional-sales-manager',
+    slug: 'b2b-institutional-sales-manager',
     title: 'B2B & Institutional Sales Manager',
     department: 'Business Development',
     location: 'Ahmedabad / Regional Hybrid',
@@ -37,6 +41,7 @@ export const openPositions = [
   },
   {
     id: 'service-technician',
+    slug: 'field-service-after-sales-technician',
     title: 'Field Service & After-Sales Technician',
     department: 'Customer Support & Service',
     location: 'Multiple States / Regional',
@@ -45,6 +50,15 @@ export const openPositions = [
     description: 'Provide prompt on-site doorstep diagnostics, preventive maintenance, motor/controller repairs, and battery health checks for institutional client fleets.'
   }
 ];
+
+export function getCareerBySlug(slug) {
+  if (!slug) return null;
+  return (
+    openPositions.find(
+      (job) => job.slug === slug || job.id === slug
+    ) || null
+  );
+}
 
 export const cultureBenefits = [
   {

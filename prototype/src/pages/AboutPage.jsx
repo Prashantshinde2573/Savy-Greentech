@@ -559,7 +559,7 @@ export function AboutPage() {
                 
                 <div className="founder-image-box">
                   <img
-                    src="/assets/team/chandan-mundhra.jpg"
+                    src="/assets/team/Chandan mundhra (ceo)Team.webp"
                     alt="Chandan Mundhra, Founder & CEO of SAVY Greentech"
                     className="founder-profile-img"
                     loading="lazy"

@@ -11,6 +11,7 @@ import { CaseStudiesPage } from './pages/CaseStudiesPage.jsx';
 import { MediaPage } from './pages/MediaPage.jsx';
 import { BecomeDealerPage } from './pages/BecomeDealerPage.jsx';
 import { CareersPage } from './pages/CareersPage.jsx';
+import { CareerDetailPage } from './pages/CareerDetailPage.jsx';
 import { BlogPage } from './pages/BlogPage.jsx';
 import { BlogDetailPage } from './pages/BlogDetailPage.jsx';
 import { ContactPage } from './pages/ContactPage.jsx';
@@ -94,6 +95,10 @@ export function AppRouter() {
   if (currentPath === '/media') return <MediaPage />;
   if (currentPath === '/become-a-dealer') return <BecomeDealerPage />;
   if (currentPath === '/careers') return <CareersPage />;
+  if (currentPath.startsWith('/careers/')) {
+    const slug = currentPath.replace('/careers/', '');
+    return <CareerDetailPage slug={slug} />;
+  }
   if (currentPath === '/blog') return <BlogPage />;
   if (currentPath.startsWith('/blog/')) {
     const slug = currentPath.replace('/blog/', '');
