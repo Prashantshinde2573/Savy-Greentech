@@ -43,7 +43,7 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
           </div>
         ) : (
           <div>
-            <p className="eyebrow mint" style={{ marginBottom: '8px' }}>{mode === 'demo' ? 'On-Site Experience' : 'Direct OEM Pricing'}</p>
+            <p className="eyebrow" style={{ marginBottom: '8px' }}>{mode === 'demo' ? 'On-Site Experience' : 'Direct OEM Pricing'}</p>
             <h3 className="modal-title">{title}</h3>
             <p className="modal-subtitle">{subtitle}</p>
 

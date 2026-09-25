@@ -14,10 +14,131 @@ import {
   PiLeaf
 } from 'react-icons/pi';
 
+const MOBILE_PRODUCT_CATEGORIES = [
+  {
+    id: 'golf',
+    name: 'Golf Carts',
+    icon: PiCar,
+    categoryUrl: '/products',
+    viewAllText: 'View All Golf Carts',
+    products: [
+      { name: 'Classic Golf', url: '/products/classic-golf' },
+      { name: 'Club Cart', url: '/products/club-cart' },
+      { name: 'Elite Vintage Cart', url: '/products/vintage-elite' }
+    ]
+  },
+  {
+    id: 'loading',
+    name: 'Loading Rickshaws',
+    icon: PiTruck,
+    categoryUrl: '/products',
+    viewAllText: 'View All Loading Rickshaws',
+    products: [
+      { name: 'Electruck Standard', url: '/products/electruck' },
+      { name: 'Nano Compact Loader', url: '/products/electruck' },
+      { name: 'DLX High-Deck Loader', url: '/products/electruck' }
+    ]
+  },
+  {
+    id: 'garbage',
+    name: 'Garbage Collection',
+    icon: PiTrash,
+    categoryUrl: '/products',
+    viewAllText: 'View All Garbage Vehicles',
+    products: [
+      { name: 'Dual Compartment Waste Tipper', url: '/products/dump-truck' },
+      { name: 'Hydraulic High-Lift Tipper', url: '/products/dump-truck' }
+    ]
+  },
+  {
+    id: 'passenger',
+    name: 'Passenger Vehicles',
+    icon: PiUsers,
+    categoryUrl: '/products',
+    viewAllText: 'View All Passenger Vehicles',
+    products: [
+      { name: 'School Rickshaw', url: '/products/school-rickshaw' },
+      { name: 'Passenger Rickshaw (Tuk Tuk ë)', url: '/products/tuk-tuk-e' },
+      { name: 'Rickshaw Food Cart', url: '/products/food-cart-rickshaw' },
+      { name: 'Electric Vintage Car', url: '/products/vintage-elite' }
+    ]
+  },
+  {
+    id: 'custom',
+    name: 'Custom / Industrial',
+    icon: PiGear,
+    categoryUrl: '/products',
+    viewAllText: 'View All Custom Vehicles',
+    products: [
+      { name: 'Electruck Heavy Cargo', url: '/products/electruck' },
+      { name: 'Ramdev Foods 900kg Build', url: '/products/custom-electruck-900kg' },
+      { name: 'Mobile ATM Vehicle', url: '/products/atm-vehicle' },
+      { name: 'Dairy & Milk Cart', url: '/products/milk-cart' }
+    ]
+  },
+  {
+    id: 'upcoming',
+    name: 'Upcoming Vehicles',
+    icon: PiClockCountdown,
+    categoryUrl: '/products',
+    viewAllText: 'View All Upcoming Vehicles',
+    products: [
+      { name: 'SAVY City Pod', url: '/products/city-pod' },
+      { name: 'Electric Mini Bus Shuttle', url: '/products/city-pod' }
+    ]
+  }
+];
+
+const MOBILE_COMPANY_ITEMS = [
+  {
+    title: 'About Us',
+    desc: 'Founding story, timeline & leadership',
+    href: '/about',
+    img: '/assets/process/consultation.jpg',
+    imgClass: 'clean-img-about'
+  },
+  {
+    title: 'Sustainability / ESG',
+    desc: 'One Vehicle, One Tree & carbon metrics',
+    href: '/sustainability',
+    img: '/assets/about-purpose/electric-future.jpg',
+    imgClass: 'clean-img-sustainability'
+  },
+  {
+    title: 'Case Studies',
+    desc: 'Proven deployments across India',
+    href: '/case-studies',
+    img: '/assets/news/ads-foundation-partnership.png',
+    imgClass: 'clean-img-casestudies'
+  },
+  {
+    title: 'Media & Press',
+    desc: 'News coverage & Amsterdam expo',
+    href: '/media',
+    img: '/assets/news/city-pod-netherlands.jpg',
+    imgClass: 'clean-img-media'
+  },
+  {
+    title: 'Careers',
+    desc: 'Join our engineering & plant team',
+    href: '/careers',
+    img: '/assets/process/customization-design.jpg',
+    imgClass: 'clean-img-careers'
+  },
+  {
+    title: 'Blog / Insights',
+    desc: 'Commercial EV economics & TCO',
+    href: '/blog',
+    img: '/assets/about-purpose/sustainability.jpg',
+    imgClass: 'clean-img-blog'
+  }
+];
+
 export function SiteHeader({ currentPath = '', transparentInitially = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null); // 'products' | 'applications' | 'technology' | 'company' | null
   const [activeProductTab, setActiveProductTab] = useState('all');
+  const [mobileOpenCategory, setMobileOpenCategory] = useState(null);
   const [headerScrolled, setHeaderScrolled] = useState(!transparentInitially);
   const headerRef = useRef(null);
 
@@ -37,6 +158,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
     const handleResize = () => {
       if (!window.matchMedia('(max-width: 960px)').matches) {
         setMenuOpen(false);
+        setMobileOpenCategory(null);
       }
     };
     window.addEventListener('resize', handleResize);
@@ -85,6 +207,10 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
     setOpenDropdown(openDropdown === name ? null : name);
   };
 
+  const handleMobileCategoryToggle = (catId) => {
+    setMobileOpenCategory((prev) => (prev === catId ? null : catId));
+  };
+
   const handleMouseEnter = (name) => {
     if (!window.matchMedia('(max-width: 960px)').matches) {
       setOpenDropdown(name);
@@ -100,6 +226,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
   const closeAllMenus = () => {
     setMenuOpen(false);
     setOpenDropdown(null);
+    setMobileOpenCategory(null);
   };
 
   return (
@@ -619,6 +746,55 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                   )}
                 </div>
               </div>
+
+              {/* Mobile Nested Accordion Products Navigation (Mobile Only) */}
+              <div className="mobile-products-accordion">
+                {/* 1. All Vehicles Direct Link Row */}
+                <a href="/products" className="mobile-prod-cat-row all-vehicles-row" onClick={closeAllMenus}>
+                  <div className="mobile-prod-cat-left">
+                    <PiCar className="mobile-prod-cat-icon" />
+                    <span>All Vehicles</span>
+                  </div>
+                  <PiArrowRight className="mobile-prod-cat-arrow" />
+                </a>
+
+                {/* 2. Nested Category Accordions */}
+                {MOBILE_PRODUCT_CATEGORIES.map((cat) => {
+                  const Icon = cat.icon;
+                  const isExpanded = mobileOpenCategory === cat.id;
+                  return (
+                    <div key={cat.id} className={`mobile-prod-cat-group ${isExpanded ? 'is-expanded' : ''}`}>
+                      <button
+                        type="button"
+                        className={`mobile-prod-cat-row ${isExpanded ? 'is-active' : ''}`}
+                        onClick={() => handleMobileCategoryToggle(cat.id)}
+                        aria-expanded={isExpanded}
+                      >
+                        <div className="mobile-prod-cat-left">
+                          <Icon className="mobile-prod-cat-icon" />
+                          <span>{cat.name}</span>
+                        </div>
+                        <PiCaretDown className={`mobile-prod-cat-chevron ${isExpanded ? 'rotate-open' : ''}`} />
+                      </button>
+
+                      {/* Nested Compact Product List */}
+                      <div className={`mobile-prod-nested-list ${isExpanded ? 'is-open' : ''}`}>
+                        {cat.products.map((p, idx) => (
+                          <a
+                            key={idx}
+                            href={p.url}
+                            className="mobile-prod-item-row"
+                            onClick={closeAllMenus}
+                          >
+                            <span className="mobile-prod-item-name">{p.name}</span>
+                            <PiArrowRight className="mobile-prod-item-arrow" />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -734,6 +910,27 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                     <PiArrowRight />
                   </a>
                 </div>
+              </div>
+
+              {/* Mobile Compact Company Navigation List (Mobile Only) */}
+              <div className="mobile-company-list">
+                {MOBILE_COMPANY_ITEMS.map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.href}
+                    className="mobile-company-row"
+                    onClick={closeAllMenus}
+                  >
+                    <div className="mobile-company-thumb">
+                      <img src={item.img} alt={item.title} className={item.imgClass} />
+                    </div>
+                    <div className="mobile-company-body">
+                      <strong className="mobile-company-title">{item.title}</strong>
+                      <span className="mobile-company-desc">{item.desc}</span>
+                    </div>
+                    <PiArrowRight className="mobile-company-arrow" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
