@@ -11,44 +11,80 @@ import { PiArrowRight } from 'react-icons/pi';
      - Frame step timing: ~90ms (~11 FPS) for fluid vehicle motion
    ========================================================================= */
 
-const CLUB_CART_FRAMES = [
-  '/assets/club-cart/Club Cart - 01.jpg',
-  '/assets/club-cart/Club Cart - 02.jpg',
-  '/assets/club-cart/Club Cart - 03.jpg',
-  '/assets/club-cart/Club Cart - 04.jpg',
-  '/assets/club-cart/Club Cart - 05.jpg',
-  '/assets/club-cart/Club Cart - 06.jpg',
-];
+const VEHICLE_FRAMES = {
+  'classic-golf': [
+    '/assets/classic-golf/frame-01.webp',
+    '/assets/classic-golf/frame-02.webp',
+    '/assets/classic-golf/frame-03.webp',
+    '/assets/classic-golf/frame-04.webp',
+    '/assets/classic-golf/frame-05.webp',
+    '/assets/classic-golf/frame-06.webp',
+  ],
+  'club-cart': [
+    '/assets/club-cart/frame-01.webp',
+    '/assets/club-cart/frame-02.webp',
+    '/assets/club-cart/frame-03.webp',
+    '/assets/club-cart/frame-04.webp',
+    '/assets/club-cart/frame-05.webp',
+    '/assets/club-cart/frame-06.webp',
+  ],
+  'electruck': [
+    '/assets/electruck/frame-01.webp',
+    '/assets/electruck/frame-02.webp',
+    '/assets/electruck/frame-03.webp',
+    '/assets/electruck/frame-04.webp',
+    '/assets/electruck/frame-05.webp',
+    '/assets/electruck/frame-06.webp',
+  ],
+  'vintage-elite': [
+    '/assets/vintage-elite/frame-01.webp',
+    '/assets/vintage-elite/frame-02.webp',
+    '/assets/vintage-elite/frame-03.webp',
+    '/assets/vintage-elite/frame-04.webp',
+    '/assets/vintage-elite/frame-05.webp',
+    '/assets/vintage-elite/frame-06.webp',
+  ],
+  'tuk-tuk-e': [
+    '/assets/tuk-tuk/frame-01.webp',
+    '/assets/tuk-tuk/frame-02.webp',
+    '/assets/tuk-tuk/frame-03.webp',
+    '/assets/tuk-tuk/frame-04.webp',
+    '/assets/tuk-tuk/frame-05.webp',
+    '/assets/tuk-tuk/frame-06.webp',
+  ],
+  'tuk-tuk': [
+    '/assets/tuk-tuk/frame-01.webp',
+    '/assets/tuk-tuk/frame-02.webp',
+    '/assets/tuk-tuk/frame-03.webp',
+    '/assets/tuk-tuk/frame-04.webp',
+    '/assets/tuk-tuk/frame-05.webp',
+    '/assets/tuk-tuk/frame-06.webp',
+  ],
+  'dump-truck': [
+    '/assets/dump-truck/frame-01.webp',
+    '/assets/dump-truck/frame-02.webp',
+    '/assets/dump-truck/frame-03.webp',
+    '/assets/dump-truck/frame-04.webp',
+    '/assets/dump-truck/frame-05.webp',
+    '/assets/dump-truck/frame-06.webp',
+  ],
+};
 
-const TUK_TUK_FRAMES = [
-  '/assets/tuk-tuk/tuk-tuk-01.webp',
-  '/assets/tuk-tuk/tuk-tuk-02.webp',
-  '/assets/tuk-tuk/tuk-tuk-03.webp',
-  '/assets/tuk-tuk/tuk-tuk-04.webp',
-  '/assets/tuk-tuk/tuk-tuk-05.webp',
-  '/assets/tuk-tuk/tuk-tuk-06.webp',
-];
-
-const DEFAULT_FRAMES = [
-  '/assets/prototype-hover/card-frame-1.png',
-  '/assets/prototype-hover/card-frame-2.png',
-  '/assets/prototype-hover/card-frame-3.png',
-  '/assets/prototype-hover/card-frame-4.png',
-];
+const getVehicleFrames = (v) => {
+  if (v?.frames && v.frames.length > 0) return v.frames;
+  if (v?.slug && VEHICLE_FRAMES[v.slug]) return VEHICLE_FRAMES[v.slug];
+  const nameLower = (v?.name || '').toLowerCase();
+  if (nameLower.includes('classic') || nameLower.includes('golf')) return VEHICLE_FRAMES['classic-golf'];
+  if (nameLower.includes('club')) return VEHICLE_FRAMES['club-cart'];
+  if (nameLower.includes('electruck')) return VEHICLE_FRAMES['electruck'];
+  if (nameLower.includes('vintage') || nameLower.includes('elite')) return VEHICLE_FRAMES['vintage-elite'];
+  if (nameLower.includes('tuk')) return VEHICLE_FRAMES['tuk-tuk'];
+  if (nameLower.includes('dump') || nameLower.includes('tipper')) return VEHICLE_FRAMES['dump-truck'];
+  return VEHICLE_FRAMES['club-cart'];
+};
 
 export function VehicleCategoryCard({ vehicle }) {
-  const isTukTuk =
-    vehicle?.slug === 'tuk-tuk-e' ||
-    vehicle?.slug === 'tuk-tuk' ||
-    (vehicle?.name && vehicle.name.toLowerCase().includes('tuk'));
-
-  // Use Tuk Tuk frames for Tuk Tuk card, and preloaded animation frames across lineup
-  const frames =
-    vehicle?.frames && vehicle.frames.length > 0
-      ? vehicle.frames
-      : isTukTuk
-      ? TUK_TUK_FRAMES
-      : CLUB_CART_FRAMES;
+  const frames = getVehicleFrames(vehicle);
 
   const totalFrames = frames.length;
 
