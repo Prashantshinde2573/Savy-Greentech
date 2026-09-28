@@ -1,17 +1,67 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { PiArrowRight, PiArticle, PiCalendarBlank, PiDownloadSimple, PiEnvelopeSimple, PiGlobeHemisphereWest, PiMagnifyingGlass, PiMapPin, PiMegaphone, PiSparkle, PiTrophy } from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
-import { pressArticles, amsterdamFeature, awardsExhibitions } from '../data/newsMedia';
+import { pressArticles as fallbackPress, amsterdamFeature, awardsExhibitions as fallbackAwards } from '../data/newsMedia';
+import { fetchMediaPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 export function MediaPage() {
   const pageRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [pressList, setPressList] = useState(fallbackPress);
+  const [awardsList, setAwardsList] = useState(fallbackAwards);
+  const [loading, setLoading] = useState(true);
   usePageAnimations(pageRef);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadMedia() {
+      try {
+        setLoading(true);
+        const wpMedia = await fetchMediaPosts(50);
+        if (isMounted && wpMedia && wpMedia.length > 0) {
+          const livePress = wpMedia.filter((m) => !m.isEvent);
+          const liveAwards = wpMedia.filter((m) => m.isEvent);
+
+          if (livePress.length > 0) {
+            const liveTitles = new Set(livePress.map((p) => p.title.toLowerCase()));
+            setPressList([...livePress, ...fallbackPress.filter((fp) => !liveTitles.has(fp.title.toLowerCase()))]);
+          } else {
+            setPressList(fallbackPress);
+          }
+
+          if (liveAwards.length > 0) {
+            const liveAwardTitles = new Set(liveAwards.map((a) => a.title.toLowerCase()));
+            setAwardsList([...liveAwards, ...fallbackAwards.filter((fa) => !liveAwardTitles.has(fa.title.toLowerCase()))]);
+          } else {
+            setAwardsList(fallbackAwards);
+          }
+        } else if (isMounted) {
+          setPressList(fallbackPress);
+          setAwardsList(fallbackAwards);
+        }
+      } catch (err) {
+        console.warn('WordPress API unavailable for media, using fallback data:', err);
+        if (isMounted) {
+          setPressList(fallbackPress);
+          setAwardsList(fallbackAwards);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadMedia();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleDownloadPressKit = () => {
     alert('SAVY Greentech Press Kit containing high-resolution logos, executive bios, and vehicle imagery will be prepared for download.');
@@ -79,8 +129,8 @@ export function MediaPage() {
           </div>
 
           <div className="press-articles-grid">
-            {pressArticles.map((story) => (
-              <article className="press-card" key={story.title}>
+            {pressList.map((story) => (
+              <article className="press-card" key={story.id || story.title}>
                 <a className="press-card-media" href={story.href} target="_blank" rel="noreferrer" aria-label={`Read ${story.title}`}>
                   <img src={story.image} alt="" loading="lazy" />
                   <span className="press-publication-tag">{story.publication}</span>
@@ -110,8 +160,8 @@ export function MediaPage() {
           </div>
 
           <div className="awards-grid">
-            {awardsExhibitions.map((item, idx) => (
-              <article className="award-card" key={idx}>
+            {awardsList.map((item, idx) => (
+              <article className="award-card" key={item.id || idx}>
                 <div className="award-card-media">
                   <img src={item.image} alt={item.title} loading="lazy" />
                   <div className="award-media-overlay" />
@@ -135,7 +185,7 @@ export function MediaPage() {
                     </span>
                   </div>
                   <h3>{item.title}</h3>
-                  <p>{item.description}</p>
+                  <p>{item.description || item.copy}</p>
                   <div className="award-card-footer">
                     <span className="award-role-tag">{item.role}</span>
                   </div>

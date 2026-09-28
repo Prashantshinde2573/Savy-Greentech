@@ -14,6 +14,8 @@ export function BlogPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 6;
   usePageAnimations(pageRef);
 
   useEffect(() => {
@@ -21,12 +23,14 @@ export function BlogPage() {
     async function loadPosts() {
       try {
         setLoading(true);
-        const wpPosts = await fetchPublishedPosts(20);
+        const wpPosts = await fetchPublishedPosts(100);
         if (isMounted) {
           if (wpPosts && wpPosts.length > 0) {
-            setPosts(wpPosts);
+            // Merge with fallback blogs to ensure complete library, prioritizing WP CMS posts
+            const existingSlugs = new Set(wpPosts.map((p) => p.slug));
+            const merged = [...wpPosts, ...fallbackBlogs.filter((fb) => !existingSlugs.has(fb.slug))];
+            setPosts(merged);
           } else {
-            // If WordPress has no published posts yet, use fallback
             setPosts(fallbackBlogs);
           }
         }
@@ -47,6 +51,16 @@ export function BlogPage() {
       isMounted = false;
     };
   }, []);
+
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (val) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
 
   // Compute dynamic categories merged with default categories (strictly excluding Careers)
   const categoriesList = useMemo(() => {
@@ -81,6 +95,22 @@ export function BlogPage() {
     });
   }, [posts, selectedCategory, searchQuery]);
 
+  const totalPages = Math.max(1, Math.ceil(filteredBlogs.length / postsPerPage));
+  const currentPaginatedBlogs = useMemo(() => {
+    const startIndex = (currentPage - 1) * postsPerPage;
+    return filteredBlogs.slice(startIndex, startIndex + postsPerPage);
+  }, [filteredBlogs, currentPage, postsPerPage]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      const target = document.getElementById('articles');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <main id="top" className="blog-page" ref={pageRef}>
       <SEOHead
@@ -110,7 +140,7 @@ export function BlogPage() {
                 key={cat}
                 type="button"
                 className={`category-tab-btn ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => handleCategoryChange(cat)}
               >
                 {cat}
               </button>
@@ -124,11 +154,11 @@ export function BlogPage() {
               type="search"
               placeholder="Search articles by title or keyword..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               aria-label="Search articles"
             />
             {searchQuery && (
-              <button type="button" className="clear-search" onClick={() => setSearchQuery('')} aria-label="Clear search">
+              <button type="button" className="clear-search" onClick={() => handleSearchChange('')} aria-label="Clear search">
                 <PiX />
               </button>
             )}
@@ -152,35 +182,75 @@ export function BlogPage() {
           ) : filteredBlogs.length === 0 ? (
             <div className="no-products-found">
               <p>No articles found matching your query.</p>
-              <button type="button" className="button-link primary" onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}>
+              <button type="button" className="button-link primary" onClick={() => { setSelectedCategory('All'); setSearchQuery(''); setCurrentPage(1); }}>
                 <span>View All Articles</span>
               </button>
             </div>
           ) : (
-            <div className="blog-articles-grid">
-              {filteredBlogs.map((post) => (
-                <article className="blog-card" key={post.id || post.slug}>
-                  <a href={`/blog/${post.slug}`} className="blog-card-media" aria-label={`Read ${post.title}`}>
-                    <img src={post.image} alt={post.title} loading="lazy" />
-                    <span className="blog-cat-badge">{post.category}</span>
-                  </a>
-                  <div className="blog-card-body">
-                    <div className="blog-meta-row">
-                      <span>{post.date}</span>
-                      <span>·</span>
-                      <span><PiClock /> {post.readTime}</span>
-                    </div>
-                    <h3>
-                      <a href={`/blog/${post.slug}`}>{post.title}</a>
-                    </h3>
-                    <p className="blog-excerpt">{post.excerpt}</p>
-                    <a href={`/blog/${post.slug}`} className="blog-read-link">
-                      Read full article <PiArrowRight aria-hidden="true" />
+            <>
+              <div className="blog-articles-grid">
+                {currentPaginatedBlogs.map((post) => (
+                  <article className="blog-card" key={post.id || post.slug}>
+                    <a href={`/blog/${post.slug}`} className="blog-card-media" aria-label={`Read ${post.title}`}>
+                      <img src={post.image} alt={post.title} loading="lazy" />
+                      <span className="blog-cat-badge">{post.category}</span>
                     </a>
-                  </div>
-                </article>
-              ))}
-            </div>
+                    <div className="blog-card-body">
+                      <div className="blog-meta-row">
+                        <span>{post.date}</span>
+                        <span>·</span>
+                        <span><PiClock /> {post.readTime}</span>
+                      </div>
+                      <h3>
+                        <a href={`/blog/${post.slug}`}>{post.title}</a>
+                      </h3>
+                      <p className="blog-excerpt">{post.excerpt}</p>
+                      <a href={`/blog/${post.slug}`} className="blog-read-link">
+                        Read full article <PiArrowRight aria-hidden="true" />
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="savy-pagination" role="navigation" aria-label="Articles Pagination">
+                  <button
+                    type="button"
+                    className="pagination-btn pagination-prev"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    aria-label="Previous page"
+                  >
+                    ← Previous
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      className={`pagination-btn ${currentPage === pageNum ? 'active' : ''}`}
+                      onClick={() => handlePageChange(pageNum)}
+                      aria-current={currentPage === pageNum ? 'page' : undefined}
+                      aria-label={`Page ${pageNum}`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    className="pagination-btn pagination-next"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    aria-label="Next page"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

@@ -7460,13 +7460,13 @@ body.menu-backdrop-open {
 }
 .category-filter-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  max-width: 980px;
+  gap: 8px;
+  max-width: 100%;
   margin: 0 auto 32px;
-  padding: 0 8px;
+  padding: 0 4px;
 }
 .category-tab-btn {
   appearance: none;
@@ -7474,9 +7474,9 @@ body.menu-backdrop-open {
   background: #ffffff;
   border: 1px solid rgba(15, 34, 30, 0.12);
   border-radius: 999px;
-  padding: 9px 20px;
+  padding: 9px 15px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--bark, #071c1b);
   cursor: pointer;
@@ -7555,7 +7555,7 @@ body.menu-backdrop-open {
   color: var(--bark, #071c1b);
   background: rgba(0, 0, 0, 0.05);
 }
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .category-filter-tabs {
     justify-content: flex-start;
     overflow-x: auto;
@@ -7657,6 +7657,66 @@ body.menu-backdrop-open {
   font-size: 13px;
   font-weight: 600;
   color: var(--canopy);
+}
+.blog-read-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================================
+   SAVY BLOG & CMS PAGINATION CONTROLS
+   ========================================================================= */
+.savy-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 52px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 34, 30, 0.12);
+  background: #ffffff;
+  color: var(--bark, #071c1b);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(7, 28, 27, 0.03);
+  outline: none;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f0f7f4;
+  border-color: rgba(0, 135, 90, 0.35);
+  color: var(--canopy, #00875a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(7, 28, 27, 0.07);
+}
+
+.pagination-btn.active {
+  background: var(--canopy, #00875a);
+  color: #ffffff;
+  border-color: var(--canopy, #00875a);
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 135, 90, 0.3);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Blog Detail Page */
