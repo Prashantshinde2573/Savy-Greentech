@@ -479,35 +479,82 @@ export function App() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const ctx = gsap.context(() => {
-      // Hero entrance
-      gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
-        .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
-        .from('.hero-content h1', { autoAlpha: 0, y: 28 }, 0.2)
-        .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
+      const mm = gsap.matchMedia();
 
-      // Section headings reveal
-      gsap.utils.toArray('.section-heading, .news-header-split, .trust-strip-header, .cs-content-block, .home-dealer-banner').forEach((el) => {
-        gsap.from(el, {
-          autoAlpha: 0,
-          y: 28,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+      // DESKTOP & TABLET (> 768px): Full reveal animations including news sticky & card stagger
+      mm.add('(min-width: 769px)', () => {
+        // Hero entrance
+        gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
+          .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
+          .from('.hero-content h1', { autoAlpha: 0, y: 28 }, 0.2)
+          .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
+
+        // Section headings reveal
+        gsap.utils.toArray('.section-heading, .news-header-split, .trust-strip-header, .cs-content-block, .home-dealer-banner').forEach((el) => {
+          gsap.from(el, {
+            autoAlpha: 0,
+            y: 28,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          });
+        });
+
+        // Applications, Rows & Bento Cards reveal
+        gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .engineering-bento-grid, .news-content-layout, .press-articles-grid').forEach((group) => {
+          const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .news-card, .press-card');
+          if (!cards.length) return;
+          gsap.from(cards, {
+            autoAlpha: 0,
+            y: 28,
+            duration: 0.75,
+            stagger: 0.08,
+            ease: 'power4.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: group, start: 'top 84%', once: true }
+          });
         });
       });
 
-      // Applications, Rows & Bento Cards reveal
-      gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .engineering-bento-grid, .news-content-layout, .press-articles-grid').forEach((group) => {
-        const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .news-card, .press-card');
-        if (!cards.length) return;
-        gsap.from(cards, {
-          autoAlpha: 0,
-          y: 28,
-          duration: 0.75,
-          stagger: 0.08,
-          ease: 'power4.out',
-          clearProps: 'transform',
-          scrollTrigger: { trigger: group, start: 'top 84%', once: true }
+      // MOBILE (<= 768px): Clean static section for LATEST FROM SAVY without scroll reveal delay
+      mm.add('(max-width: 768px)', () => {
+        // Hero entrance
+        gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
+          .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
+          .from('.hero-content h1', { autoAlpha: 0, y: 28 }, 0.2)
+          .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
+
+        // Section headings reveal (excluding news header)
+        gsap.utils.toArray('.section-heading, .trust-strip-header, .cs-content-block, .home-dealer-banner').forEach((el) => {
+          gsap.from(el, {
+            autoAlpha: 0,
+            y: 28,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          });
+        });
+
+        // Other groups reveal (excluding news cards for instant mobile visibility)
+        gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .engineering-bento-grid, .press-articles-grid').forEach((group) => {
+          const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .press-card');
+          if (!cards.length) return;
+          gsap.from(cards, {
+            autoAlpha: 0,
+            y: 28,
+            duration: 0.75,
+            stagger: 0.08,
+            ease: 'power4.out',
+            clearProps: 'transform',
+            scrollTrigger: { trigger: group, start: 'top 84%', once: true }
+          });
+        });
+
+        // Immediately clear transforms/opacity on news elements on mobile
+        gsap.set('.news, .news *, .news-header-split, .news-content-layout, .news-card', {
+          autoAlpha: 1,
+          y: 0,
+          clearProps: 'all'
         });
       });
     });
@@ -671,10 +718,10 @@ export function App() {
       {/* =========================================================================
           04. OPERATIONAL VERSATILITY (REUSING APPROVED APPLICATIONS COMPONENT)
           ========================================================================= */}
-      <section className="applications section-white" id="applications" aria-labelledby="applications-title">
+      <section className="applications home-applications-dark" id="applications" aria-labelledby="applications-title">
         <div className="container">
           <div className="section-heading center">
-            <p className="eyebrow">OPERATIONAL VERSATILITY</p>
+            <p className="eyebrow mint">OPERATIONAL VERSATILITY</p>
             <h2 id="applications-title">Built for the Way You Work</h2>
             <p className="section-subtitle">
               Purpose-built electric vehicles designed around real operational needs.
@@ -718,8 +765,9 @@ export function App() {
       </section>
 
       {/* =========================================================================
-          05. WHY SAVY / ENGINEERING EXCELLENCE (EDITORIAL HORIZONTAL ROWS)
+          05. WHY SAVY / ENGINEERING EXCELLENCE (EDITORIAL HORIZONTAL ROWS) - HIDDEN
           ========================================================================= */}
+      {/*
       <section className="home-why-savy-section" id="why-savy" aria-labelledby="why-title">
         <div className="container">
           <div className="section-heading center">
@@ -752,6 +800,7 @@ export function App() {
           </div>
         </div>
       </section>
+      */}
 
       {/* =========================================================================
           05B. ENGINEERING EXCELLENCE (RESPONSIVE ASYMMETRIC BENTO GRID)

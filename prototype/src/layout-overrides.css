@@ -8542,7 +8542,6 @@ body.menu-backdrop-open {
   .awards-grid,
   .dealer-benefits-grid,
   .culture-grid,
-  .quality-cards-grid,
   .dealer-steps-grid,
   .related-products-grid {
     grid-template-columns: 1fr;
@@ -11464,6 +11463,350 @@ body.menu-backdrop-open {
     gap: 24px;
   }
 }
+
+/* ==========================================================================
+   OPERATIONAL VERSATILITY - DARK THEME (MATCHING LATEST FROM SAVY BACKGROUND)
+   ========================================================================== */
+.applications.home-applications-dark,
+.home-applications-dark {
+  background: var(--midnight) !important;
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-applications-dark .section-heading h2 {
+  color: #ffffff !important;
+}
+
+.home-applications-dark .section-subtitle,
+.home-applications-dark .applications-intro {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.home-applications-dark .application-card {
+  color: #ffffff;
+}
+
+.home-applications-dark .application-card img {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-applications-dark .application-card:hover img {
+  transform: scale(1.02);
+  border-color: rgba(15, 255, 135, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 16px rgba(15, 255, 135, 0.15);
+}
+
+.home-applications-dark .application-card h3 {
+  color: #ffffff !important;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.home-applications-dark .application-card p {
+  color: rgba(255, 255, 255, 0.68) !important;
+}
+
+.home-applications-dark .application-controls button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  backdrop-filter: blur(8px);
+}
+
+.home-applications-dark .application-controls button:hover {
+  background: var(--mint) !important;
+  border-color: var(--mint) !important;
+  color: var(--bark) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 255, 135, 0.3);
+}
+
+/* ==========================================================================
+   MOBILE VIEW STANDARDIZATION (MOBILE ONLY — <= 768px)
+   1. Consistent Section Padding: 60px top & bottom across all main sections.
+   2. Hero Section Padding: 72px bottom padding across all page hero sections.
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Main content sections across all pages — strictly 60px top and bottom */
+  .intro,
+  .vehicles,
+  .applications,
+  .home-applications-dark,
+  .home-why-savy-section,
+  .home-engineering-bento-section,
+  .manufacturing-overview-section,
+  .trusted,
+  .news,
+  .news.section-dark,
+  .home-latest-news-section,
+  .home-faq-section,
+  .contact,
+  .about-story,
+  .intro.intro-impact,
+  .founding-story-section,
+  .journey-section,
+  .about-team,
+  .about-focus,
+  .application-sector-block,
+  .catalog-section,
+  .custom-solutions-callout,
+  .product-overview-section,
+  .product-specs-section,
+  .product-apps-section,
+  .related-products-section,
+  .calculator-section,
+  .one-tree-section,
+  .sustainability-pillars-section,
+  .battery-deep-dive-section,
+  .manufacturing-process-section,
+  .quality-standards-section,
+  .after-sales-section,
+  .dealer-benefits-section,
+  .dealer-form-section,
+  .onboarding-roadmap-section,
+  .case-studies-index-section,
+  .active-case-study-deep-dive,
+  .culture-section,
+  .open-positions-section,
+  .career-form-section,
+  .article-body-section,
+  .amsterdam-spotlight-section,
+  .press-releases-section,
+  .awards-section,
+  .media-kit-section,
+  .media-inquiries-section,
+  .blog-directory-section,
+  .article-media-section,
+  .related-blogs-section,
+  .policy-content-section,
+  .contact-main-section,
+  .map-embed-section,
+  main#top section:not(.hero):not(.page-hero):not(.about-hero):not(.product-hero-section):not(.article-header-section):not(.policy-header-section) {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  /* Standardize 72px Bottom Padding for All Hero Sections on Mobile */
+  .hero,
+  .page-hero,
+  .about-hero,
+  .about-page .about-hero,
+  .product-hero-section,
+  .policy-header-section,
+  .career-detail-page .article-header-section,
+  .blog-detail-page .article-header-section {
+    padding-bottom: 72px !important;
+  }
+
+  /* 3. LATEST FROM SAVY — Horizontal Swipeable Carousel on Mobile (Matching OPERATIONAL VERSATILITY) */
+  .news.section-dark .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .news.section-dark .news-header-split {
+    width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    margin-bottom: 32px;
+  }
+
+  .news.section-dark .news-content-layout {
+    --news-gutter: 16px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-padding-inline: var(--news-gutter) !important;
+    scrollbar-width: none !important;
+    padding: 0 var(--news-gutter) 16px !important;
+    margin: 0 !important;
+    outline: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+  }
+
+  .news.section-dark .news-content-layout::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Unwrap sub-columns so cards are direct flex items in the horizontal track */
+  .news.section-dark .news-featured-sticky-col,
+  .news.section-dark .news-scrolling-grid-col,
+  .news.section-dark .news-cards-2col-grid {
+    display: contents !important;
+  }
+
+  /* All 5 News Cards formatted with uniform equal height in the carousel */
+  .news.section-dark .news-card {
+    flex: 0 0 82vw !important;
+    width: 82vw !important;
+    max-width: 340px !important;
+    scroll-snap-align: start !important;
+    scroll-snap-stop: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  .news.section-dark .news-featured-image,
+  .news.section-dark .news-secondary-image {
+    display: block !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 16px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #111a18 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .news.section-dark .news-featured-image img,
+  .news.section-dark .news-secondary-image img {
+    display: block !important;
+    width: 100% !important;
+    aspect-ratio: 16 / 10 !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+    transition: none !important;
+  }
+
+  .news.section-dark .news-meta {
+    margin: 0 0 10px !important;
+    color: var(--mint) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    flex-shrink: 0 !important;
+  }
+
+  .news.section-dark .news-featured-title,
+  .news.section-dark .news-secondary-card h3 {
+    margin: 0 0 10px !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.015em !important;
+    flex-shrink: 0 !important;
+  }
+
+  .news.section-dark .news-featured-title a,
+  .news.section-dark .news-secondary-card h3 a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+
+  .news.section-dark .news-copy {
+    color: rgba(255, 255, 255, 0.72) !important;
+    font-size: 13.5px !important;
+    line-height: 1.55 !important;
+    margin: 0 0 18px !important;
+    flex: 1 1 auto !important;
+  }
+
+  .news.section-dark .news-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: var(--mint) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* -------------------------------------------------------------------------
+     4. TECHNOLOGY PAGE MOBILE ENHANCEMENTS (<= 768px)
+     ------------------------------------------------------------------------- */
+  /* 1. Power & Energy Storage: Match Section Title Typography */
+  .battery-deep-dive-section .battery-content-inner h2,
+  .battery-deep-dive-section #battery-heading {
+    font-size: clamp(28px, 6.8vw, 36px) !important;
+    font-weight: 500 !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* 2. Design to Assembly: Reduce Gap Between Subtitle Description & Process Steps */
+  .manufacturing-process-section .section-heading {
+    margin-bottom: 24px !important;
+  }
+  .manufacturing-process-section .process-editorial-timeline {
+    margin-top: 0 !important;
+    gap: 24px !important;
+  }
+
+  /* 3. Quality & Compliance: Reduced Gap & 2-Column Cards Grid with 8px gap */
+  .quality-standards-section .section-heading {
+    margin-bottom: 24px !important;
+  }
+  .quality-standards-section .quality-cards-grid {
+    margin-top: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .quality-standards-section .quality-card {
+    padding: 16px 12px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .quality-standards-section .quality-icon {
+    font-size: 24px !important;
+    margin-bottom: 10px !important;
+  }
+  .quality-standards-section .quality-card h4 {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+    margin: 0 0 6px !important;
+  }
+  .quality-standards-section .quality-card p {
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
+  }
+  .quality-standards-section .certifications-note-box {
+    margin-top: 8px !important;
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+
 
 
 
