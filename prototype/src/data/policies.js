@@ -28,7 +28,7 @@ export const policiesData = {
       },
       {
         heading: '5. Service & Support Contact',
-        content: `To log a service request or warranty claim, contact our dedicated support desk at service@savygreentech.com or call +91 96384 50070.`
+        content: `To log a service request or warranty claim, contact our dedicated support desk at service@savygreentech.com, call Toll-Free 1800 202 6972, or message WhatsApp at +91 9284830085.`
       }
     ]
   },

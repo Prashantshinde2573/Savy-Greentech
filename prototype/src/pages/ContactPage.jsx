@@ -41,7 +41,7 @@ export function ContactPage() {
         primaryCtaText="Submit Enquiry"
         primaryCtaHref="#contact-form-section"
         secondaryCtaText="Chat on WhatsApp"
-        secondaryCtaHref="https://wa.me/919638450070"
+        secondaryCtaHref="https://wa.me/919284830085"
       />
 
       {/* Main Contact Section: Form & Info */}
@@ -182,12 +182,12 @@ export function ContactPage() {
                   <h3>Quickest Response on WhatsApp</h3>
                   <p>Need urgent pricing or specification sheets? Chat directly with our sales desk on WhatsApp.</p>
                   <a
-                    href="https://wa.me/919638450070"
+                    href="https://wa.me/919284830085"
                     target="_blank"
                     rel="noreferrer"
                     className="button-link mint btn-sm"
                   >
-                    <span>Chat on WhatsApp</span>
+                    <span>Chat on WhatsApp (9284830085)</span>
                     <PiArrowRight aria-hidden="true" />
                   </a>
                 </div>
@@ -211,8 +211,16 @@ export function ContactPage() {
                 <div className="contact-detail-row">
                   <PiPhoneCall className="detail-icon" />
                   <div>
-                    <strong>Telephone / Mobile:</strong>
-                    <p><a href="tel:+919638450070">+91 96384 50070</a></p>
+                    <strong>Toll-Free Number:</strong>
+                    <p><a href="tel:18002026972">1800 202 6972</a></p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-row">
+                  <PiWhatsappLogo className="detail-icon" />
+                  <div>
+                    <strong>WhatsApp Direct:</strong>
+                    <p><a href="https://wa.me/919284830085" target="_blank" rel="noreferrer">+91 9284830085</a></p>
                   </div>
                 </div>
 

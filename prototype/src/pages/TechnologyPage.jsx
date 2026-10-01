@@ -420,7 +420,7 @@ export function TechnologyPage() {
               <span>Discuss Your Requirement</span>
               <PiArrowRight aria-hidden="true" />
             </button>
-            <a className="button-link ghost-light" href="https://wa.me/919638450070" target="_blank" rel="noreferrer">
+            <a className="button-link ghost-light" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
               <span>Talk on WhatsApp</span>
               <PiArrowRight aria-hidden="true" />
             </a>

@@ -17,7 +17,7 @@ export function SiteFooter() {
             <a href="https://www.linkedin.com/in/chandanmundhra/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="footer-social-btn">
               <PiLinkedinLogo /> <span>LinkedIn</span>
             </a>
-            <a href="https://wa.me/919638450070" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="footer-social-btn">
+            <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="footer-social-btn">
               <PiWhatsappLogo /> <span>WhatsApp</span>
             </a>
           </div>
@@ -38,15 +38,12 @@ export function SiteFooter() {
           {/* 2. Products */}
           <div className="footer-col">
             <p className="eyebrow mint">Products</p>
-            <a href="/products/classic-golf">Golf Carts</a>
-            <a href="/products/electruck">Loading Rickshaws</a>
-            <a href="/products/dump-truck">Garbage Collection Vehicles</a>
-            <a href="/products/school-rickshaw">School Rickshaw</a>
-            <a href="/products/tuk-tuk-e">Passenger Rickshaw</a>
-            <a href="/products/food-cart-rickshaw">Rickshaw Food Cart</a>
-            <a href="/products/vintage-elite">Electric Vintage Car</a>
-            <a href="/products/custom-electruck-900kg">Custom / Industrial</a>
-            <a href="/products/city-pod">Upcoming Vehicles</a>
+            <a href="/products">All Products</a>
+            <a href="/products/e-campus-cart">E-Campus Cart</a>
+            <a href="/products/electric-passenger-rickshaw">Electric Passenger Rickshaw</a>
+            <a href="/products/electric-loading-rickshaw">Electric Loading Rickshaw</a>
+            <a href="/products/food-cart-rickshaw">Food Cart Rickshaw</a>
+            <a href="/products/special-purpose-vehicle">Special Purpose Vehicle</a>
           </div>
 
           {/* 3. Applications */}
@@ -76,8 +73,11 @@ export function SiteFooter() {
             <a href="/become-a-dealer" className="footer-highlight-link">Become a Dealer</a>
             <a href="/contact" className="footer-highlight-link">Contact Us / Get in Touch</a>
             <div className="footer-contact-details">
-              <a href="tel:+919638450070" className="footer-icon-link">
-                <PiPhone /> <span>+91 96384 50070</span>
+              <a href="tel:18002026972" className="footer-icon-link">
+                <PiPhone /> <span>Toll Free: 1800 202 6972</span>
+              </a>
+              <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" className="footer-icon-link">
+                <PiWhatsappLogo /> <span>WhatsApp: 9284830085</span>
               </a>
               <a href="mailto:info@savygreentech.com" className="footer-icon-link">
                 <PiEnvelopeSimple /> <span>info@savygreentech.com</span>

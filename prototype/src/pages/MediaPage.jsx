@@ -243,7 +243,7 @@ export function MediaPage() {
               <span>Send Media Inquiry</span>
               <PiArrowRight aria-hidden="true" />
             </a>
-            <a className="button-link ghost-light" href="https://wa.me/919638450070" target="_blank" rel="noreferrer">
+            <a className="button-link ghost-light" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
               <span>Chat on WhatsApp</span>
               <PiArrowRight aria-hidden="true" />
             </a>

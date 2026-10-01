@@ -142,7 +142,7 @@ export function HomeOld() {
   return <main id="top" className="home-old">
     <GlobalNavbar currentPath="/home-old" transparentInitially={true} />
 
-    <section className="hero" aria-labelledby="hero-title"><video ref={videoRef} className="hero-video" muted autoPlay loop playsInline preload="metadata"><source src="/assets/hero-bg.mp4" type="video/mp4" /></video><div className="hero-shade" /><div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" />
+    <section className="hero" aria-labelledby="hero-title"><video ref={videoRef} className="hero-video" poster="/assets/Videos/Hero Video Cover Img.webp" muted autoPlay loop playsInline preload="metadata"><source src="/assets/Videos/Hero section video.mp4" type="video/mp4" /></video><div className="hero-shade" /><div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" />
       <div className="hero-content container"><p className="eyebrow mint">Electric mobility · Since 2014</p><h1 id="hero-title">Electric vehicles built around your requirements.</h1><div className="hero-actions"><ButtonLink href="#vehicles" kind="mint">Explore Our Vehicles</ButtonLink></div></div>
     </section>
 
@@ -163,7 +163,7 @@ export function HomeOld() {
         <p className="eyebrow mint">Start a conversation</p>
         <h2 id="contact-title">Ready to power<br />your project?</h2>
         <p>Talk to our team about a customized electric vehicle solution.</p>
-        <div><ButtonLink href="mailto:info@savygreentech.com">Get in Touch</ButtonLink><ButtonLink href="https://wa.me/919638450070">Talk on WhatsApp</ButtonLink></div>
+        <div><ButtonLink href="mailto:info@savygreentech.com">Get in Touch</ButtonLink><ButtonLink href="https://wa.me/919284830085">Talk on WhatsApp</ButtonLink></div>
       </div>
     </section>
     <GlobalFooter />

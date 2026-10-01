@@ -1,22 +1,65 @@
 export const productCategories = [
-  { id: 'all', name: 'All Vehicles' },
-  { id: 'golf-carts', name: 'Electric Golf Carts' },
-  { id: 'loading-rickshaws', name: 'Electric Loading Rickshaws' },
-  { id: 'garbage-collection', name: 'Electric Garbage Collection' },
-  { id: 'passenger-rickshaws', name: 'Electric Passenger Rickshaws' },
-  { id: 'school-rickshaws', name: 'Electric School Rickshaw' },
-  { id: 'food-carts', name: 'Rickshaw Food Carts' },
-  { id: 'vintage-cars', name: 'Electric Vintage Cars' },
-  { id: 'custom-industrial', name: 'Custom & Industrial Builds' },
-  { id: 'upcoming', name: 'Upcoming Products' },
+  {
+    id: 'e-campus-cart',
+    slug: 'e-campus-cart',
+    name: 'E-Campus Cart',
+    shortName: 'Campus Carts',
+    tagline: 'Eco-friendly, whisper-quiet electric mobility for universities, resorts, hospitals, and corporate campuses.',
+    heroImage: '/assets/classic-golf.jpeg',
+    icon: 'car',
+    description: 'Purpose-built electric campus carts engineered for passenger comfort, VIP hospitality, and whisper-quiet institutional transit. Available in multiple seating configurations from 2 to 8 seats.'
+  },
+  {
+    id: 'electric-passenger-rickshaw',
+    slug: 'electric-passenger-rickshaw',
+    name: 'Electric Passenger Rickshaw',
+    shortName: 'Passenger Rickshaws',
+    tagline: 'Certified on-road & institutional 3-wheel passenger electric rickshaws engineered for reliable, economical micro-mobility.',
+    heroImage: '/assets/tuk-tuk.jpg',
+    icon: 'users',
+    description: 'Safe, economical, and approved electric passenger rickshaws for urban micro-mobility, tourist circuits, and student transit.'
+  },
+  {
+    id: 'electric-loading-rickshaw',
+    slug: 'electric-loading-rickshaw',
+    name: 'Electric Loading Rickshaw',
+    shortName: 'Loading Rickshaws',
+    tagline: 'Heavy-duty electric cargo, freight, water tankers, and municipal logistics solutions.',
+    heroImage: '/assets/electruck.jpg',
+    icon: 'truck',
+    description: 'Heavy-payload 3-wheel electric carriers engineered for industrial material handling, urban freight, water distribution, dairy routes, and municipal sanitation.'
+  },
+  {
+    id: 'food-cart-rickshaw',
+    slug: 'food-cart-rickshaw',
+    name: 'Food Cart Rickshaw',
+    shortName: 'Food Carts',
+    tagline: 'Mobile electric culinary and retail dispensing stations for street food, beverages, and event vending.',
+    heroImage: '/assets/applications/food-cart.webp',
+    icon: 'store',
+    description: 'Food-grade stainless steel electric mobile retail units designed for pollution-free street vending, fast food, beverages, catering, and event refreshments.'
+  },
+  {
+    id: 'special-purpose-vehicle',
+    slug: 'special-purpose-vehicle',
+    name: 'Special Purpose Vehicle',
+    shortName: 'Special Purpose',
+    tagline: 'Bespoke engineered electric vehicles customized for specialized industrial, institutional, and government operations.',
+    heroImage: '/assets/electruck.jpg',
+    icon: 'gear',
+    description: 'Tailored electric mobility engineering built from the ground up to match unique operational workflows, specialized equipment, and heavy payload specifications.'
+  }
 ];
 
 export const products = [
+  // ==========================================
+  // 1. E-CAMPUS CART
+  // ==========================================
   {
     slug: 'classic-golf',
     name: 'Classic Golf',
-    category: 'golf-carts',
-    categoryName: 'Electric Golf Carts',
+    category: 'e-campus-cart',
+    categoryName: 'E-Campus Cart',
     tagline: 'High-efficiency four-wheel electric campus cart for institutional transit.',
     image: '/assets/classic-golf.jpeg',
     gallery: [
@@ -25,7 +68,7 @@ export const products = [
       '/assets/applications/golf-course.jpg',
       '/assets/applications/campus.jpg'
     ],
-    shortCopy: 'Classic Golf is a four-wheel campus cart designed for internal transportation purposes across various sectors such as universities, schools, resorts, government bodies, industrial campuses, and large institutions.',
+    shortCopy: 'Classic Golf is a four-wheel campus cart designed for internal transportation purposes across universities, schools, resorts, government bodies, industrial campuses, and large institutions.',
     overview: 'The SAVY Classic Golf cart provides a silent, zero-emission transportation solution engineered specifically for paved and internal pathways. Built with robust tubular steel chassis, smart motor control, and ergonomic passenger seating, it delivers superior comfort and dependable daily campus mobility.',
     specs: {
       power: '2 kW High-Torque AC/DC Motor',
@@ -66,8 +109,8 @@ export const products = [
   {
     slug: 'club-cart',
     name: 'Club Cart',
-    category: 'golf-carts',
-    categoryName: 'Electric Golf Carts',
+    category: 'e-campus-cart',
+    categoryName: 'E-Campus Cart',
     tagline: 'Premium luxury campus and resort electric mobility.',
     image: '/assets/club-cart.jpg',
     gallery: [
@@ -76,7 +119,7 @@ export const products = [
       '/assets/vintage-elite.jpg',
       '/assets/applications/tourism.jpg'
     ],
-    shortCopy: 'Club Cart is a premium four-wheel campus cart similar to the Classic Golf model, designed for internal transportation in campuses, resorts, institutions, and commercial premises. The primary difference lies in its premium exterior design and styling.',
+    shortCopy: 'Club Cart is a premium four-wheel campus cart designed for internal transportation in luxury campuses, resorts, institutions, and commercial premises with executive styling.',
     overview: 'Engineered for luxury hospitality, VIP guest transit, and premier resort environments, the SAVY Club Cart elevates passenger comfort with automotive-grade exterior body panels, enhanced suspension tuning, and sophisticated aesthetics.',
     specs: {
       power: '2 kW High-Efficiency Motor',
@@ -112,105 +155,11 @@ export const products = [
     ]
   },
   {
-    slug: 'electruck',
-    name: 'Electruck',
-    category: 'loading-rickshaws',
-    categoryName: 'Electric Loading Rickshaws',
-    tagline: 'Rugged heavy-duty electric cargo carrier for industrial logistics.',
-    image: '/assets/electruck.jpg',
-    gallery: [
-      '/assets/electruck.jpg',
-      '/assets/dump-truck.jpg',
-      '/assets/applications/logistics.jpg'
-    ],
-    shortCopy: 'Electruck is a cargo-loading three-wheeler designed to cater to clients across various sectors such as FMCG delivery, laundry services, material handling, and industrial logistics.',
-    overview: 'The SAVY Electruck redefines industrial cargo transport with its heavy-duty payload capability, reinforced steel cargo bed, and high-torque electric powertrain. Built to handle punishing duty cycles in manufacturing plants, warehouses, and last-mile urban logistics networks.',
-    specs: {
-      power: '1.5 kW High-Torque Indigenous Motor',
-      topSpeed: '25 km/h',
-      range: '75 km (Payload dependent)',
-      seatingCapacity: '1 Driver',
-      loadCapacity: '500 kg to 900 kg Custom Payload Ratings',
-      batteryType: 'Heavy-Duty Lithium-ion / Deep Cycle Lead-Acid',
-      chargingTime: '4–6 Hours',
-      dimensions: 'High-Volume Cargo Box Configurations',
-      warranty: 'Verified OEM Industrial Warranty',
-      gradeability: 'Up to 12 degrees fully laden',
-      braking: 'Heavy-Duty Mechanical / Hydraulic Assist',
-    },
-    features: [
-      'Reinforced ladder-frame chassis with heavy-duty leaf spring rear suspension',
-      'High-grade steel cargo deck with drop-down sides and secure lock mechanisms',
-      'Weatherproof sealed motor and electronic controller enclosure (IP65/IP67)',
-      'Digital battery management and overload protection system',
-      'Zero fuel consumption leading to over 75% operational cost reduction'
-    ],
-    applications: [
-      'Industrial Manufacturing Plants & Material Handling',
-      'FMCG & Parcel Last-Mile Delivery',
-      'Hospital & Hotel Linen / Laundry Transport',
-      'Wholesale Markets, Agro-Logistics & Hardware Supply'
-    ],
-    customization: [
-      'Closed container box body with roll-up shutters or double rear doors',
-      'Custom 900 kg heavy-duty reinforced chassis (as built for Ramdev Foods)',
-      'Insulated container body for perishable goods and cold chain transit',
-      'Hydraulic tip-tray for aggregate and bulk material unloading'
-    ]
-  },
-  {
-    slug: 'dump-truck',
-    name: 'Dump Truck',
-    category: 'garbage-collection',
-    categoryName: 'Electric Garbage Collection',
-    tagline: 'Hydraulic tipper & dual-compartment EV for municipal sanitation.',
-    image: '/assets/dump-truck.jpg',
-    gallery: [
-      '/assets/dump-truck.jpg',
-      '/assets/electruck.jpg',
-      '/assets/applications/government.jpg',
-      '/assets/applications/community.jpg'
-    ],
-    shortCopy: 'Dumptruck is a three-wheel electric waste collection vehicle designed for efficient door-to-door garbage collection and municipal sanitation operations, widely used by Gram Panchayats, municipalities, and government sanitation departments.',
-    overview: 'Built specifically to support Swachh Bharat and municipal solid waste management initiatives, the SAVY Dump Truck features hydraulic tipping mechanisms, dual wet/dry segregation compartments, and low-speed high-torque maneuvering through narrow lanes where conventional diesel trucks cannot enter.',
-    specs: {
-      power: '1.5 kW High-Torque Motor',
-      topSpeed: '25 km/h',
-      range: '70–120 km per charge',
-      seatingCapacity: '1 Driver + 1 Helper',
-      loadCapacity: '500–800 kg Waste Payload Capacity',
-      batteryType: 'High-Density Lithium / Deep Cycle Industrial',
-      chargingTime: '4–6 Hours',
-      dimensions: 'Compact Narrow-Alley Urban Footprint',
-      warranty: 'Municipal OEM Warranty Support',
-      gradeability: '12 degrees laden',
-      braking: 'Hydraulic / Mechanical Front and Rear Drum',
-    },
-    features: [
-      'Dual compartment waste segregation (Wet Waste & Dry Waste dividers)',
-      'Electro-hydraulic tipping mechanism with intuitive operator joystick control',
-      'Leak-proof anti-corrosive stainless steel or treated MS bin floor to prevent leachate spills',
-      'Audio public announcement (PA) siren system for resident door-to-door collection alerts',
-      'Easy wash-down design with drainage plugs for effortless daily sanitization'
-    ],
-    applications: [
-      'Municipal Corporations & Nagar Palikas',
-      'Gram Panchayats & Rural Sanitation Missions',
-      'Smart City Waste Management Hubs',
-      'Large Educational & Industrial Campuses'
-    ],
-    customization: [
-      'Hydraulic auto-lifter for standard 120L / 240L municipal garbage bins',
-      'Single large capacity tipper bin or partitioned multi-compartment bin',
-      'GPS live fleet tracking and geofencing telemetry module',
-      'Solar trickle-charging auxiliary rooftop unit'
-    ]
-  },
-  {
     slug: 'vintage-elite',
-    name: 'Vintage Elite',
-    category: 'vintage-cars',
-    categoryName: 'Electric Vintage Cars',
+    aliasSlugs: ['elite-vintage-cart'],
+    name: 'Elite Vintage Cart',
+    category: 'e-campus-cart',
+    categoryName: 'E-Campus Cart',
     tagline: 'Timeless heritage styling paired with cutting-edge electric powertrain.',
     image: '/assets/vintage-elite.jpg',
     gallery: [
@@ -218,8 +167,8 @@ export const products = [
       '/assets/classic-golf.jpeg',
       '/assets/applications/tourism.jpg'
     ],
-    shortCopy: 'A premium four-wheel campus cart designed for internal transportation with a vintage appearance. It is preferred by universities, schools, resorts, government bodies, and for VIP movement within large campuses and commercial premises.',
-    overview: 'The SAVY Vintage Elite combines nostalgic classic automobile design with clean zero-emission electric engineering. A statement vehicle ideal for royal heritage hotels, destination wedding venues, high-profile institutional visits, and VIP hospitality.',
+    shortCopy: 'A premium four-wheel campus cart designed for internal transportation with a classic vintage appearance, preferred by resorts, heritage properties, and for VIP movement.',
+    overview: 'The SAVY Elite Vintage Cart combines nostalgic classic automobile design with clean zero-emission electric engineering. A statement vehicle ideal for royal heritage hotels, destination wedding venues, high-profile institutional visits, and VIP hospitality.',
     specs: {
       power: '2 kW High-Precision Electric Motor',
       topSpeed: '25 km/h',
@@ -252,12 +201,17 @@ export const products = [
       'Luxury bar console and auxiliary cool-box fitment'
     ]
   },
+
+  // ==========================================
+  // 2. ELECTRIC PASSENGER RICKSHAW
+  // ==========================================
   {
-    slug: 'tuk-tuk-e',
-    name: 'Tuk Tuk ë',
-    category: 'passenger-rickshaws',
-    categoryName: 'Electric Passenger Rickshaws',
-    tagline: 'Versatile electric passenger three-wheeler with on-road approval.',
+    slug: 'three-wheel-passenger-rickshaw',
+    aliasSlugs: ['tuk-tuk-e', 'tuk-tuk'],
+    name: 'Three-wheel Passenger Rickshaw',
+    category: 'electric-passenger-rickshaw',
+    categoryName: 'Electric Passenger Rickshaw',
+    tagline: 'Versatile electric passenger three-wheeler with certified on-road approval.',
     image: '/assets/tuk-tuk.jpg',
     gallery: [
       '/assets/tuk-tuk.jpg',
@@ -265,8 +219,8 @@ export const products = [
       '/assets/applications/community.jpg',
       '/assets/applications/tourism.jpg'
     ],
-    shortCopy: 'Tuk Tuk ë is a versatile three-wheel passenger vehicle designed for urban and commercial transport, available in multiple seating configurations from 2+1 to 8+1, with the 4+1 variant approved for on-road use.',
-    overview: 'The SAVY Tuk Tuk ë is an efficient, safe, and economical electric passenger vehicle. Built to provide green micro-mobility for campus transit, tourist circuits, and certified on-road passenger transport with exceptional battery mileage and low maintenance overheads.',
+    shortCopy: 'Three-wheel Passenger Rickshaw (Tuk Tuk ë) is a versatile three-wheel passenger vehicle designed for urban and commercial transport, available in multiple seating configurations with approved on-road variants.',
+    overview: 'The SAVY Three-wheel Passenger Rickshaw is an efficient, safe, and economical electric passenger vehicle. Built to provide green micro-mobility for campus transit, tourist circuits, and certified on-road passenger transport with exceptional battery mileage and low maintenance overheads.',
     specs: {
       power: '1.5 kW Indigenous BLDC / PMSM Motor',
       topSpeed: '25 km/h',
@@ -300,11 +254,491 @@ export const products = [
       'Fleet telematics and remote battery diagnostic monitoring'
     ]
   },
+
+  // ==========================================
+  // 3. ELECTRIC LOADING RICKSHAW
+  // ==========================================
+  {
+    slug: 'electruck',
+    aliasSlugs: ['electruck-500kg'],
+    name: 'Electruck — max 500 kg',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: 'Rugged heavy-duty electric cargo carrier with versatile body customizations.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/dump-truck.jpg',
+      '/assets/applications/logistics.jpg'
+    ],
+    shortCopy: 'Electruck (max 500 kg) is a heavy-duty cargo loading three-wheeler engineered for FMCG delivery, laundry services, material handling, and municipal operations with versatile body customizations.',
+    overview: 'The SAVY Electruck redefines urban and industrial cargo transport with its heavy-duty payload capability, reinforced steel frame, and high-torque electric powertrain. Available with specialized customization variants including Pack Body, Half Body, Dumptruck, and Tipper configurations.',
+    specs: {
+      power: '1.5 kW High-Torque Indigenous Motor',
+      topSpeed: '25 km/h',
+      range: '75–100 km per charge',
+      seatingCapacity: '1 Driver',
+      loadCapacity: 'Up to 500 kg Certified Payload',
+      batteryType: 'Heavy-Duty Lithium-ion / Deep Cycle Lead-Acid',
+      chargingTime: '4–6 Hours',
+      dimensions: 'High-Volume Cargo Deck Footprint',
+      warranty: 'Verified OEM Industrial Warranty',
+      gradeability: 'Up to 12 degrees fully laden',
+      braking: 'Heavy-Duty Mechanical / Hydraulic Assist',
+    },
+    customizationVariants: [
+      {
+        name: 'Pack Body',
+        tag: 'Enclosed Cargo Box',
+        copy: 'Fully enclosed metal container box body with weather-sealed roll-up shutters or double lockable doors. Ideal for FMCG delivery, parcel logistics, and protected goods.'
+      },
+      {
+        name: 'Half Body',
+        tag: 'Open Freight Deck',
+        copy: 'Open high-side utility freight deck with drop-down sides and heavy-duty steel tie-down hooks for rapid loading and multi-purpose industrial freight.'
+      },
+      {
+        name: 'Dumptruck — Garbage Collection',
+        tag: 'Municipal Sanitation',
+        copy: 'Specialized municipal waste collection body featuring dual wet/dry segregation compartments and easy discharge for door-to-door civic cleanliness.'
+      },
+      {
+        name: 'Tipper — Garbage Transportation',
+        tag: 'Electro-Hydraulic Tip',
+        copy: 'Heavy-duty electro-hydraulic tipping hopper engineered for effortless dumping of municipal solid waste, debris, and bulk materials.'
+      }
+    ],
+    features: [
+      'Reinforced ladder-frame chassis with heavy-duty leaf spring rear suspension',
+      'Four factory-customized body configurations: Pack Body, Half Body, Dumptruck, and Tipper',
+      'Weatherproof sealed motor and electronic controller enclosure (IP65/IP67)',
+      'Digital battery management and overload protection system',
+      'Over 75% operational cost reduction compared to conventional diesel loaders'
+    ],
+    applications: [
+      'Industrial Manufacturing Plants & Material Handling',
+      'FMCG, Courier & Parcel Last-Mile Delivery',
+      'Hospital & Hotel Linen / Laundry Transport',
+      'Municipal Waste Collection & Rural Sanitation'
+    ],
+    customization: [
+      'Pack Body enclosed box with rear lockable shutters',
+      'Half Body open utility cargo deck with drop sides',
+      'Dumptruck dual-compartment waste collection body',
+      'Tipper electro-hydraulic tipping hopper for garbage transport'
+    ]
+  },
+  {
+    slug: 'electruck-dlx',
+    name: 'Electruck DLX — 1–3 Ton',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: 'High-tonnage heavy industrial electric cargo carrier built for 1 to 3 Ton payloads.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/applications/logistics.jpg'
+    ],
+    shortCopy: 'Electruck DLX is an ultra-heavy-duty electric cargo platform engineered for high-tonnage material handling and heavy manufacturing logistics, rated for 1 to 3 Ton capacities.',
+    overview: 'Built for demanding industrial environments and heavy freight cycles, the SAVY Electruck DLX combines reinforced heavy-gauge structural steel frames, upgraded high-torque powertrains, and multi-leaf suspension systems to carry between 1,000 kg and 3,000 kg with zero emissions.',
+    specs: {
+      power: '3 kW – 5 kW Heavy Industrial Powertrain',
+      topSpeed: '25 km/h',
+      range: '70–90 km per charge',
+      seatingCapacity: '1 Driver',
+      loadCapacity: '1,000 kg – 3,000 kg (1–3 Ton)',
+      batteryType: 'High-Capacity Lithium-ion (LFP) with Smart BMS',
+      chargingTime: '4–6 Hours / Rapid Charge Compatible',
+      dimensions: 'Extended Reinforced Industrial Wheelbase',
+      warranty: 'Industrial SLA Warranty Support',
+      gradeability: '15 degrees fully loaded',
+      braking: 'Dual-Circuit Hydraulic Disc/Drum Heavy-Duty System',
+    },
+    features: [
+      'Double-gusseted reinforced structural steel chassis for heavy tonnage',
+      'High-torque industrial motor with heavy differential gear reduction',
+      'Multi-leaf heavy rear suspension with dual shock absorbers',
+      'Custom heavy cargo platform dimensions suited for industrial pallets and crates'
+    ],
+    applications: [
+      'Heavy Manufacturing & Steel / Engineering Plants',
+      'Warehouse Bulk Material Movement & Distribution Centers',
+      'Agro-Processing, Grain & Sugar Mills',
+      'Heavy Industrial Campus Logistics'
+    ],
+    customization: [
+      'Hydraulic lift-gate for effortless ground-to-bed pallet loading',
+      'High-side steel cages or enclosed container configurations',
+      'Fleet telemetry and heavy-duty battery fast-charging packages'
+    ]
+  },
+  {
+    slug: 'tobu-truck',
+    name: 'Tobu Truck — small/light cargo',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: 'Agile, compact electric cargo truck engineered for small and light freight.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/applications/logistics.jpg'
+    ],
+    shortCopy: 'Tobu Truck is a nimble, compact electric cargo vehicle tailored for light-load delivery, intra-facility movements, and narrow-street urban logistics.',
+    overview: 'Designed for quick, nimble trips and low-payload urban logistics, the SAVY Tobu Truck provides an economical, easy-to-park electric transport solution with an ultra-tight turning radius for narrow market alleys and dense warehouse corridors.',
+    specs: {
+      power: '1.2 kW Efficient BLDC Motor',
+      topSpeed: '25 km/h',
+      range: '80 km per charge',
+      seatingCapacity: '1 Driver',
+      loadCapacity: '300–400 kg Light Cargo',
+      batteryType: 'Lithium-ion / Deep Cycle',
+      chargingTime: '3.5–4.5 Hours',
+      dimensions: 'Compact Ultra-Maneuverable Footprint',
+      warranty: 'Standard SAVY Warranty',
+      gradeability: '10 degrees',
+      braking: 'Mechanical & Regenerative Braking',
+    },
+    features: [
+      'Ultra-compact footprint for narrow lanes and tight warehouse aisles',
+      'Lightweight rigid chassis providing maximum battery efficiency',
+      'Convenient low load-bed height for quick manual parcel loading',
+      'Extremely low operating and maintenance expenses'
+    ],
+    applications: [
+      'E-Commerce & Courier Last-Mile Delivery',
+      'Intra-Hospital & University Campus Supply Runs',
+      'Local Grocery & Hardware Store Deliveries',
+      'Internal Factory Parts Shuttle'
+    ],
+    customization: [
+      'Weather-sealed canvas canopy cover or lockable mesh cage',
+      'Rear parcel organizer dividers and delivery basket fitments'
+    ]
+  },
+  {
+    slug: 'electric-water-tanker',
+    name: 'Electric Water Tanker — 500 L',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: '500-liter electric water dispensing tanker for horticulture and campus maintenance.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/applications/government.jpg'
+    ],
+    shortCopy: 'Purpose-built electric vehicle mounted with a 500L anti-slosh water tanker and pressure dispensing pump for horticulture, campus grounds, and civic watering.',
+    overview: 'The SAVY Electric Water Tanker (500 L) delivers silent, zero-emission watering and sanitization capability for botanical gardens, public parks, municipal green belts, and expansive corporate campuses without noisy tractor engines.',
+    specs: {
+      power: '1.5 kW High-Torque Motor',
+      topSpeed: '25 km/h',
+      range: '70 km per charge',
+      seatingCapacity: '1 Driver',
+      loadCapacity: '500 Liters Water Tank + Dispensing System',
+      batteryType: 'Lithium-ion with Auxiliary 12V Pump Circuit',
+      chargingTime: '4–5 Hours',
+      dimensions: 'Integrated Tanker Platform',
+      warranty: 'SAVY Municipal & Commercial Warranty',
+      gradeability: '12 degrees',
+      braking: 'Heavy-Duty Hydraulic / Mechanical Drum',
+    },
+    features: [
+      '500-liter corrosion-resistant water tank with internal anti-slosh baffles',
+      'Electric 12V high-pressure water pump with adjustable spray gun and hose reel',
+      'Wide rear spray bar option for road dust suppression and lawn watering',
+      'Top inspection hatch with quick-fill inlet and bottom drain valve'
+    ],
+    applications: [
+      'Horticulture, Municipal Parks & Green Belt Maintenance',
+      'University, Resort & Industrial Campus Landscaping',
+      'Road Cleaning & Mist/Dust Suppression in Construction Zones',
+      'Remote Drinking Water / Utility Water Distribution'
+    ],
+    customization: [
+      'High-pressure spray nozzle wand for tree washing and pesticide spraying',
+      'Stainless steel SS304 tank option for potable drinking water supply',
+      'Retractable 30-meter spring-loaded hose reel'
+    ]
+  },
+  {
+    slug: 'milk-cart',
+    name: 'Milk Cart — SS tanker, 500 L',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: 'Food-grade 304 stainless steel 500L tanker cart tailored for dairy collection.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/applications/agriculture.jpg'
+    ],
+    shortCopy: 'Purpose-built electric vehicle tailored for dairy cooperatives and milk distribution networks with a 500L food-grade stainless steel tanker or organized can bays.',
+    overview: 'Optimized for hygienic, early morning, silent delivery across residential neighbourhoods and dairy collection centres. Features sanitary SS304 construction, easy clean-in-place valves, and zero exhaust emissions.',
+    specs: {
+      power: '1.5 kW High-Torque Motor',
+      topSpeed: '25 km/h',
+      range: '75 km per charge',
+      seatingCapacity: '1 Driver',
+      loadCapacity: '500 Liters Food-Grade SS Tank / Crate Bays',
+      batteryType: 'Lithium-ion / Deep Cycle Lead-Acid',
+      chargingTime: '4 Hours',
+      dimensions: 'Crate-Optimized Bed Dimensions',
+      warranty: 'SAVY Commercial Warranty',
+      gradeability: '12 degrees',
+      braking: 'Heavy-Duty Drum',
+    },
+    features: [
+      'Food-grade 304 stainless steel tank with sanitary mirror finish inside',
+      'Corrosion-proof wash-down floor with non-slip texture',
+      'Quick-drain butterfly sanitary valve for effortless milk transfer',
+      'Whisper-quiet electric drive perfect for 4:00 AM distribution rounds'
+    ],
+    applications: [
+      'Dairy Cooperatives & Milk Collection Routes',
+      'Agro-Farm Produce & Liquid Food Transport',
+      'Community Daily Dairy Essentials Delivery'
+    ],
+    customization: [
+      'Insulated PUF container box for maintaining chilled milk temperatures',
+      'Dual tank compartments for separate milk grades or collection points'
+    ]
+  },
+  {
+    slug: 'dump-truck',
+    aliasSlugs: ['dumptruck-garbage-collection'],
+    name: 'Dump Truck — Municipal Sanitation',
+    category: 'electric-loading-rickshaw',
+    categoryName: 'Electric Loading Rickshaw',
+    tagline: 'Hydraulic tipper & dual-compartment EV for municipal waste collection.',
+    image: '/assets/dump-truck.jpg',
+    gallery: [
+      '/assets/dump-truck.jpg',
+      '/assets/electruck.jpg',
+      '/assets/applications/government.jpg',
+      '/assets/applications/community.jpg'
+    ],
+    shortCopy: 'Dumptruck is a three-wheel electric waste collection vehicle designed for efficient door-to-door garbage collection and municipal sanitation operations.',
+    overview: 'Built specifically to support Swachh Bharat and municipal solid waste management initiatives, the SAVY Dump Truck features hydraulic tipping mechanisms, dual wet/dry segregation compartments, and low-speed high-torque maneuvering through narrow lanes where conventional diesel trucks cannot enter.',
+    specs: {
+      power: '1.5 kW High-Torque Motor',
+      topSpeed: '25 km/h',
+      range: '70–120 km per charge',
+      seatingCapacity: '1 Driver + 1 Helper',
+      loadCapacity: '500–800 kg Waste Payload Capacity',
+      batteryType: 'High-Density Lithium / Deep Cycle Industrial',
+      chargingTime: '4–6 Hours',
+      dimensions: 'Compact Narrow-Alley Urban Footprint',
+      warranty: 'Municipal OEM Warranty Support',
+      gradeability: '12 degrees laden',
+      braking: 'Hydraulic / Mechanical Front and Rear Drum',
+    },
+    features: [
+      'Dual compartment waste segregation (Wet Waste & Dry Waste dividers)',
+      'Electro-hydraulic tipping mechanism with intuitive operator joystick control',
+      'Leak-proof anti-corrosive stainless steel or treated MS bin floor to prevent leachate spills',
+      'Audio public announcement (PA) siren system for resident door-to-door collection alerts',
+      'Easy wash-down design with drainage plugs for effortless daily sanitization'
+    ],
+    applications: [
+      'Municipal Corporations & Nagar Palikas',
+      'Gram Panchayats & Rural Sanitation Missions',
+      'Smart City Waste Management Hubs',
+      'Large Educational & Industrial Campuses'
+    ],
+    customization: [
+      'Hydraulic auto-lifter for standard 120L / 240L municipal garbage bins',
+      'Single large capacity tipper bin or partitioned multi-compartment bin',
+      'GPS live fleet tracking and geofencing telemetry module'
+    ]
+  },
+
+  // ==========================================
+  // 4. FOOD CART RICKSHAW
+  // ==========================================
+  {
+    slug: 'dosa-cart',
+    name: 'Dosa Cart',
+    category: 'food-cart-rickshaw',
+    categoryName: 'Food Cart Rickshaw',
+    tagline: 'Mobile electric fast-food kiosk with food-grade SS tawa & prep station.',
+    image: '/assets/applications/food-cart.webp',
+    gallery: [
+      '/assets/applications/food-cart.webp'
+    ],
+    shortCopy: 'Mobile electric food vending vehicle customized with heavy-gauge food-grade stainless steel dosa tawa, batter containers, and gas/electric burner fixtures.',
+    overview: 'The SAVY Dosa Cart transforms fast-food street vending into a clean, modern, zero-emission commercial operation. Designed with hygiene-first SS304 countertops, fold-out serving bays, integrated condiment organizers, and battery-powered illumination.',
+    specs: {
+      power: '1.5 kW Electric Powertrain',
+      topSpeed: '20 km/h',
+      range: '70 km per charge',
+      seatingCapacity: '1 Driver / Chef + Walk-up Service Area',
+      loadCapacity: 'Up to 600 kg Cooking Equipment & Ingredients',
+      batteryType: 'Lithium-ion with Auxiliary 220V Inverter Output',
+      chargingTime: '4–5 Hours',
+      dimensions: 'Food-Grade Kitchen Module',
+      warranty: 'SAVY Commercial Warranty',
+      gradeability: '10 degrees',
+      braking: 'Mechanical & Hydraulic Braking',
+    },
+    features: [
+      'Heavy-gauge commercial SS304 dosa tawa griddle with burner integration',
+      'Sanitary wash sink with fresh water tank and wastewater container',
+      'Overhead fold-out weather canopy with high-visibility LED spotlights',
+      'Lockable dry-storage compartments and insulated batter cooler bay',
+      'Auxiliary battery inverter powering mixers, lights, and billing machine'
+    ],
+    applications: [
+      'Street Food Vending & Night Markets',
+      'Corporate Tech Parks & University Food Courts',
+      'Event Catering, Fairs & Tourist Hotspots',
+      'Beach Promenades & Pedestrian Plazas'
+    ],
+    customization: [
+      'Custom tawa size and multi-burner gas piping setup',
+      'Solar-assisted roof for daytime battery topping and lighting',
+      'Custom vinyl wrap branding and digital POS mounting'
+    ]
+  },
+  {
+    slug: 'soda-cart',
+    name: 'Soda Cart',
+    category: 'food-cart-rickshaw',
+    categoryName: 'Food Cart Rickshaw',
+    tagline: 'Mobile refrigerated soda & beverage dispensing EV with multi-flavor fountain taps.',
+    image: '/assets/applications/food-cart.webp',
+    gallery: [
+      '/assets/applications/food-cart.webp'
+    ],
+    shortCopy: 'Mobile beverage dispensing EV equipped with multi-flavor post-mix fountain soda taps, onboard cooling chiller, and CO2 cylinder safety bays.',
+    overview: 'The SAVY Soda Cart offers high-margin mobile beverage vending for parks, tourist destinations, sports stadiums, and event grounds. Features food-grade beverage lines, continuous chilling systems, and silent electric mobility.',
+    specs: {
+      power: '1.5 kW Electric Powertrain',
+      topSpeed: '20 km/h',
+      range: '70 km per charge',
+      seatingCapacity: '1 Driver + Dispensing Kiosk',
+      loadCapacity: 'Up to 600 kg Syrup Tanks & Refrigeration System',
+      batteryType: 'Lithium-ion with Dedicated Chiller Inverter',
+      chargingTime: '4–5 Hours',
+      dimensions: 'Beverage Kiosk Platform',
+      warranty: 'SAVY Commercial Warranty',
+      gradeability: '10 degrees',
+      braking: 'Mechanical & Hydraulic Drum',
+    },
+    features: [
+      'Multi-flavor post-mix fountain soda dispensing manifold (4 to 8 valves)',
+      'Integrated ice-bank chiller maintaining ice-cold beverage temperatures',
+      'Secure bracket mountings for CO2 gas cylinders and syrup canisters',
+      'Illuminated display marquee and digital cash register counter'
+    ],
+    applications: [
+      'Public Parks, Beaches & Tourist Attractions',
+      'Sports Stadiums, Concerts & Outdoor Exhibitions',
+      'Commercial Hubs & Transportation Terminals'
+    ],
+    customization: [
+      'Flavored juice dispensers and sugarcane juice extractor integration',
+      'Custom LED branded neon signage and sound system'
+    ]
+  },
+  {
+    slug: 'food-cart-rickshaw',
+    aliasSlugs: ['other-food-cart-variants', 'custom-food-cart'],
+    name: 'Other Food Cart variants',
+    category: 'food-cart-rickshaw',
+    categoryName: 'Food Cart Rickshaw',
+    tagline: 'Custom-tailored mobile culinary kitchens for specialty food and beverage retail.',
+    image: '/assets/applications/food-cart.webp',
+    gallery: [
+      '/assets/applications/food-cart.webp'
+    ],
+    shortCopy: 'Bespoke mobile electric food dispensing and retail vehicle customizable for coffee stalls, momos, rolls, chaat, ice cream, and specialty culinary kiosks.',
+    overview: 'The SAVY Custom Food Cart brings culinary concepts directly to high-footfall tourist zones, corporate campuses, and pedestrian plazas without noise or pollution.',
+    specs: {
+      power: '1.5 kW High-Efficiency Motor',
+      topSpeed: '20 km/h',
+      range: '70 km per charge',
+      seatingCapacity: '1 Operator + Walk-up Serving Bay',
+      loadCapacity: 'Up to 600 kg Kitchen Equipment & Stock',
+      batteryType: 'Lithium-ion with Auxiliary Inverter Output',
+      chargingTime: '4–5 Hours',
+      dimensions: 'Food-Grade Mobile Service Kiosk',
+      warranty: 'SAVY Commercial Warranty',
+      gradeability: '10 degrees',
+      braking: 'Mechanical / Hydraulic Assist',
+    },
+    features: [
+      'Food-grade 304 stainless steel prep countertops and sanitary water sinks',
+      'Fold-out service awnings and LED counter display lighting',
+      'Auxiliary battery inverter powering coffee machines, blenders, or warmers',
+      'Lockable dry-storage cabinetry and insulated cold-beverage compartments'
+    ],
+    applications: [
+      'Specialty Coffee, Tea & Snack Vending',
+      'Corporate Campuses & IT Tech Parks',
+      'Exhibition Grounds, Event Venues & Tourist Hubs',
+      'Hotel Resort Poolside Refreshment Stations'
+    ],
+    customization: [
+      'Custom kitchen equipment layout (Griddles, induction, beverage taps)',
+      'Solar roof canopy for continuous auxiliary power generation',
+      'Digital POS display mounting and branded vinyl wraps'
+    ]
+  },
+
+  // ==========================================
+  // 5. SPECIAL PURPOSE VEHICLE
+  // ==========================================
+  {
+    slug: 'custom-built-vehicles',
+    aliasSlugs: ['custom-electruck-900kg', 'atm-vehicle', 'special-purpose-custom'],
+    name: 'Custom-built Vehicles',
+    category: 'special-purpose-vehicle',
+    categoryName: 'Special Purpose Vehicle',
+    tagline: 'Bespoke engineered electric vehicle platforms customized for unique operational requirements.',
+    image: '/assets/electruck.jpg',
+    gallery: [
+      '/assets/electruck.jpg',
+      '/assets/applications/logistics.jpg',
+      '/assets/applications/government.jpg'
+    ],
+    shortCopy: 'Special-purpose customized electric vehicles engineered from the ground up for mobile banking, heavy industrial haulage, healthcare transit, and specialized civic utilities.',
+    overview: 'SAVY Greentech’s in-house R&D, chassis fabrication, and power electronics engineering teams create custom-built electric vehicles for clients with specific operational challenges. From heavy 900kg+ FMCG distribution platforms (Ramdev Foods) to secure Mobile ATM banking units and hazardous environment shuttles.',
+    specs: {
+      power: '1.5 kW – 5 kW Custom Powertrains',
+      topSpeed: '25 km/h (Calibrated to site regulations)',
+      range: '75–120 km per charge (Configurable)',
+      seatingCapacity: 'Custom Cabin Formats',
+      loadCapacity: '500 kg to 3,000 kg Custom Ratings',
+      batteryType: 'Custom Engineered Lithium-ion Packs (LFP / NMC)',
+      chargingTime: 'Tailored Charging Architecture',
+      dimensions: 'Custom CAD-Engineered Dimensions',
+      warranty: 'Comprehensive OEM SLA Support',
+      gradeability: 'Up to 15 degrees laden',
+      braking: 'Hydraulic Multi-Circuit Braking System',
+    },
+    features: [
+      'Tailor-made tubular and ladder-frame chassis with finite element stress analysis',
+      'Custom payload bodies: Mobile ATMs, insulated medical labs, heavy cargo haulers',
+      'Auxiliary battery systems and high-power inverters for specialized equipment',
+      'End-to-end design, prototyping, testing, and volume manufacturing under one roof'
+    ],
+    applications: [
+      'Mobile ATM & Rural Banking Services',
+      'Heavy FMCG Manufacturing & Multi-Shift Factory Haulage (Ramdev Foods)',
+      'Hospital Patient Transfer & Mobile Health Clinics',
+      'Airport Tarmac Baggage & Maintenance Utility Platforms',
+      'Hazardous Material & Chemical Plant Controlled Shuttles'
+    ],
+    customization: [
+      'Complete mechanical, electrical, and aesthetic customization to client specs',
+      'Telemetry, RFID access control, and specialized equipment mounting'
+    ]
+  },
+
+  // Legacy / Direct Slug Products (Maintained for seamless routing)
   {
     slug: 'school-rickshaw',
     name: 'Electric School Rickshaw',
-    category: 'school-rickshaws',
-    categoryName: 'Electric School Rickshaw',
+    category: 'electric-passenger-rickshaw',
+    categoryName: 'Electric Passenger Rickshaw',
     tagline: 'Safe, dedicated zero-emission electric school transport for children.',
     image: '/assets/tuk-tuk.jpg',
     gallery: [
@@ -329,71 +763,61 @@ export const products = [
     features: [
       'Protective high-side wire mesh and secure safety door locks',
       'Integrated speed limiter calibrated for student safety in residential zones',
-      'Bright safety yellow exterior with high-visibility reflective branding',
-      'School bag storage racks positioned below seats to maximize aisle space',
-      'First-aid kit mounting and fire extinguisher bracket standard'
+      'Bright safety yellow exterior with high-visibility reflective branding'
     ],
     applications: [
       'Primary & Secondary School Transportation',
-      'Daycare & Kindergarten Transit Circuits',
-      'Residential Community School Feeder Networks'
+      'Daycare & Kindergarten Transit Circuits'
     ],
     customization: [
       'GPS live bus/rickshaw tracking app integration for parents',
-      'CCTV internal cabin safety camera module',
-      'Custom school crest badging and color schemes'
+      'CCTV internal cabin safety camera module'
     ]
   },
   {
-    slug: 'food-cart-rickshaw',
-    name: 'Rickshaw Food Cart',
-    category: 'food-carts',
-    categoryName: 'Rickshaw Food Carts',
-    tagline: 'Mobile electric retail and commercial food dispensing station.',
+    slug: 'atm-vehicle',
+    name: 'Mobile ATM & Bank Vehicle',
+    category: 'special-purpose-vehicle',
+    categoryName: 'Special Purpose Vehicle',
+    tagline: 'Secure mobile banking and financial service delivery EV.',
     image: '/assets/electruck.jpg',
     gallery: [
       '/assets/electruck.jpg',
-      '/assets/applications/tourism.jpg'
+      '/assets/applications/government.jpg'
     ],
-    shortCopy: 'Mobile commercial food dispensing and retail vehicle built on a robust electric three-wheeler platform with food-grade stainless steel counters.',
-    overview: 'The SAVY Rickshaw Food Cart brings mobile culinary and retail ventures into high-footfall tourist zones, corporate tech parks, and community plazas without generating noisy generator fumes or diesel odors.',
+    shortCopy: 'Special-purpose customized electric vehicle equipped with secure enclosures, auxiliary power, and connectivity for mobile banking services.',
+    overview: 'Developed for financial inclusion and rural banking access, the SAVY Mobile ATM Vehicle houses automated teller machines, teller counters, and satellite communication equipment on a clean electric chassis.',
     specs: {
-      power: '1.5 kW High-Efficiency Motor',
-      topSpeed: '20 km/h',
-      range: '70 km per charge',
-      seatingCapacity: '1 Operator + Walk-up Serving Bay',
-      loadCapacity: 'Up to 600 kg Kitchen Equipment & Stock',
-      batteryType: 'Lithium-ion with Auxiliary Inverter Output',
+      power: '1.5 kW Electric Motor',
+      topSpeed: '25 km/h',
+      range: '75 km',
+      seatingCapacity: '1 Driver + 1 Bank Officer',
+      loadCapacity: 'Heavy Enclosure Rated',
+      batteryType: 'Lithium-ion + UPS Auxiliary Battery System',
       chargingTime: '4–5 Hours',
-      dimensions: 'Food-Grade Mobile Service Kiosk',
-      warranty: 'SAVY Commercial Warranty',
-      gradeability: '10 degrees',
-      braking: 'Mechanical / Hydraulic Assist',
+      dimensions: 'Security Reinforced Cabin',
+      warranty: 'SAVY Special Purpose Warranty',
+      gradeability: '12 degrees',
+      braking: 'Hydraulic Multi-Circuit Braking',
     },
     features: [
-      'Food-grade 304 stainless steel prep countertops and sanitary water sinks',
-      'Fold-out service awnings and LED counter display lighting',
-      'Auxiliary battery inverter powering coffee machines, blenders, or warmers',
-      'Lockable dry-storage cabinetry and insulated cold-beverage compartments',
-      'Clean, silent operation compliant with eco-sensitive urban pedestrian plazas'
+      'Reinforced steel ATM security booth with safe anchoring points',
+      'Dedicated pure sine wave inverter backup for continuous ATM uptime',
+      'Surveillance camera integration and panic alarm system'
     ],
     applications: [
-      'Street Food Vending & Specialty Coffee Stalls',
-      'Corporate Campuses & IT Tech Parks',
-      'Exhibition Grounds, Event Venues & Tourist Hubs',
-      'Hotel Resort Poolside Refreshment Stations'
+      'Rural & Remote Financial Inclusion Programs',
+      'Festivals, Fairs & Disaster Relief Cash Distribution'
     ],
     customization: [
-      'Custom kitchen equipment layout (Griddles, induction, beverage taps)',
-      'Solar roof canopy for continuous auxiliary power generation',
-      'Digital POS display mounting and branded vinyl wraps'
+      'Custom bank branding and ATM machine integration specifications'
     ]
   },
   {
     slug: 'custom-electruck-900kg',
     name: 'Custom 900kg Electruck (Ramdev Foods)',
-    category: 'custom-industrial',
-    categoryName: 'Custom & Industrial Builds',
+    category: 'special-purpose-vehicle',
+    categoryName: 'Special Purpose Vehicle',
     tagline: 'Heavy-duty bespoke industrial cargo platform built for 900kg payloads.',
     image: '/assets/electruck.jpg',
     gallery: [
@@ -418,13 +842,11 @@ export const products = [
     features: [
       'Bespoke engineered chassis with double-gusseted stress points',
       'Heavy-duty multi-leaf suspension and reinforced heavy axle hubs',
-      'Custom high-side cargo walls engineered for palletized food crates',
-      'Continuous-duty thermal management for round-the-clock factory shifts'
+      'Custom high-side cargo walls engineered for palletized food crates'
     ],
     applications: [
       'Heavy FMCG Manufacturing & Warehousing',
-      'Spice, Grain & Food Distribution Logistics',
-      'Industrial Spare Parts & Heavy Material Handling'
+      'Spice, Grain & Food Distribution Logistics'
     ],
     customization: [
       'Custom payload sizing (up to 1,200 kg on request)',
@@ -432,92 +854,10 @@ export const products = [
     ]
   },
   {
-    slug: 'atm-vehicle',
-    name: 'Mobile ATM & Bank Vehicle',
-    category: 'custom-industrial',
-    categoryName: 'Custom & Industrial Builds',
-    tagline: 'Secure mobile banking and financial service delivery EV.',
-    image: '/assets/electruck.jpg',
-    gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/government.jpg'
-    ],
-    shortCopy: 'Special-purpose customized electric vehicle equipped with secure enclosures, auxiliary power, and connectivity for mobile banking services.',
-    overview: 'Developed for financial inclusion and rural banking access, the SAVY Mobile ATM Vehicle houses automated teller machines, teller counters, and satellite communication equipment on a clean electric chassis.',
-    specs: {
-      power: '1.5 kW Electric Motor',
-      topSpeed: '25 km/h',
-      range: '75 km',
-      seatingCapacity: '1 Driver + 1 Bank Officer',
-      loadCapacity: 'Heavy Enclosure Rated',
-      batteryType: 'Lithium-ion + UPS Auxiliary Battery System',
-      chargingTime: '4–5 Hours',
-      dimensions: 'Security Reinforced Cabin',
-      warranty: 'SAVY Special Purpose Warranty',
-      gradeability: '12 degrees',
-      braking: 'Hydraulic Multi-Circuit Braking',
-    },
-    features: [
-      'Reinforced steel ATM security booth with safe anchoring points',
-      'Dedicated pure sine wave inverter backup for 8+ hours of continuous ATM uptime',
-      'Surveillance camera integration and panic alarm system',
-      'Climate-controlled teller and passenger compartment'
-    ],
-    applications: [
-      'Rural & Remote Financial Inclusion Programs',
-      'Festivals, Fairs & Disaster Relief Cash Distribution',
-      'Corporate Campuses & Special Economic Zones (SEZs)'
-    ],
-    customization: [
-      'Custom bank branding and ATM machine integration specifications',
-      'Biometric authentication console and VSAT antenna mount'
-    ]
-  },
-  {
-    slug: 'milk-cart',
-    name: 'Electric Milk Distribution Cart',
-    category: 'custom-industrial',
-    categoryName: 'Custom & Industrial Builds',
-    tagline: 'Insulated daily dairy and milk crate delivery vehicle.',
-    image: '/assets/electruck.jpg',
-    gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/agriculture.jpg'
-    ],
-    shortCopy: 'Purpose-built electric vehicle tailored for dairy cooperatives and milk distribution networks with organized can racks and insulated bays.',
-    overview: 'Optimized for early morning, silent, emission-free delivery across residential neighbourhoods and dairy collection centres without disturbing communities.',
-    specs: {
-      power: '1.5 kW High-Torque Motor',
-      topSpeed: '25 km/h',
-      range: '75 km per charge',
-      seatingCapacity: '1 Driver',
-      loadCapacity: 'Up to 600 kg Dairy Cans & Crates',
-      batteryType: 'Lithium-ion / Deep Cycle Lead-Acid',
-      chargingTime: '4 Hours',
-      dimensions: 'Crate-Optimized Bed Dimensions',
-      warranty: 'SAVY Commercial Warranty',
-      gradeability: '12 degrees',
-      braking: 'Heavy-Duty Drum',
-    },
-    features: [
-      'Custom rack shelving designed for standard dairy crates and 40L milk cans',
-      'Corrosion-proof wash-down floor with non-slip texture',
-      'Whisper-quiet electric drive perfect for 4:00 AM distribution rounds'
-    ],
-    applications: [
-      'Dairy Cooperatives & Milk Supply Routes',
-      'Agro-Farm Produce Collection',
-      'Community Daily Essentials Delivery'
-    ],
-    customization: [
-      'Insulated PUF container box for maintaining chilled milk temperatures'
-    ]
-  },
-  {
     slug: 'city-pod',
     name: 'SAVY City Pod (Upcoming)',
-    category: 'upcoming',
-    categoryName: 'Upcoming Products',
+    category: 'special-purpose-vehicle',
+    categoryName: 'Special Purpose Vehicle',
     tagline: 'Next-generation luxury urban e-auto debuted internationally in Amsterdam.',
     image: '/assets/coming-soon-vehicle.png',
     gallery: [
@@ -547,56 +887,46 @@ export const products = [
     ],
     applications: [
       'Eco-Tourism & European / Global Urban Transit',
-      'Smart City VIP Feeder Mobility',
-      'Premium Shared Ride Services'
+      'Smart City VIP Feeder Mobility'
     ],
     customization: [
       'Bespoke international livery, interior trims, and telematics configurations'
     ],
     comingSoon: true
-  },
-  {
-    slug: 'mini-bus',
-    name: 'SAVY Electric Mini Bus (Upcoming)',
-    category: 'upcoming',
-    categoryName: 'Upcoming Products',
-    tagline: 'High-capacity electric passenger shuttle for campuses and institutions.',
-    image: '/assets/coming-soon-vehicle.png',
-    gallery: [
-      '/assets/coming-soon-vehicle.png',
-      '/assets/applications/campus.jpg'
-    ],
-    shortCopy: 'Purpose-built high-capacity multi-passenger electric mini bus in active engineering development for institutional shuttles and large campus mobility.',
-    overview: 'Designed to bridge the gap between campus carts and full-sized buses, the upcoming SAVY Electric Mini Bus delivers group passenger capacity with zero emissions, low operating overheads, and wheelchair-accessible options.',
-    specs: {
-      power: 'High-Torque Commercial Electric Drivetrain',
-      topSpeed: '25–35 km/h (Campus Regulated)',
-      range: '100+ km per charge target',
-      seatingCapacity: '12 to 20 Passenger Seating Options',
-      loadCapacity: 'High-Volume Group Transport',
-      batteryType: 'High-Capacity Lithium Iron Phosphate (LFP)',
-      chargingTime: 'Fast-Charging Capable',
-      dimensions: 'Spacious High-Roof Low-Floor Layout',
-      warranty: 'Commercial Fleet Warranty',
-      gradeability: '15 degrees',
-      braking: 'Full Pneumatic / Hydraulic Dual Circuit Braking',
-    },
-    features: [
-      'Low-floor design for quick passenger ingress and egress',
-      'Air-conditioned / all-weather ventilation cabin options',
-      'Sturdy roll-cage chassis structure meeting institutional safety norms',
-      'Integrated public address and route display system'
-    ],
-    applications: [
-      'University Shuttles & Corporate Tech Parks',
-      'Airport Tarmac & Terminal Passenger Transfers',
-      'Large Gated Townships & Tourist Wildlife Sanctuaries'
-    ],
-    customization: [
-      'Custom seating arrangements, wheelchair ramps, and livery branding'
-    ],
-    comingSoon: true
   }
 ];
 
-export const getProductBySlug = (slug) => products.find((p) => p.slug === slug);
+// Helper to look up a category by slug or id
+export const getCategoryBySlug = (slug) => {
+  if (!slug) return null;
+  const clean = slug.replace(/^\/|\/$/g, '').toLowerCase();
+  return productCategories.find(
+    (c) => c.slug.toLowerCase() === clean || c.id.toLowerCase() === clean
+  );
+};
+
+// Helper to look up a product by slug or alias
+export const getProductBySlug = (slug) => {
+  if (!slug) return null;
+  // Handle nested slugs e.g. "e-campus-cart/classic-golf"
+  const parts = slug.replace(/^\/|\/$/g, '').split('/');
+  const targetSlug = parts[parts.length - 1].toLowerCase();
+  
+  return products.find(
+    (p) =>
+      p.slug.toLowerCase() === targetSlug ||
+      p.aliasSlugs?.some((a) => a.toLowerCase() === targetSlug)
+  );
+};
+
+// Helper to get products belonging to a category
+export const getProductsByCategory = (categorySlug) => {
+  const cat = getCategoryBySlug(categorySlug);
+  if (!cat) return [];
+  return products.filter(
+    (p) =>
+      p.category === cat.id ||
+      p.category === cat.slug ||
+      (cat.id === 'special-purpose-vehicle' && (p.category === 'special-purpose-vehicle' || p.category === 'upcoming' || p.category === 'custom-industrial'))
+  );
+};

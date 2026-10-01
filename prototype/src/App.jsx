@@ -585,13 +585,14 @@ export function App() {
         <video
           ref={videoRef}
           className="hero-video"
+          poster="/assets/Videos/Hero Video Cover Img.webp"
           muted
           autoPlay
           loop
           playsInline
           preload="metadata"
         >
-          <source src="/assets/hero-bg.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Hero section video.mp4" type="video/mp4" />
         </video>
         <div className="hero-shade" />
         <div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" />
@@ -939,7 +940,8 @@ export function App() {
             <video
               ref={manufacturingVideoRef}
               className="manufacturing-plant-video"
-              src="/assets/manufacturing-plant.mp4"
+              poster="/assets/Videos/manufacturing img.webp"
+              src="/assets/Videos/Dump truck manufacturing process .mp4"
               muted
               autoPlay
               loop

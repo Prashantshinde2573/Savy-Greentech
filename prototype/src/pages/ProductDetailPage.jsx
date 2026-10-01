@@ -18,7 +18,8 @@ import {
   PiMapPinLine,
   PiFirstAid,
   PiCaretLeft,
-  PiCaretRight
+  PiCaretRight,
+  PiSliders
 } from 'react-icons/pi';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -168,10 +169,10 @@ export function ProductDetailPage({ slug }) {
       <div className="product-breadcrumb-bar">
         <div className="container breadcrumb-inner">
           <a href="/products" className="breadcrumb-back-link">
-            <PiArrowLeft aria-hidden="true" /> Back to All Vehicles
+            <PiArrowLeft aria-hidden="true" /> Back to All Products
           </a>
           <div className="breadcrumb-trail">
-            <a href="/">Home</a> / <a href="/products">Products</a> / <a href="/products">{product.categoryName}</a> / <span>{product.name}</span>
+            <a href="/">Home</a> / <a href="/products">Products</a> / <a href={`/products/${product.category}`}>{product.categoryName}</a> / <span>{product.name}</span>
           </div>
         </div>
       </div>
@@ -282,7 +283,7 @@ export function ProductDetailPage({ slug }) {
                 <PiHeadset className="support-strip-icon" />
                 <div>
                   <strong>Need immediate fleet consultation?</strong>
-                  <p>Talk to our Ahmedabad engineering team at <a href="tel:+919638450070">+91 96384 50070</a> or <a href="https://wa.me/919638450070" target="_blank" rel="noreferrer">Chat on WhatsApp</a>.</p>
+                  <p>Talk to our Ahmedabad engineering team at <a href="tel:18002026972">1800 202 6972</a> (Toll Free) or <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer">Chat on WhatsApp (9284830085)</a>.</p>
                 </div>
               </div>
             </div>
@@ -413,6 +414,42 @@ export function ProductDetailPage({ slug }) {
           </div>
         </div>
       </section>
+
+      {/* Modular Customization Variants (e.g. Electruck) */}
+      {product.customizationVariants && product.customizationVariants.length > 0 && (
+        <section className="section-white electruck-variants-section" aria-labelledby="pdp-variants-heading">
+          <div className="container">
+            <div className="section-heading center">
+              <p className="eyebrow mint">Modular Customization</p>
+              <h2 id="pdp-variants-heading">{product.name} Customization Variants</h2>
+              <p className="section-subtitle">
+                Available in four purpose-built superstructure configurations to match your exact commercial and operational workflow.
+              </p>
+            </div>
+
+            <div className="electruck-variants-grid">
+              {product.customizationVariants.map((variant, idx) => (
+                <div key={idx} className="variant-card">
+                  <div className="variant-card-icon-wrap">
+                    <PiSliders aria-hidden="true" />
+                  </div>
+                  <span className="variant-tag">{variant.tag}</span>
+                  <h3 className="variant-title">{variant.name}</h3>
+                  <p className="variant-copy">{variant.copy}</p>
+                  <button
+                    type="button"
+                    className="button-link mint btn-sm variant-enquire-btn"
+                    onClick={() => openQuoteModal('quote')}
+                  >
+                    <span>Enquire About {variant.name}</span>
+                    <PiArrowRight aria-hidden="true" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Recommended Applications / Use Cases (Full Bleed Right Edge) */}
       <section className="section-cream product-apps-section" aria-labelledby="apps-heading">

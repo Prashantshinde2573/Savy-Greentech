@@ -1,5 +1,18 @@
 import { useState, useMemo, useRef } from 'react';
-import { PiArrowRight, PiCheckCircle, PiFunnel, PiMagnifyingGlass, PiSliders, PiSparkle, PiX } from 'react-icons/pi';
+import {
+  PiArrowRight,
+  PiCheckCircle,
+  PiFunnel,
+  PiMagnifyingGlass,
+  PiSliders,
+  PiSparkle,
+  PiX,
+  PiCar,
+  PiTruck,
+  PiUsers,
+  PiStorefront,
+  PiGear
+} from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
@@ -7,6 +20,14 @@ import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
 import { products, productCategories } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
+
+const CATEGORY_ICONS = {
+  'e-campus-cart': PiCar,
+  'electric-passenger-rickshaw': PiUsers,
+  'electric-loading-rickshaw': PiTruck,
+  'food-cart-rickshaw': PiStorefront,
+  'special-purpose-vehicle': PiGear
+};
 
 export function ProductsPage() {
   const pageRef = useRef(null);
@@ -28,8 +49,8 @@ export function ProductsPage() {
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesName = item.name.toLowerCase().includes(query);
-        const matchesCopy = item.shortCopy.toLowerCase().includes(query);
-        const matchesCategory = item.categoryName.toLowerCase().includes(query);
+        const matchesCopy = item.shortCopy?.toLowerCase().includes(query) || false;
+        const matchesCategory = item.categoryName?.toLowerCase().includes(query) || false;
         const matchesApps = item.applications?.some((app) => app.toLowerCase().includes(query));
         if (!matchesName && !matchesCopy && !matchesCategory && !matchesApps) {
           return false;
@@ -37,16 +58,16 @@ export function ProductsPage() {
       }
       // Seating filter
       if (seatingFilter !== 'all') {
-        const seats = item.specs.seatingCapacity.toLowerCase();
+        const seats = item.specs?.seatingCapacity?.toLowerCase() || '';
         if (seatingFilter === '1-2' && !(seats.includes('1') || seats.includes('2') || seats.includes('driver'))) return false;
         if (seatingFilter === '4-6' && !(seats.includes('4') || seats.includes('6'))) return false;
         if (seatingFilter === '8+' && !(seats.includes('8') || seats.includes('12') || seats.includes('10') || seats.includes('20'))) return false;
       }
       // Load filter
       if (loadFilter !== 'all') {
-        const load = item.specs.loadCapacity.toLowerCase();
-        if (loadFilter === 'heavy' && !(load.includes('800') || load.includes('900') || load.includes('600') || load.includes('650') || load.includes('heavy'))) return false;
-        if (loadFilter === 'standard' && (load.includes('900') || load.includes('heavy'))) return false;
+        const load = item.specs?.loadCapacity?.toLowerCase() || '';
+        if (loadFilter === 'heavy' && !(load.includes('800') || load.includes('900') || load.includes('600') || load.includes('650') || load.includes('ton') || load.includes('heavy'))) return false;
+        if (loadFilter === 'standard' && (load.includes('900') || load.includes('ton') || load.includes('heavy'))) return false;
       }
       return true;
     });
@@ -61,20 +82,68 @@ export function ProductsPage() {
     <main id="top" className="products-page" ref={pageRef}>
       <SEOHead
         title="SAVY Electric Vehicles | Commercial & Campus EV Catalog"
-        description="Browse SAVY Greentech purpose-built electric vehicles: Golf carts, loading rickshaws, garbage tippers, passenger tuk-tuks, vintage cars, and custom industrial builds."
+        description="Browse SAVY Greentech 5 core product categories: E-Campus Carts, Electric Passenger Rickshaws, Electric Loading Rickshaws, Food Cart Rickshaws, and Special Purpose Vehicles."
       />
       <SiteHeader currentPath="/products" transparentInitially={true} />
 
       <PageHero
         eyebrow="SAVY Electric Vehicles"
         title="Purpose-built electric mobility for real-world applications."
-        description="Engineered for institutional campuses, luxury resorts, municipal sanitation, industrial logistics, and last-mile urban transport."
+        description="Engineered across 5 core categories for institutional campuses, luxury hospitality, commercial logistics, street retail, and specialized operations."
         videoSrc="/assets/CTA-bg.mp4"
         primaryCtaText="Request a Fleet Quote"
         onPrimaryClick={() => handleInquire('Fleet Inquiry')}
-        secondaryCtaText="Book a Demo"
-        secondaryCtaHref="#catalog"
+        secondaryCtaText="Explore Categories"
+        secondaryCtaHref="#categories"
       />
+
+      {/* 5 Core Product Categories Showcase */}
+      <section className="section-white category-showcase-section" id="categories" aria-labelledby="cat-showcase-title">
+        <div className="container">
+          <div className="section-heading center">
+            <p className="eyebrow">Product Categories</p>
+            <h2 id="cat-showcase-title">Explore Our 5 Core Categories</h2>
+            <p className="section-subtitle">
+              Select a category to view specialized vehicle lineups, custom body configurations, and full technical specifications.
+            </p>
+          </div>
+
+          <div className="hub-categories-grid">
+            {productCategories.map((cat) => {
+              const Icon = CATEGORY_ICONS[cat.slug] || PiCar;
+              const catProds = products.filter((p) => p.category === cat.id || p.category === cat.slug);
+              return (
+                <article key={cat.slug} className="hub-cat-card">
+                  <div className="hub-cat-card-media">
+                    <img src={cat.heroImage} alt={cat.name} loading="lazy" />
+                    <div className="hub-cat-badge">
+                      <Icon aria-hidden="true" />
+                      <span>{catProds.length} Model{catProds.length === 1 ? '' : 's'}</span>
+                    </div>
+                  </div>
+                  <div className="hub-cat-card-body">
+                    <h3>{cat.name}</h3>
+                    <p className="hub-cat-tagline">{cat.tagline}</p>
+                    <div className="hub-cat-actions">
+                      <a href={`/products/${cat.slug}`} className="button-link primary btn-sm">
+                        <span>View Category</span>
+                        <PiArrowRight aria-hidden="true" />
+                      </a>
+                      <button
+                        type="button"
+                        className="button-link ghost-dark btn-sm"
+                        onClick={() => handleInquire(`${cat.name} Category Inquiry`)}
+                      >
+                        <span>Enquire</span>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Catalog & Filter Section */}
       <section className="section-cream catalog-section" id="catalog" aria-labelledby="catalog-title">
@@ -106,17 +175,18 @@ export function ProductsPage() {
 
             {/* Filter Dropdowns Grid */}
             <div className="filter-dropdowns">
-              {/* Vehicle Type Dropdown (Replaces old horizontal tabs) */}
+              {/* Vehicle Type Dropdown */}
               <div className="filter-select-wrap">
                 <select
                   id="filter-category"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  aria-label="Filter by Vehicle Type"
+                  aria-label="Filter by Vehicle Category"
                 >
+                  <option value="all">All 5 Categories</option>
                   {productCategories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
-                      {cat.id === 'all' ? 'All Vehicle Types' : cat.name}
+                      {cat.name}
                     </option>
                   ))}
                 </select>
@@ -146,8 +216,8 @@ export function ProductsPage() {
                   aria-label="Filter by Payload Capacity"
                 >
                   <option value="all">All Payloads</option>
-                  <option value="standard">Standard Duty</option>
-                  <option value="heavy">Heavy Duty (500kg+)</option>
+                  <option value="standard">Standard Duty (&lt; 500kg)</option>
+                  <option value="heavy">Heavy Duty (500kg – 3 Ton)</option>
                 </select>
               </div>
             </div>
@@ -208,21 +278,21 @@ export function ProductsPage() {
                       <div className="spec-badge">
                         <span className="spec-label">Motor</span>
                         <span className="spec-val">
-                          {vehicle.specs.power ? `${vehicle.specs.power.split(' ')[0]} ${vehicle.specs.power.split(' ')[1] || ''}` : 'Electric'}
+                          {vehicle.specs?.power ? `${vehicle.specs.power.split(' ')[0]} ${vehicle.specs.power.split(' ')[1] || ''}` : 'Electric'}
                         </span>
                       </div>
                       <div className="spec-badge">
                         <span className="spec-label">Speed</span>
-                        <span className="spec-val">{vehicle.specs.topSpeed || '25 km/h'}</span>
+                        <span className="spec-val">{vehicle.specs?.topSpeed || '25 km/h'}</span>
                       </div>
                       <div className="spec-badge">
                         <span className="spec-label">Range</span>
-                        <span className="spec-val">{vehicle.specs.range ? `${vehicle.specs.range.split(' ')[0]} km` : '75 km'}</span>
+                        <span className="spec-val">{vehicle.specs?.range ? `${vehicle.specs.range.split(' ')[0]} km` : '75 km'}</span>
                       </div>
                       <div className="spec-badge">
                         <span className="spec-label">Payload</span>
                         <span className="spec-val">
-                          {vehicle.specs.loadCapacity ? `${vehicle.specs.loadCapacity.split(' ')[0]} ${vehicle.specs.loadCapacity.split(' ')[1] || ''}` : vehicle.specs.seatingCapacity?.split(' ')[0] + ' Seats' || 'Standard'}
+                          {vehicle.specs?.loadCapacity ? `${vehicle.specs.loadCapacity.split(' ')[0]} ${vehicle.specs.loadCapacity.split(' ')[1] || ''}` : vehicle.specs?.seatingCapacity?.split(' ')[0] + ' Seats' || 'Standard'}
                         </span>
                       </div>
                     </div>
@@ -234,10 +304,10 @@ export function ProductsPage() {
                       </a>
                       <button
                         type="button"
-                        className="button-link ghost btn-sm"
+                        className="button-link ghost-dark btn-sm"
                         onClick={() => handleInquire(vehicle.name)}
                       >
-                        <span>Quote</span>
+                        <span>Enquire</span>
                       </button>
                     </div>
                   </div>
@@ -256,47 +326,71 @@ export function ProductsPage() {
               <p className="eyebrow">Bespoke Manufacturing</p>
               <h2 id="custom-build-heading">Need a Custom Vehicle Configuration?</h2>
               <p>
-                From custom 900kg cargo flatbeds for FMCG giants like Ramdev Foods to specialized mobile ATM kiosks, sanitization tippers, and luxury heritage retrofits, SAVY engineers vehicles built entirely around your unique operational requirements.
+                From custom 900kg cargo flatbeds for FMCG giants like Ramdev Foods to specialized mobile ATM kiosks, sanitization tippers, food carts, and luxury heritage retrofits, SAVY engineers vehicles built entirely around your unique operational requirements.
               </p>
-              <ul className="custom-bullets">
-                <li><PiCheckCircle /> Custom dimensions, cargo box heights, and load capacities</li>
-                <li><PiCheckCircle /> Lithium-ion or Lead-acid battery pack sizing for target ranges</li>
-                <li><PiCheckCircle /> Auxiliary power integration (refrigeration, inverters, hydraulic lifts)</li>
-              </ul>
+              <div className="custom-box-bullets">
+                <div className="custom-bullet-item">
+                  <PiCheckCircle aria-hidden="true" />
+                  <span>Custom chassis length, payload capacity, and leaf spring ratings</span>
+                </div>
+                <div className="custom-bullet-item">
+                  <PiCheckCircle aria-hidden="true" />
+                  <span>Specialized superstructures: Tipper hoppers, insulated boxes &amp; SS water tanks</span>
+                </div>
+                <div className="custom-bullet-item">
+                  <PiCheckCircle aria-hidden="true" />
+                  <span>High-capacity Lithium Iron Phosphate (LFP) battery sizing for full-shift duty</span>
+                </div>
+              </div>
+              <div className="custom-box-actions">
+                <button
+                  type="button"
+                  className="button-link primary"
+                  onClick={() => handleInquire('Special Custom Build Project')}
+                >
+                  <span>Discuss Custom Requirements</span>
+                  <PiArrowRight aria-hidden="true" />
+                </button>
+                <a href="/technology" className="button-link ghost">
+                  <span>Explore In-House R&amp;D</span>
+                  <PiArrowRight aria-hidden="true" />
+                </a>
+              </div>
             </div>
-            <div className="custom-box-cta">
-              <h3>Consult an EV Engineer</h3>
-              <p>Discuss your operational payloads, gradients, and daily range requirements directly with our technical team.</p>
-              <button
-                type="button"
-                className="button-link primary full-width"
-                onClick={() => handleInquire('Custom Engineering Requirement')}
-              >
-                <span>Discuss a Custom EV</span>
-                <PiArrowRight aria-hidden="true" />
-              </button>
-              <a
-                href="https://wa.me/919638450070"
-                className="button-link ghost-light full-width"
-                target="_blank"
-                rel="noreferrer"
-                style={{ marginTop: '12px' }}
-              >
-                <span>Chat on WhatsApp</span>
-                <PiArrowRight aria-hidden="true" />
-              </a>
+
+            <div className="custom-box-card">
+              <div className="custom-box-header">
+                <PiSparkle aria-hidden="true" />
+                <h4>SAVY Custom Capabilities</h4>
+              </div>
+              <ul className="custom-spec-checklist">
+                <li>
+                  <strong>Chassis &amp; Body:</strong> CAD modeling, FEA simulation &amp; precision robotic welding.
+                </li>
+                <li>
+                  <strong>Powertrain:</strong> Custom motor winding &amp; proprietary programmable controllers.
+                </li>
+                <li>
+                  <strong>Battery Systems:</strong> Indigenous thermal-protected smart BMS packaging.
+                </li>
+                <li>
+                  <strong>Compliance:</strong> ARAI / ICAT certification and institutional safety standards.
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
+      <SiteFooter />
+
+      {/* Shared Quote Modal */}
       <QuoteModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        defaultVehicle={selectedVehicleForModal}
+        initialVehicle={selectedVehicleForModal}
         mode="quote"
       />
-      <SiteFooter />
     </main>
   );
 }

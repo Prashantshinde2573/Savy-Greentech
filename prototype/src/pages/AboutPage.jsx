@@ -447,8 +447,17 @@ export function AboutPage() {
       <div className="about-story-sequence" ref={storySequenceRef}>
         {/* SECTION 1: ABOUT US HERO (100vh) */}
         <section className="hero about-hero" aria-labelledby="about-title">
-          <video ref={videoRef} className="hero-video" muted autoPlay loop playsInline preload="metadata">
-            <source src="/assets/about-hero.mp4" type="video/mp4" />
+          <video
+            ref={videoRef}
+            className="hero-video"
+            poster="/assets/Videos/About us video cover img.webp"
+            muted
+            autoPlay
+            loop
+            playsInline
+            preload="metadata"
+          >
+            <source src="/assets/Videos/About us Hero.mp4" type="video/mp4" />
           </video>
           <div className="hero-shade" />
           <div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" />
@@ -813,7 +822,8 @@ export function AboutPage() {
             <video
               ref={manufacturingVideoRef}
               className="manufacturing-plant-video"
-              src="/assets/manufacturing-plant.mp4"
+              poster="/assets/Videos/manufacturing img.webp"
+              src="/assets/Videos/Dump truck manufacturing process .mp4"
               muted
               autoPlay
               loop
@@ -951,7 +961,7 @@ export function AboutPage() {
               <span>Discuss Your Requirement</span>
               <PiArrowRight aria-hidden="true" />
             </button>
-            <a className="button-link ghost-light" href="https://wa.me/919638450070" target="_blank" rel="noreferrer">
+            <a className="button-link ghost-light" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
               <span>Talk on WhatsApp</span>
               <PiArrowRight aria-hidden="true" />
             </a>

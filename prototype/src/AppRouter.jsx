@@ -3,7 +3,9 @@ import { App } from './App.jsx';
 import { HomeOld } from './HomeOld.jsx';
 import { AboutPage } from './pages/AboutPage.jsx';
 import { ProductsPage } from './pages/ProductsPage.jsx';
+import { ProductCategoryPage } from './pages/ProductCategoryPage.jsx';
 import { ProductDetailPage } from './pages/ProductDetailPage.jsx';
+import { getCategoryBySlug } from './data/products.js';
 import { ApplicationsPage } from './pages/ApplicationsPage.jsx';
 import { TechnologyPage } from './pages/TechnologyPage.jsx';
 import { SustainabilityPage } from './pages/SustainabilityPage.jsx';
@@ -16,6 +18,7 @@ import { BlogPage } from './pages/BlogPage.jsx';
 import { BlogDetailPage } from './pages/BlogDetailPage.jsx';
 import { ContactPage } from './pages/ContactPage.jsx';
 import { PolicyPage } from './pages/PolicyPage.jsx';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp.jsx';
 import FlowButtonDemo from './components/demo.tsx';
 
 export function AppRouter() {
@@ -64,6 +67,7 @@ export function AppRouter() {
         }
 
         e.preventDefault();
+        document.body.classList.remove('menu-backdrop-open');
         window.history.pushState({}, '', href);
         setCurrentPath(href.split('#')[0].replace(/\/$/, '') || '/');
         window.scrollTo(0, 0);
@@ -80,36 +84,49 @@ export function AppRouter() {
   }, [currentPath]);
 
   // Routing Switch
-  if (currentPath === '/home-old') return <HomeOld />;
-  if (currentPath === '/flow-button') return <FlowButtonDemo />;
-  if (currentPath === '/about') return <AboutPage />;
-  if (currentPath === '/products') return <ProductsPage />;
-  if (currentPath.startsWith('/products/')) {
-    const slug = currentPath.replace('/products/', '');
-    return <ProductDetailPage slug={slug} />;
-  }
-  if (currentPath === '/applications') return <ApplicationsPage />;
-  if (currentPath === '/technology') return <TechnologyPage />;
-  if (currentPath === '/sustainability') return <SustainabilityPage />;
-  if (currentPath === '/case-studies') return <CaseStudiesPage />;
-  if (currentPath === '/media') return <MediaPage />;
-  if (currentPath === '/become-a-dealer') return <BecomeDealerPage />;
-  if (currentPath === '/careers') return <CareersPage />;
-  if (currentPath.startsWith('/careers/')) {
-    const slug = currentPath.replace('/careers/', '');
-    return <CareerDetailPage slug={slug} />;
-  }
-  if (currentPath === '/blog') return <BlogPage />;
-  if (currentPath.startsWith('/blog/')) {
-    const slug = currentPath.replace('/blog/', '');
-    return <BlogDetailPage slug={slug} />;
-  }
-  if (currentPath === '/contact') return <ContactPage />;
-  if (currentPath === '/warranty') return <PolicyPage policyType="warranty" />;
-  if (currentPath === '/privacy-policy') return <PolicyPage policyType="privacy-policy" />;
-  if (currentPath === '/terms') return <PolicyPage policyType="terms" />;
-  if (currentPath === '/cookie-policy') return <PolicyPage policyType="cookie-policy" />;
+  const renderPage = () => {
+    if (currentPath === '/home-old') return <HomeOld key="home-old" />;
+    if (currentPath === '/flow-button') return <FlowButtonDemo key="flow-button" />;
+    if (currentPath === '/about') return <AboutPage key="about" />;
+    if (currentPath === '/products') return <ProductsPage key="products" />;
+    if (currentPath.startsWith('/products/')) {
+      const rawSlug = currentPath.replace('/products/', '').replace(/\/$/, '');
+      const categoryMatch = getCategoryBySlug(rawSlug);
+      if (categoryMatch) {
+        return <ProductCategoryPage key={`cat-${categoryMatch.slug}`} categorySlug={categoryMatch.slug} />;
+      }
+      return <ProductDetailPage key={`pdp-${rawSlug}`} slug={rawSlug} />;
+    }
+    if (currentPath === '/applications') return <ApplicationsPage key="applications" />;
+    if (currentPath === '/technology') return <TechnologyPage key="technology" />;
+    if (currentPath === '/sustainability') return <SustainabilityPage key="sustainability" />;
+    if (currentPath === '/case-studies') return <CaseStudiesPage key="case-studies" />;
+    if (currentPath === '/media') return <MediaPage key="media" />;
+    if (currentPath === '/become-a-dealer') return <BecomeDealerPage key="become-a-dealer" />;
+    if (currentPath === '/careers') return <CareersPage key="careers" />;
+    if (currentPath.startsWith('/careers/')) {
+      const slug = currentPath.replace('/careers/', '');
+      return <CareerDetailPage key={`career-${slug}`} slug={slug} />;
+    }
+    if (currentPath === '/blog') return <BlogPage key="blog" />;
+    if (currentPath.startsWith('/blog/')) {
+      const slug = currentPath.replace('/blog/', '');
+      return <BlogDetailPage key={`blog-${slug}`} slug={slug} />;
+    }
+    if (currentPath === '/contact') return <ContactPage key="contact" />;
+    if (currentPath === '/warranty') return <PolicyPage key="policy-warranty" policyType="warranty" />;
+    if (currentPath === '/privacy-policy') return <PolicyPage key="policy-privacy" policyType="privacy-policy" />;
+    if (currentPath === '/terms') return <PolicyPage key="policy-terms" policyType="terms" />;
+    if (currentPath === '/cookie-policy') return <PolicyPage key="policy-cookie" policyType="cookie-policy" />;
 
-  // Default: Homepage (Locked App.jsx)
-  return <App />;
+    // Default: Homepage (Locked App.jsx)
+    return <App key="home" />;
+  };
+
+  return (
+    <>
+      {renderPage()}
+      <FloatingWhatsApp />
+    </>
+  );
 }
