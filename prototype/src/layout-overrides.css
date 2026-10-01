@@ -573,18 +573,41 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
-.hero-video-reveal {
+.hero {
+  background-color: transparent !important;
+}
+
+.hero-poster-fallback {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: var(--canopy);
-  opacity: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
   pointer-events: none;
-  transition: opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s;
 }
-.hero-video-reveal.is-ready { opacity: 0; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-video-reveal { display: none; }
+
+.hero .hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+.hero .hero-shade {
+  z-index: 2;
+}
+
+.hero .hero-content {
+  z-index: 3;
+}
+
+.hero-video-reveal {
+  display: none !important;
 }
 
 /* ==========================================================================
@@ -10180,19 +10203,21 @@ body.menu-backdrop-open {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 48px rgba(16, 67, 54, 0.12);
-  background: #000;
+  background: #f8fafc;
 }
 .cs-media-showcase img {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 13;
   object-fit: cover;
+  object-position: center center;
   display: block;
 }
 .cs-client-badge {
   position: absolute;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
+  left: auto;
   background: rgba(7, 28, 27, 0.88);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -10202,6 +10227,7 @@ body.menu-backdrop-open {
   align-items: center;
   gap: 14px;
   color: #ffffff;
+  z-index: 2;
 }
 .cs-client-badge img {
   width: 44px;

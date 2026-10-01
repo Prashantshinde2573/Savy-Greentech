@@ -18,8 +18,8 @@ export const caseStudies = [
       'Smooth, vibration-free handling protecting delicate packaging'
     ],
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/logistics.jpg'
+      '/assets/for-ramdev-study.webp',
+      '/assets/applications/electruck-logistics.webp'
     ],
     relatedProduct: 'custom-electruck-900kg',
     relatedIndustry: 'industrial-logistics'

@@ -112,51 +112,51 @@ const realWorldApplications = [
   {
     title: 'Municipal & Government',
     tag: 'Civic Sanitation',
-    image: '/assets/applications/government.jpg',
+    image: '/assets/applications/municipal-government.webp',
     copy: 'Swachh Bharat & Smart City sanitation solutions with whisper-quiet zero-emission electric tippers.',
     slug: 'municipal-government'
   },
   {
     title: 'Hospitality & Tourism',
     tag: 'Quiet Luxury',
-    image: '/assets/applications/tourism.jpg',
+    image: '/assets/applications/ap-tourism.webp',
     copy: 'Elevating guest experiences in luxury resorts, eco-destinations, and golf courses with silent electric transit.',
     slug: 'hospitality-tourism'
   },
   {
     title: 'Healthcare & Hospitals',
     tag: 'Sterile Transit',
-    image: '/assets/applications/campus.jpg',
+    image: '/assets/applications/e-ambulance-cart.webp',
     copy: 'Zero-emission patient transfers, medical laundry, and campus logistics in sterile hospital compounds.',
     slug: 'healthcare'
   },
   {
     title: 'Industrial & Logistics',
     tag: 'Heavy Duty',
-    image: '/assets/applications/logistics.jpg',
+    image: '/assets/applications/electruck-logistics.webp',
     copy: 'High-payload factory floor transit and warehouse material handling with heavy-duty electric cargo platforms.',
     slug: 'industrial-logistics'
   },
   {
     title: 'Defence & Campuses',
     tag: 'Institutional',
-    image: '/assets/applications/airport.jpg',
+    image: '/assets/applications/nfsu-gandhinagar.webp',
     copy: 'Secure, dependable electric utility vehicles for airbases, defence units, and expansive university campuses.',
-    slug: 'airports-defence'
+    slug: 'defence-campuses'
   },
   {
     title: 'Food & Mobile Retail',
     tag: 'Special Purpose',
-    image: '/assets/applications/community.jpg',
+    image: '/assets/applications/food-cart.webp',
     copy: 'Customized mobile retail kiosks, food service carts, and specialized community utility vehicles.',
-    slug: 'townships-communities'
+    slug: 'food-retail'
   },
   {
     title: 'FMCG & Warehousing',
     tag: 'Multi-Shift Cargo',
-    image: '/assets/electruck.jpg',
+    image: '/assets/applications/fmcg-delivery.webp',
     copy: 'Purpose-built heavy crate distribution and multi-shift factory material movement with zero indoor fumes.',
-    slug: 'industrial-logistics'
+    slug: 'fmcg-delivery'
   }
 ];
 
@@ -582,6 +582,12 @@ export function App() {
           01. HERO SECTION
           ========================================================================= */}
       <section className="hero" aria-labelledby="hero-title">
+        <img
+          src="/assets/Videos/Hero Video Cover Img.webp"
+          alt="SAVY Greentech Electric Vehicles"
+          aria-hidden="true"
+          className="hero-poster-fallback"
+        />
         <video
           ref={videoRef}
           className="hero-video"
@@ -590,12 +596,11 @@ export function App() {
           autoPlay
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
         >
           <source src="/assets/Videos/Hero section video.mp4" type="video/mp4" />
         </video>
         <div className="hero-shade" />
-        <div className={`hero-video-reveal ${heroVideoReady ? 'is-ready' : ''}`} aria-hidden="true" />
         
         <div className="hero-content container">
           <p className="eyebrow mint">Electric mobility · Since 2014</p>
@@ -872,7 +877,7 @@ export function App() {
           <div className="case-study-split-layout">
             <div className="cs-media-showcase">
               <img
-                src="/assets/electruck.jpg"
+                src="/assets/for-ramdev-study.webp"
                 alt="Custom 900kg Heavy-Duty Electruck deployed at Ramdev Foods"
                 loading="lazy"
               />
