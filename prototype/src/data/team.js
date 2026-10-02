@@ -10,7 +10,7 @@ export const leadershipTeam = [
     name: 'Dhawal Soni',
     role: 'Chief Operating Officer',
     copy: 'Overseeing strategic operations, production planning, supply chain excellence, and business growth for purpose-built electric vehicle platforms.',
-    image: '/assets/team/Dhawal Soni (chief operation officer)Team.webp',
+    image: '/assets/team/dhawal soni1.webp',
     linkedin: 'https://www.linkedin.com/in/dhawalsoni01/'
   },
   {
@@ -26,16 +26,17 @@ export const leadershipTeam = [
     image: '/assets/team/Jitendra Adhyaru (CFO) team.webp'
   },
   {
-    name: 'Shivansh Tamrakar',
-    role: 'Chief Sustainability Officer',
-    copy: 'Spearheading ESG initiatives, life-cycle carbon reduction, and circular battery sustainability frameworks across all product lines.',
-    image: '/assets/team/Shivansh Tamrakar (chief sustainability officer)team.webp'
-  },
-  {
     name: 'Ajay Sharma',
     role: 'Head of Administration',
     copy: 'Managing plant administration, regulatory statutory compliance, infrastructure logistics, and corporate operational workflows.',
-    image: '/assets/team/AJAY SHARMA(Admin) Team.webp'
+    image: '/assets/team/ajay sharma1.webp'
+  },
+  {
+    name: 'Shivansh Tamrakar',
+    role: 'Chief Sustainability Officer',
+    copy: 'Spearheading ESG initiatives, life-cycle carbon reduction, and circular battery sustainability frameworks across all product lines.',
+    image: '/assets/team/Shivansh Tamrakar (chief sustainability officer)team.webp',
+    linkedin: 'https://www.linkedin.com/in/shivanshtamrakar/'
   }
 ];
 
