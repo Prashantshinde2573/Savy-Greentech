@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = 'https://savygreentech.fistbumpdigital.com/wp-json/wp/v2';
+const DEFAULT_API_BASE = 'https://savygreen.upwardsonwards.io/wp-json/wp/v2';
 
 let cachedCategories = null;
 let cachedCategoriesPromise = null;
