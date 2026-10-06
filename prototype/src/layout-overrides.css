@@ -10950,12 +10950,100 @@ select::-ms-expand {
   .why-savy-grid {
     grid-template-columns: 1fr;
   }
-  .cs-metrics-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
   .calc-vehicle-tabs {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Featured Case Study Mobile Center Alignment */
+@media (max-width: 768px) {
+  .case-study-split-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .cs-content-block {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .cs-content-block .eyebrow {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cs-content-block h2 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+  }
+  .cs-content-block p.cs-lead {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 580px;
+  }
+  .cs-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin: 0 auto 28px;
+    padding: 18px 0;
+    border-top: 1px solid var(--sage);
+    border-bottom: 1px solid var(--sage);
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .cs-metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .cs-metric-item strong {
+    text-align: center;
+    display: block;
+    margin: 0 auto 4px;
+    font-size: clamp(20px, 5.5vw, 26px);
+    line-height: 1.1;
+  }
+  .cs-metric-item span {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    font-size: clamp(11px, 3.2vw, 12.5px);
+    line-height: 1.35;
+    max-width: 100%;
+  }
+  .cs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .cs-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cs-actions .button-link {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    text-align: center;
   }
 }
 
