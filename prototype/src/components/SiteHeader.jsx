@@ -17,26 +17,16 @@ import {
 
 const MOBILE_PRODUCT_CATEGORIES = [
   {
-    id: 'e-campus-cart',
-    name: 'E-Campus Cart',
+    id: 'electric-campus-cart',
+    name: 'Electric Campus Cart',
     icon: PiCar,
-    categoryUrl: '/products/e-campus-cart',
-    viewAllText: 'View E-Campus Cart Category',
+    categoryUrl: '/products/electric-campus-cart',
+    viewAllText: 'View Electric Campus Cart Category',
     products: [
-      { name: 'Classic Golf', url: '/products/classic-golf' },
+      { name: 'Classic Golf Cart', url: '/products/classic-golf-cart' },
       { name: 'Club Cart', url: '/products/club-cart' },
-      { name: 'Elite Vintage Cart', url: '/products/vintage-elite' }
-    ]
-  },
-  {
-    id: 'electric-passenger-rickshaw',
-    name: 'Electric Passenger Rickshaw',
-    icon: PiUsers,
-    categoryUrl: '/products/electric-passenger-rickshaw',
-    viewAllText: 'View Passenger Rickshaw Category',
-    products: [
-      { name: 'Three-wheel Passenger Rickshaw', url: '/products/three-wheel-passenger-rickshaw' },
-      { name: 'Electric School Rickshaw', url: '/products/school-rickshaw' }
+      { name: 'Elite Vintage Cart', url: '/products/elite-vintage-cart' },
+      { name: 'Utility Cart', url: '/products/utility-cart' }
     ]
   },
   {
@@ -44,26 +34,44 @@ const MOBILE_PRODUCT_CATEGORIES = [
     name: 'Electric Loading Rickshaw',
     icon: PiTruck,
     categoryUrl: '/products/electric-loading-rickshaw',
-    viewAllText: 'View Loading Rickshaw Category',
+    viewAllText: 'View Electric Loading Rickshaw Category',
     products: [
-      { name: 'Electruck — max 500 kg', url: '/products/electruck' },
-      { name: 'Electruck DLX — 1–3 Ton', url: '/products/electruck-dlx' },
-      { name: 'Tobu Truck — small/light cargo', url: '/products/tobu-truck' },
-      { name: 'Electric Water Tanker — 500 L', url: '/products/electric-water-tanker' },
-      { name: 'Milk Cart — SS tanker, 500 L', url: '/products/milk-cart' },
-      { name: 'Dump Truck — Garbage Collection', url: '/products/dump-truck' }
+      { name: 'Electruck', url: '/products/electruck' },
+      { name: 'Electruck DLX', url: '/products/electruck-dlx' },
+      { name: 'Tobu Truck', url: '/products/tobu-truck' },
+      { name: 'EcoTanker', url: '/products/ecotanker' }
     ]
   },
   {
-    id: 'food-cart-rickshaw',
-    name: 'Food Cart Rickshaw',
+    id: 'electric-passenger-rickshaw',
+    name: 'Electric Passenger Rickshaw',
+    icon: PiUsers,
+    categoryUrl: '/products/electric-passenger-rickshaw',
+    viewAllText: 'View Electric Passenger Rickshaw Category',
+    products: [
+      { name: 'Tuk Tuk e', url: '/products/tuk-tuk-e' },
+      { name: 'Tuk Tuk DLX', url: '/products/tuk-tuk-dlx' }
+    ]
+  },
+  {
+    id: 'waste-collection-rickshaw',
+    name: 'Waste Collection Rickshaw',
+    icon: PiTrash,
+    categoryUrl: '/products/waste-collection-rickshaw',
+    viewAllText: 'View Waste Collection Category',
+    products: [
+      { name: 'Dumptruck', url: '/products/dumptruck' },
+      { name: 'Tipper', url: '/products/tipper' }
+    ]
+  },
+  {
+    id: 'food-cart',
+    name: 'Food Cart',
     icon: PiStorefront,
-    categoryUrl: '/products/food-cart-rickshaw',
+    categoryUrl: '/products/food-cart',
     viewAllText: 'View Food Cart Category',
     products: [
-      { name: 'Dosa Cart', url: '/products/dosa-cart' },
-      { name: 'Soda Cart', url: '/products/soda-cart' },
-      { name: 'Other Food Cart variants', url: '/products/food-cart-rickshaw' }
+      { name: 'E-Food Cart', url: '/products/e-food-cart' }
     ]
   },
   {
@@ -73,10 +81,7 @@ const MOBILE_PRODUCT_CATEGORIES = [
     categoryUrl: '/products/special-purpose-vehicle',
     viewAllText: 'View Special Purpose Category',
     products: [
-      { name: 'Custom-built Vehicles', url: '/products/custom-built-vehicles' },
-      { name: 'Mobile ATM Vehicle', url: '/products/atm-vehicle' },
-      { name: 'Ramdev Foods 900kg Build', url: '/products/custom-electruck-900kg' },
-      { name: 'SAVY City Pod (Upcoming)', url: '/products/city-pod' }
+      { name: 'Custom SPV', url: '/products/custom-spv' }
     ]
   }
 ];
@@ -307,22 +312,12 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                     </button>
                     <button
                       type="button"
-                      className={`tabbed-nav-btn ${activeProductTab === 'e-campus-cart' ? 'active' : ''}`}
-                      onMouseEnter={() => setActiveProductTab('e-campus-cart')}
-                      onClick={() => setActiveProductTab('e-campus-cart')}
+                      className={`tabbed-nav-btn ${activeProductTab === 'electric-campus-cart' ? 'active' : ''}`}
+                      onMouseEnter={() => setActiveProductTab('electric-campus-cart')}
+                      onClick={() => setActiveProductTab('electric-campus-cart')}
                     >
                       <PiCar className="tab-icon" />
-                      <span>E-Campus Cart</span>
-                      <PiCaretRight className="tab-arrow" />
-                    </button>
-                    <button
-                      type="button"
-                      className={`tabbed-nav-btn ${activeProductTab === 'electric-passenger-rickshaw' ? 'active' : ''}`}
-                      onMouseEnter={() => setActiveProductTab('electric-passenger-rickshaw')}
-                      onClick={() => setActiveProductTab('electric-passenger-rickshaw')}
-                    >
-                      <PiUsers className="tab-icon" />
-                      <span>Passenger Rickshaw</span>
+                      <span>Electric Campus Cart</span>
                       <PiCaretRight className="tab-arrow" />
                     </button>
                     <button
@@ -332,17 +327,37 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       onClick={() => setActiveProductTab('electric-loading-rickshaw')}
                     >
                       <PiTruck className="tab-icon" />
-                      <span>Loading Rickshaw</span>
+                      <span>Electric Loading Rickshaw</span>
                       <PiCaretRight className="tab-arrow" />
                     </button>
                     <button
                       type="button"
-                      className={`tabbed-nav-btn ${activeProductTab === 'food-cart-rickshaw' ? 'active' : ''}`}
-                      onMouseEnter={() => setActiveProductTab('food-cart-rickshaw')}
-                      onClick={() => setActiveProductTab('food-cart-rickshaw')}
+                      className={`tabbed-nav-btn ${activeProductTab === 'electric-passenger-rickshaw' ? 'active' : ''}`}
+                      onMouseEnter={() => setActiveProductTab('electric-passenger-rickshaw')}
+                      onClick={() => setActiveProductTab('electric-passenger-rickshaw')}
+                    >
+                      <PiUsers className="tab-icon" />
+                      <span>Electric Passenger Rickshaw</span>
+                      <PiCaretRight className="tab-arrow" />
+                    </button>
+                    <button
+                      type="button"
+                      className={`tabbed-nav-btn ${activeProductTab === 'waste-collection-rickshaw' ? 'active' : ''}`}
+                      onMouseEnter={() => setActiveProductTab('waste-collection-rickshaw')}
+                      onClick={() => setActiveProductTab('waste-collection-rickshaw')}
+                    >
+                      <PiTrash className="tab-icon" />
+                      <span>Waste Collection Rickshaw</span>
+                      <PiCaretRight className="tab-arrow" />
+                    </button>
+                    <button
+                      type="button"
+                      className={`tabbed-nav-btn ${activeProductTab === 'food-cart' ? 'active' : ''}`}
+                      onMouseEnter={() => setActiveProductTab('food-cart')}
+                      onClick={() => setActiveProductTab('food-cart')}
                     >
                       <PiStorefront className="tab-icon" />
-                      <span>Food Cart Rickshaw</span>
+                      <span>Food Cart</span>
                       <PiCaretRight className="tab-arrow" />
                     </button>
                     <button
@@ -352,7 +367,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       onClick={() => setActiveProductTab('special-purpose-vehicle')}
                     >
                       <PiGear className="tab-icon" />
-                      <span>Special Purpose</span>
+                      <span>Special Purpose Vehicle</span>
                       <PiCaretRight className="tab-arrow" />
                     </button>
                   </div>
@@ -362,7 +377,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                     <p className="brand-card-tag">BUILT FOR A</p>
                     <h4 className="brand-card-heading">Greener Tomorrow</h4>
                     <p className="brand-card-text">
-                      Purpose-built electric mobility across 5 dedicated commercial categories.
+                      Purpose-built electric mobility across 6 dedicated commercial categories.
                     </p>
                   </div>
                 </aside>
@@ -375,7 +390,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">SAVY ELECTRIC VEHICLES</p>
-                          <h3 className="pane-title">5 Core Product Categories</h3>
+                          <h3 className="pane-title">6 Core Product Categories</h3>
                         </div>
                         <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View All Products</span>
@@ -385,28 +400,15 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                       <div className="all-vehicles-grid">
                         <a
-                          href="/products/e-campus-cart"
+                          href="/products/electric-campus-cart"
                           className="product-tab-card overview-card"
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/classic-golf.jpeg" alt="E-Campus Cart" />
+                            <img src="/assets/products/classic-golf/Classic Golf5.webp" alt="Electric Campus Cart" />
                           </div>
-                          <strong className="product-tab-card-title">E-Campus Cart</strong>
-                          <span className="product-tab-card-sub">Campus transit, golf &amp; luxury resort carts</span>
-                          <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
-                        </a>
-
-                        <a
-                          href="/products/electric-passenger-rickshaw"
-                          className="product-tab-card overview-card"
-                          onClick={closeAllMenus}
-                        >
-                          <div className="product-tab-card-img">
-                            <img src="/assets/tuk-tuk.jpg" alt="Electric Passenger Rickshaw" />
-                          </div>
-                          <strong className="product-tab-card-title">Electric Passenger Rickshaw</strong>
-                          <span className="product-tab-card-sub">Approved 3-wheel passenger &amp; student transit</span>
+                          <strong className="product-tab-card-title">Electric Campus Cart</strong>
+                          <span className="product-tab-card-sub">Campus transit, golf, luxury resort &amp; utility carts</span>
                           <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
                         </a>
 
@@ -419,20 +421,46 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                             <img src="/assets/electruck.jpg" alt="Electric Loading Rickshaw" />
                           </div>
                           <strong className="product-tab-card-title">Electric Loading Rickshaw</strong>
-                          <span className="product-tab-card-sub">Heavy freight, tankers, milk carts &amp; tippers</span>
+                          <span className="product-tab-card-sub">Heavy freight, container logistics, tankers &amp; cargo</span>
                           <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
                         </a>
 
                         <a
-                          href="/products/food-cart-rickshaw"
+                          href="/products/electric-passenger-rickshaw"
                           className="product-tab-card overview-card"
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Food Cart Rickshaw" />
+                            <img src="/assets/tuk-tuk.jpg" alt="Electric Passenger Rickshaw" />
                           </div>
-                          <strong className="product-tab-card-title">Food Cart Rickshaw</strong>
-                          <span className="product-tab-card-sub">Dosa, soda &amp; mobile retail food dispensing</span>
+                          <strong className="product-tab-card-title">Electric Passenger Rickshaw</strong>
+                          <span className="product-tab-card-sub">Approved 3-wheel urban passenger &amp; group transit</span>
+                          <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
+                        </a>
+
+                        <a
+                          href="/products/waste-collection-rickshaw"
+                          className="product-tab-card overview-card"
+                          onClick={closeAllMenus}
+                        >
+                          <div className="product-tab-card-img">
+                            <img src="/assets/dump-truck.jpg" alt="Waste Collection Rickshaw" />
+                          </div>
+                          <strong className="product-tab-card-title">Waste Collection Rickshaw</strong>
+                          <span className="product-tab-card-sub">Municipal door-to-door waste collection &amp; tippers</span>
+                          <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
+                        </a>
+
+                        <a
+                          href="/products/food-cart"
+                          className="product-tab-card overview-card"
+                          onClick={closeAllMenus}
+                        >
+                          <div className="product-tab-card-img">
+                            <img src="/assets/applications/food-cart.webp" alt="Food Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Food Cart</strong>
+                          <span className="product-tab-card-sub">Mobile culinary catering, ice cream, soda &amp; retail</span>
                           <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
                         </a>
 
@@ -442,55 +470,118 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/vintage-elite.jpg" alt="Special Purpose Vehicle" />
+                            <img src="/assets/electruck.jpg" alt="Special Purpose Vehicle" />
                           </div>
                           <strong className="product-tab-card-title">Special Purpose Vehicle</strong>
-                          <span className="product-tab-card-sub">Custom-built utility platforms &amp; ATMs</span>
+                          <span className="product-tab-card-sub">Custom-built design &amp; bespoke engineered platforms</span>
                           <span className="product-tab-card-link">Explore Category <PiArrowRight /></span>
                         </a>
                       </div>
                     </div>
                   )}
 
-                  {/* TAB: E-CAMPUS CART */}
-                  {activeProductTab === 'e-campus-cart' && (
+                  {/* TAB: ELECTRIC CAMPUS CART */}
+                  {activeProductTab === 'electric-campus-cart' && (
                     <div className="tab-pane active-pane">
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">CAMPUS &amp; RESORT MOBILITY</p>
-                          <h3 className="pane-title">E-Campus Cart</h3>
+                          <h3 className="pane-title">Electric Campus Cart</h3>
                         </div>
-                        <a href="/products/e-campus-cart" className="pane-header-pill" onClick={closeAllMenus}>
+                        <a href="/products/electric-campus-cart" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
                           <PiArrowRight />
                         </a>
                       </div>
 
-                      <div className="product-cards-tab-grid product-grid-3">
-                        <a href="/products/classic-golf" className="product-tab-card" onClick={closeAllMenus}>
+                      <div className="product-cards-tab-grid product-grid-4">
+                        <a href="/products/classic-golf-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/classic-golf.jpeg" alt="Classic Golf" />
+                            <img src="/assets/products/classic-golf/Classic Golf5.webp" alt="Classic Golf Cart" />
                           </div>
-                          <strong className="product-tab-card-title">Classic Golf</strong>
-                          <span className="product-tab-card-sub">High-efficiency 2 to 8-seater campus transit cart</span>
+                          <strong className="product-tab-card-title">Classic Golf Cart</strong>
+                          <span className="product-tab-card-sub">2000W* BLDC • 2 - 8 Seater institutional cart</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
 
                         <a href="/products/club-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/club-cart.jpg" alt="Club Cart" />
+                            <img src="/assets/products/club-cart/Club Cart3.webp" alt="Club Cart" />
                           </div>
                           <strong className="product-tab-card-title">Club Cart</strong>
-                          <span className="product-tab-card-sub">Luxury executive resort and VIP guest vehicle</span>
+                          <span className="product-tab-card-sub">2000W Heavy Duty BLDC • 2 - 8 Seater resort cart</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
 
-                        <a href="/products/vintage-elite" className="product-tab-card" onClick={closeAllMenus}>
+                        <a href="/products/elite-vintage-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/vintage-elite.jpg" alt="Elite Vintage Cart" />
+                            <img src="/assets/products/elite-vintage/Elite Vintage Cart9.webp" alt="Elite Vintage Cart" />
                           </div>
                           <strong className="product-tab-card-title">Elite Vintage Cart</strong>
-                          <span className="product-tab-card-sub">Timeless heritage aesthetic with electric powertrain</span>
+                          <span className="product-tab-card-sub">2000W BLDC • 2 - 8 Seater classic retro luxury</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/utility-cart" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/products/utility-cart/utility Cart1.webp" alt="Utility Cart" />
+                          </div>
+                          <strong className="product-tab-card-title">Utility Cart</strong>
+                          <span className="product-tab-card-sub">3000W BLDC • 2 Seater + 500 kg Cargo Platform</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TAB: ELECTRIC LOADING RICKSHAW */}
+                  {activeProductTab === 'electric-loading-rickshaw' && (
+                    <div className="tab-pane active-pane">
+                      <div className="pane-header">
+                        <div>
+                          <p className="pane-eyebrow">HEAVY FREIGHT &amp; LOGISTICS</p>
+                          <h3 className="pane-title">Electric Loading Rickshaw</h3>
+                        </div>
+                        <a href="/products/electric-loading-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
+                          <span>View Category Page</span>
+                          <PiArrowRight />
+                        </a>
+                      </div>
+
+                      <div className="product-cards-tab-grid product-grid-4">
+                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Electruck" />
+                          </div>
+                          <strong className="product-tab-card-title">Electruck</strong>
+                          <span className="product-tab-card-sub">1000W BLDC • 500 kg open cargo platform</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/electruck-dlx" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Electruck DLX" />
+                          </div>
+                          <strong className="product-tab-card-title">Electruck DLX</strong>
+                          <span className="product-tab-card-sub">2000W High Torque BLDC • 1 - 3 ton container</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/tobu-truck" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="Tobu Truck" />
+                          </div>
+                          <strong className="product-tab-card-title">Tobu Truck</strong>
+                          <span className="product-tab-card-sub">1000W BLDC • 500 kg high maneuverability</span>
+                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
+                        </a>
+
+                        <a href="/products/ecotanker" className="product-tab-card" onClick={closeAllMenus}>
+                          <div className="product-tab-card-img">
+                            <img src="/assets/electruck.jpg" alt="EcoTanker" />
+                          </div>
+                          <strong className="product-tab-card-title">EcoTanker</strong>
+                          <span className="product-tab-card-sub">2000W BLDC • 500 Ltr liquid &amp; spray tanker</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
                       </div>
@@ -512,138 +603,84 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       </div>
 
                       <div className="product-cards-tab-grid product-grid-2">
-                        <a href="/products/three-wheel-passenger-rickshaw" className="product-tab-card" onClick={closeAllMenus}>
+                        <a href="/products/tuk-tuk-e" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/tuk-tuk.jpg" alt="Three-wheel Passenger Rickshaw" />
+                            <img src="/assets/tuk-tuk.jpg" alt="Tuk Tuk e" />
                           </div>
-                          <strong className="product-tab-card-title">Three-wheel Passenger Rickshaw</strong>
-                          <span className="product-tab-card-sub">Certified 4+1 on-road approved 3-wheeler (Tuk Tuk ë)</span>
+                          <strong className="product-tab-card-title">Tuk Tuk e</strong>
+                          <span className="product-tab-card-sub">1000W BLDC • Driver + 2 - 4 Passengers</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
 
-                        <a href="/products/school-rickshaw" className="product-tab-card" onClick={closeAllMenus}>
+                        <a href="/products/tuk-tuk-dlx" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/tuk-tuk.jpg" alt="Electric School Rickshaw" />
+                            <img src="/assets/tuk-tuk.jpg" alt="Tuk Tuk DLX" />
                           </div>
-                          <strong className="product-tab-card-title">Electric School Rickshaw</strong>
-                          <span className="product-tab-card-sub">Child-safe speed-governed student transport</span>
+                          <strong className="product-tab-card-title">Tuk Tuk DLX</strong>
+                          <span className="product-tab-card-sub">1000W High Capacity • Driver + 6 - 9 Passengers</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
                       </div>
                     </div>
                   )}
 
-                  {/* TAB: ELECTRIC LOADING RICKSHAW */}
-                  {activeProductTab === 'electric-loading-rickshaw' && (
+                  {/* TAB: WASTE COLLECTION RICKSHAW */}
+                  {activeProductTab === 'waste-collection-rickshaw' && (
                     <div className="tab-pane active-pane">
                       <div className="pane-header">
                         <div>
-                          <p className="pane-eyebrow">HEAVY FREIGHT &amp; LOGISTICS</p>
-                          <h3 className="pane-title">Electric Loading Rickshaw</h3>
+                          <p className="pane-eyebrow">MUNICIPAL &amp; SANITATION</p>
+                          <h3 className="pane-title">Waste Collection Rickshaw</h3>
                         </div>
-                        <a href="/products/electric-loading-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
+                        <a href="/products/waste-collection-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
                           <PiArrowRight />
                         </a>
                       </div>
 
-                      <div className="product-cards-tab-grid product-grid-3">
-                        <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
+                      <div className="product-cards-tab-grid product-grid-2">
+                        <a href="/products/dumptruck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Electruck — max 500 kg" />
+                            <img src="/assets/dump-truck.jpg" alt="Dumptruck" />
                           </div>
-                          <strong className="product-tab-card-title">Electruck — max 500 kg</strong>
-                          <span className="product-tab-card-sub">Pack Body, Half Body, Dumptruck &amp; Tipper variants</span>
+                          <strong className="product-tab-card-title">Dumptruck</strong>
+                          <span className="product-tab-card-sub">1200W BLDC • 500 kg Waste Capacity</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
 
-                        <a href="/products/electruck-dlx" className="product-tab-card" onClick={closeAllMenus}>
+                        <a href="/products/tipper" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Electruck DLX — 1–3 Ton" />
+                            <img src="/assets/dump-truck.jpg" alt="Tipper" />
                           </div>
-                          <strong className="product-tab-card-title">Electruck DLX — 1–3 Ton</strong>
-                          <span className="product-tab-card-sub">Heavy industrial 1–3 Ton cargo carrier</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/tobu-truck" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Tobu Truck" />
-                          </div>
-                          <strong className="product-tab-card-title">Tobu Truck — small/light cargo</strong>
-                          <span className="product-tab-card-sub">Agile inner-facility &amp; parcel delivery</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/electric-water-tanker" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Electric Water Tanker — 500 L" />
-                          </div>
-                          <strong className="product-tab-card-title">Electric Water Tanker — 500 L</strong>
-                          <span className="product-tab-card-sub">500L anti-slosh tank with pressure pump</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/milk-cart" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Milk Cart — SS tanker, 500 L" />
-                          </div>
-                          <strong className="product-tab-card-title">Milk Cart — SS tanker, 500 L</strong>
-                          <span className="product-tab-card-sub">Food-grade SS304 hygienic dairy tanker</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/dump-truck" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/dump-truck.jpg" alt="Dump Truck" />
-                          </div>
-                          <strong className="product-tab-card-title">Dump Truck — Garbage Tipper</strong>
-                          <span className="product-tab-card-sub">Electro-hydraulic tipping municipal EV</span>
+                          <strong className="product-tab-card-title">Tipper</strong>
+                          <span className="product-tab-card-sub">1500W* High Torque • 600 kg Hydraulic Tipping</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
                       </div>
                     </div>
                   )}
 
-                  {/* TAB: FOOD CART RICKSHAW */}
-                  {activeProductTab === 'food-cart-rickshaw' && (
+                  {/* TAB: FOOD CART */}
+                  {activeProductTab === 'food-cart' && (
                     <div className="tab-pane active-pane">
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">MOBILE CULINARY RETAIL</p>
-                          <h3 className="pane-title">Food Cart Rickshaw</h3>
+                          <h3 className="pane-title">Food Cart</h3>
                         </div>
-                        <a href="/products/food-cart-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
+                        <a href="/products/food-cart" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
                           <PiArrowRight />
                         </a>
                       </div>
 
-                      <div className="product-cards-tab-grid product-grid-3">
-                        <a href="/products/dosa-cart" className="product-tab-card" onClick={closeAllMenus}>
+                      <div className="product-cards-tab-grid product-grid-2">
+                        <a href="/products/e-food-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Dosa Cart" />
+                            <img src="/assets/applications/food-cart.webp" alt="E-Food Cart" />
                           </div>
-                          <strong className="product-tab-card-title">Dosa Cart</strong>
-                          <span className="product-tab-card-sub">Integrated SS tawa, burners &amp; food prep kiosk</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/soda-cart" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Soda Cart" />
-                          </div>
-                          <strong className="product-tab-card-title">Soda Cart</strong>
-                          <span className="product-tab-card-sub">Multi-flavor fountain soda taps &amp; chiller unit</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/food-cart-rickshaw" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Other Food Cart variants" />
-                          </div>
-                          <strong className="product-tab-card-title">Other Food Cart variants</strong>
-                          <span className="product-tab-card-sub">Custom mobile kitchens &amp; beverage dispensers</span>
+                          <strong className="product-tab-card-title">E-Food Cart</strong>
+                          <span className="product-tab-card-sub">1100W BLDC • 400 - 450 kg • Ice Cream, Soda, Dosa &amp; catering kiosk variants</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
                       </div>
@@ -664,31 +701,13 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                         </a>
                       </div>
 
-                      <div className="product-cards-tab-grid product-grid-3">
-                        <a href="/products/custom-built-vehicles" className="product-tab-card" onClick={closeAllMenus}>
+                      <div className="product-cards-tab-grid product-grid-2">
+                        <a href="/products/custom-spv" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Custom-built Vehicles" />
+                            <img src="/assets/electruck.jpg" alt="Custom SPV" />
                           </div>
-                          <strong className="product-tab-card-title">Custom-built Vehicles</strong>
-                          <span className="product-tab-card-sub">Bespoke engineered platforms built to client specs</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/atm-vehicle" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Mobile ATM Vehicle" />
-                          </div>
-                          <strong className="product-tab-card-title">Mobile ATM Vehicle</strong>
-                          <span className="product-tab-card-sub">Secure mobile banking and rural cash distribution</span>
-                          <span className="product-tab-card-link">View Details <PiArrowRight /></span>
-                        </a>
-
-                        <a href="/products/custom-electruck-900kg" className="product-tab-card" onClick={closeAllMenus}>
-                          <div className="product-tab-card-img">
-                            <img src="/assets/electruck.jpg" alt="Ramdev Foods 900kg Build" />
-                          </div>
-                          <strong className="product-tab-card-title">Ramdev Foods 900kg Build</strong>
-                          <span className="product-tab-card-sub">Reinforced multi-shift industrial factory hauler</span>
+                          <strong className="product-tab-card-title">Custom SPV</strong>
+                          <span className="product-tab-card-sub">Customizable Motor &amp; Capacity • Tailored design and fabrication</span>
                           <span className="product-tab-card-link">View Details <PiArrowRight /></span>
                         </a>
                       </div>

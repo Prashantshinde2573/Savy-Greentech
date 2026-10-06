@@ -244,8 +244,8 @@ const engineeringBentoPoints = [
     icon: PiCompassTool,
     gridClass: 'bento-row2-right',
     theme: 'theme-white',
-    imgOverlay: '/assets/bento/cad-chassis.png',
-    imgType: 'cad-chassis'
+    imgOverlay: '/assets/bento/chassis-cutaway.webp',
+    imgType: 'design-customisation'
   },
   {
     id: 'platforms',

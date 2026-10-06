@@ -49,7 +49,7 @@ As Indian cities transition towards zero-emission public services, electrifying 
     date: 'January 2026',
     author: 'Mobility Solutions Team',
     readTime: '5 min read',
-    image: '/assets/classic-golf.jpeg',
+    image: '/assets/products/classic-golf/Classic Golf1.webp',
     excerpt: 'From premier universities to luxury resorts, why leading institutions are replacing conventional vehicles with electric campus transit.',
     content: `
 ### The Campus Transit Challenge

@@ -14,7 +14,7 @@ export function SiteFooter() {
             </p>
           </div>
           <div className="footer-top-socials">
-            <a href="https://www.linkedin.com/in/chandanmundhra/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="footer-social-btn">
+            <a href="https://www.linkedin.com/company/savygreentech/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="footer-social-btn">
               <PiLinkedinLogo /> <span>LinkedIn</span>
             </a>
             <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="footer-social-btn">
@@ -39,10 +39,11 @@ export function SiteFooter() {
           <div className="footer-col">
             <p className="eyebrow mint">Products</p>
             <a href="/products">All Products</a>
-            <a href="/products/e-campus-cart">E-Campus Cart</a>
-            <a href="/products/electric-passenger-rickshaw">Electric Passenger Rickshaw</a>
+            <a href="/products/electric-campus-cart">Electric Campus Cart</a>
             <a href="/products/electric-loading-rickshaw">Electric Loading Rickshaw</a>
-            <a href="/products/food-cart-rickshaw">Food Cart Rickshaw</a>
+            <a href="/products/electric-passenger-rickshaw">Electric Passenger Rickshaw</a>
+            <a href="/products/waste-collection-rickshaw">Waste Collection Rickshaw</a>
+            <a href="/products/food-cart">Food Cart</a>
             <a href="/products/special-purpose-vehicle">Special Purpose Vehicle</a>
           </div>
 

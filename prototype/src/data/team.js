@@ -94,7 +94,7 @@ export const journeyGroups = [
         category: 'Passenger Vehicles',
         title: 'Growing Product Portfolio',
         description: 'Expanded our range with advanced golf carts and passenger mobility solutions.',
-        image: '/assets/classic-golf.jpeg',
+        image: '/assets/products/classic-golf/Classic Golf1.webp',
         alt: 'SAVY Classic Golf Cart in green finish',
         ctaLabel: 'Explore Our Vehicles',
         ctaUrl: '/products'

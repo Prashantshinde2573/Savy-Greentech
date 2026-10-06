@@ -4039,64 +4039,133 @@ body.menu-backdrop-open {
   }
 }
 
-/* Custom Solutions Callout */
+/* Custom Solutions Callout / Bespoke Manufacturing Card */
 .custom-solutions-callout {
-  padding: 90px 0;
+  padding: 80px 0 100px;
+  background: var(--white, #ffffff);
 }
 .custom-box-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 60px;
-  align-items: center;
-  background: var(--cream);
-  border: 1px solid var(--sage);
-  border-radius: 20px;
-  padding: 54px;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 48px;
+  align-items: stretch;
+  background: var(--cream, #f7f9f8);
+  border: 1px solid rgba(16, 67, 54, 0.12);
+  border-radius: 24px;
+  padding: 56px 60px;
+  box-shadow: 0 4px 20px rgba(7, 28, 27, 0.03);
 }
 .custom-box-grid h2 {
-  font-size: 36px;
-  margin: 0 0 16px;
+  font-size: 34px;
+  line-height: 1.25;
+  margin: 8px 0 18px;
+  color: var(--bark, #071c1b);
+  font-weight: 700;
 }
-.custom-box-grid > div > p {
+.custom-box-lead {
   font-size: 16px;
-  color: var(--slate);
-  line-height: 1.6;
-  margin-bottom: 24px;
+  color: var(--slate, #4a625a);
+  line-height: 1.65;
+  margin-bottom: 28px;
 }
-.custom-bullets {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
+.custom-box-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.custom-bullet-item {
+  display: flex;
+  align-items: center;
   gap: 12px;
+  font-size: 15px;
+  color: var(--bark, #071c1b);
+  font-weight: 500;
+  line-height: 1.4;
 }
-.custom-bullets li {
+.custom-bullet-item svg {
+  color: var(--canopy, #00875a);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.custom-box-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+.custom-box-card {
+  background: #ffffff;
+  border: 1px solid rgba(16, 67, 54, 0.12);
+  border-radius: 18px;
+  padding: 40px 36px;
+  box-shadow: 0 10px 30px rgba(7, 28, 27, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.custom-box-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.custom-bullets li svg {
-  color: var(--canopy);
-  font-size: 18px;
-}
-.custom-box-cta {
-  background: #071c1b;
-  color: #ffffff;
-  padding: 36px;
-  border-radius: 16px;
-}
-.custom-box-cta h3 {
-  color: #ffffff;
-  font-size: 24px;
-  margin: 0 0 10px;
-}
-.custom-box-cta p {
-  color: #d4e8df;
-  font-size: 14.5px;
-  line-height: 1.55;
   margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(16, 67, 54, 0.08);
+}
+.custom-box-header svg {
+  color: var(--canopy, #00875a);
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.custom-box-header h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bark, #071c1b);
+  margin: 0;
+}
+.custom-spec-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.custom-spec-checklist li {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--slate, #4a625a);
+  position: relative;
+  padding-left: 20px;
+}
+.custom-spec-checklist li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: var(--canopy, #00875a);
+  font-size: 20px;
+  line-height: 1;
+}
+.custom-spec-checklist strong {
+  color: var(--bark, #071c1b);
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  .custom-box-grid {
+    grid-template-columns: 1fr;
+    padding: 36px 24px;
+    gap: 36px;
+    border-radius: 16px;
+  }
+  .custom-box-grid h2 {
+    font-size: 26px;
+  }
+  .custom-box-card {
+    padding: 28px 20px;
+  }
 }
 
 /* ==========================================================================
@@ -4135,26 +4204,38 @@ body.menu-backdrop-open {
 }
 .product-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 60px;
   align-items: start;
 }
 .product-gallery-col {
   position: sticky;
   top: 90px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 .product-main-media-wrap {
   position: relative;
+  width: 100%;
   aspect-ratio: 4/3;
   border-radius: 16px;
   overflow: hidden;
-  background: #071c1b;
+  background: #061817;
   border: 1px solid var(--sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.product-main-media-wrap img,
 .product-main-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block;
 }
 .product-badge-overlay {
   position: absolute;
@@ -4168,6 +4249,7 @@ body.menu-backdrop-open {
   text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 4px;
+  z-index: 2;
 }
 .product-status-overlay {
   position: absolute;
@@ -4179,30 +4261,58 @@ body.menu-backdrop-open {
   font-weight: 700;
   padding: 6px 14px;
   border-radius: 4px;
+  z-index: 2;
 }
 .product-thumbnails-strip {
   display: flex;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 14px;
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--canopy) rgba(0, 0, 0, 0.08);
+}
+.product-thumbnails-strip::-webkit-scrollbar {
+  height: 5px;
+}
+.product-thumbnails-strip::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+.product-thumbnails-strip::-webkit-scrollbar-thumb {
+  background: var(--canopy);
+  border-radius: 4px;
 }
 .thumb-btn {
-  width: 80px;
-  height: 60px;
+  flex: 0 0 76px;
+  width: 76px;
+  height: 56px;
   border-radius: 8px;
   border: 2px solid transparent;
   padding: 0;
   overflow: hidden;
   cursor: pointer;
-  background: #111a18;
+  background: #061817;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+.thumb-btn:hover {
+  border-color: rgba(0, 135, 90, 0.5);
 }
 .thumb-btn.active {
   border-color: var(--canopy);
 }
 .thumb-btn img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  display: block;
 }
 .product-info-col h1 {
   font-size: clamp(36px, 4vw, 50px);
@@ -10060,16 +10170,47 @@ body.menu-backdrop-open {
   object-position: right center;
 }
 
-/* Card 4: CAD Chassis Foreground Layer (in ~62.5% card) */
+/* Card 4: Design & Customisation Transparent Chassis Cutaway */
+.bento-media-design-customisation,
 .bento-media-cad-chassis {
-  width: 38%;
-  height: 92%;
-  right: 18px;
-  bottom: 10px;
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  bottom: 14px;
+  width: 48%;
+  height: calc(100% - 28px);
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.bento-media-design-customisation img,
 .bento-media-cad-chassis img {
-  object-position: right center;
-  opacity: 0.95;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  opacity: 1;
+  display: block;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  filter: none;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-media-design-customisation .bento-media-blend,
+.bento-media-cad-chassis .bento-media-blend {
+  display: none !important;
+}
+
+.bento-card:hover .bento-media-design-customisation img,
+.bento-card:hover .bento-media-cad-chassis img {
+  transform: scale(1.03);
 }
 
 /* Card 5: Commercial EV Foreground Layer */
@@ -10148,6 +10289,14 @@ body.menu-backdrop-open {
   .bento-card {
     padding: 24px;
   }
+  .bento-media-design-customisation,
+  .bento-media-cad-chassis {
+    top: 14px;
+    right: 16px;
+    bottom: 14px;
+    width: 46%;
+    height: calc(100% - 28px);
+  }
 }
 
 @media (max-width: 680px) {
@@ -10173,6 +10322,14 @@ body.menu-backdrop-open {
   .bento-row2-left .bento-card-content,
   .bento-row3-right .bento-card-content {
     max-width: 65%;
+  }
+  .bento-media-design-customisation,
+  .bento-media-cad-chassis {
+    top: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: 44%;
+    height: calc(100% - 24px);
   }
   .bento-main-highlight.is-number {
     font-size: 38px;

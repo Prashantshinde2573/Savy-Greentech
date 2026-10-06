@@ -42,8 +42,8 @@ export const caseStudies = [
       'Rapid response times across campus departments without traffic bottlenecking'
     ],
     gallery: [
-      '/assets/classic-golf.jpeg',
-      '/assets/club-cart.jpg'
+      '/assets/products/classic-golf/Classic Golf1.webp',
+      '/assets/products/club-cart/Club Cart1.webp'
     ],
     relatedProduct: 'classic-golf',
     relatedIndustry: 'healthcare'
@@ -66,8 +66,8 @@ export const caseStudies = [
       'Aligns with state-level green tourism and sustainability mandates'
     ],
     gallery: [
-      '/assets/club-cart.jpg',
-      '/assets/vintage-elite.jpg',
+      '/assets/products/club-cart/Club Cart1.webp',
+      '/assets/products/elite-vintage/Elite Vintage Cart1.webp',
       '/assets/applications/tourism.jpg'
     ],
     relatedProduct: 'club-cart',
@@ -91,7 +91,7 @@ export const caseStudies = [
       'Low thermal and acoustic signature suited to secure installation protocols'
     ],
     gallery: [
-      '/assets/classic-golf.jpeg',
+      '/assets/products/classic-golf/Classic Golf1.webp',
       '/assets/electruck.jpg',
       '/assets/applications/airport.jpg'
     ],

@@ -4,6 +4,7 @@ import {
   PiArrowRight,
   PiCar,
   PiTruck,
+  PiTrash,
   PiUsers,
   PiStorefront,
   PiGear,
@@ -27,9 +28,12 @@ import {
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 const CATEGORY_ICONS = {
+  'electric-campus-cart': PiCar,
   'e-campus-cart': PiCar,
-  'electric-passenger-rickshaw': PiUsers,
   'electric-loading-rickshaw': PiTruck,
+  'electric-passenger-rickshaw': PiUsers,
+  'waste-collection-rickshaw': PiTrash,
+  'food-cart': PiStorefront,
   'food-cart-rickshaw': PiStorefront,
   'special-purpose-vehicle': PiGear
 };
@@ -200,11 +204,11 @@ export function ProductCategoryPage({ categorySlug }) {
                   <div className="cat-product-specs-pills">
                     {product.specs?.power && (
                       <div className="spec-pill">
-                        <span className="pill-label">Power</span>
-                        <strong className="pill-val">{product.specs.power.split(' ')[0]} {product.specs.power.split(' ')[1]}</strong>
+                        <span className="pill-label">Motor</span>
+                        <strong className="pill-val">{product.specs.power.length > 24 ? 'Customizable' : product.specs.power}</strong>
                       </div>
                     )}
-                    {product.specs?.range && (
+                    {product.specs?.range && product.specs.range !== 'Customizable (Configurable battery capacity)' && (
                       <div className="spec-pill">
                         <span className="pill-label">Range</span>
                         <strong className="pill-val">{product.specs.range.split(' ')[0]} km</strong>
@@ -213,13 +217,13 @@ export function ProductCategoryPage({ categorySlug }) {
                     {product.specs?.loadCapacity && (
                       <div className="spec-pill">
                         <span className="pill-label">Payload</span>
-                        <strong className="pill-val">{product.specs.loadCapacity.replace('Payload', '').trim()}</strong>
+                        <strong className="pill-val">{product.specs.loadCapacity.length > 24 ? 'Customizable' : product.specs.loadCapacity}</strong>
                       </div>
                     )}
                     {product.specs?.seatingCapacity && (
                       <div className="spec-pill">
                         <span className="pill-label">Capacity</span>
-                        <strong className="pill-val">{product.specs.seatingCapacity.split(' ')[0]}</strong>
+                        <strong className="pill-val">{product.specs.seatingCapacity.length > 24 ? 'Customizable' : product.specs.seatingCapacity}</strong>
                       </div>
                     )}
                   </div>
@@ -250,37 +254,39 @@ export function ProductCategoryPage({ categorySlug }) {
         </div>
       </section>
 
-      {/* Special Electruck Customization Variants Showcase (For Loading Category) */}
-      {category.slug === 'electric-loading-rickshaw' && electruckVariants.length > 0 && (
+      {/* Special Modular Customization Variants Showcase (For Food Cart or Loading Category) */}
+      {categoryProducts.some((p) => p.customizationVariants?.length > 0) && (
         <section className="section-cream electruck-variants-section" aria-labelledby="variants-heading">
           <div className="container">
             <div className="section-heading center">
-              <p className="eyebrow">Modular Engineering</p>
-              <h2 id="variants-heading">Electruck (Max 500 kg) Customization Variants</h2>
+              <p className="eyebrow">Modular Customizations</p>
+              <h2 id="variants-heading">Purpose-Built Application Formats</h2>
               <p className="section-subtitle">
-                Engineered with flexible rear chassis structures to support four purpose-built commercial and municipal configurations.
+                Engineered with flexible chassis and superstructure configurations to match specific operational workflows.
               </p>
             </div>
 
             <div className="electruck-variants-grid">
-              {electruckVariants.map((variant, idx) => (
-                <div key={idx} className="variant-card">
-                  <div className="variant-card-icon-wrap">
-                    <PiSliders aria-hidden="true" />
+              {categoryProducts
+                .flatMap((p) => p.customizationVariants || [])
+                .map((variant, idx) => (
+                  <div key={idx} className="variant-card">
+                    <div className="variant-card-icon-wrap">
+                      <PiSliders aria-hidden="true" />
+                    </div>
+                    <span className="variant-tag">{variant.tag}</span>
+                    <h3 className="variant-title">{variant.name}</h3>
+                    <p className="variant-copy">{variant.copy}</p>
+                    <button
+                      type="button"
+                      className="button-link mint btn-sm variant-enquire-btn"
+                      onClick={() => handleOpenQuote(`${variant.name} Inquiry`)}
+                    >
+                      <span>Enquire About {variant.name}</span>
+                      <PiArrowRight aria-hidden="true" />
+                    </button>
                   </div>
-                  <span className="variant-tag">{variant.tag}</span>
-                  <h3 className="variant-title">{variant.name}</h3>
-                  <p className="variant-copy">{variant.copy}</p>
-                  <button
-                    type="button"
-                    className="button-link mint btn-sm variant-enquire-btn"
-                    onClick={() => handleOpenQuote(`Electruck — ${variant.name}`)}
-                  >
-                    <span>Enquire About {variant.name}</span>
-                    <PiArrowRight aria-hidden="true" />
-                  </button>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </section>

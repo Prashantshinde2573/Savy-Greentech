@@ -107,6 +107,10 @@ export function ProductDetailPage({ slug }) {
   usePageAnimations(pageRef);
 
   useEffect(() => {
+    setActiveImage(product.gallery?.[0] || product.image);
+  }, [slug, product]);
+
+  useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray('.product-usecase-card');
@@ -154,6 +158,10 @@ export function ProductDetailPage({ slug }) {
   };
 
   const handleDownloadBrochure = () => {
+    if (product.pdf) {
+      window.open(encodeURI(product.pdf), '_blank', 'noopener,noreferrer');
+      return;
+    }
     alert(`Brochure & Spec Sheet for ${product.name} will be dispatched to your email or downloaded directly once official release PDF is verified.`);
   };
 
@@ -242,7 +250,7 @@ export function ProductDetailPage({ slug }) {
                   <PiUsers className="quick-spec-icon" />
                   <div>
                     <span className="quick-spec-title">Seating / Load</span>
-                    <strong>{product.specs.seatingCapacity}</strong>
+                    <strong>{product.specs.seatingCapacity || product.specs.loadCapacity || 'Customizable'}</strong>
                   </div>
                 </div>
               </div>
@@ -268,14 +276,26 @@ export function ProductDetailPage({ slug }) {
                   <span>Book a Demo</span>
                 </button>
 
-                <button
-                  type="button"
-                  className="button-link text-download"
-                  onClick={handleDownloadBrochure}
-                >
-                  <PiDownloadSimple aria-hidden="true" />
-                  <span>Download Spec Sheet</span>
-                </button>
+                {product.pdf ? (
+                  <a
+                    href={encodeURI(product.pdf)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button-link text-download"
+                  >
+                    <PiDownloadSimple aria-hidden="true" />
+                    <span>Download Spec Sheet</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    className="button-link text-download"
+                    onClick={handleDownloadBrochure}
+                  >
+                    <PiDownloadSimple aria-hidden="true" />
+                    <span>Download Spec Sheet</span>
+                  </button>
+                )}
               </div>
 
               {/* Direct Support Notice */}
@@ -372,14 +392,18 @@ export function ProductDetailPage({ slug }) {
                   <th>Range per Charge</th>
                   <td>{product.specs.range}</td>
                 </tr>
-                <tr>
-                  <th>Seating Capacity</th>
-                  <td>{product.specs.seatingCapacity}</td>
-                </tr>
-                <tr>
-                  <th>Payload / Load Capacity</th>
-                  <td>{product.specs.loadCapacity}</td>
-                </tr>
+                {product.specs.seatingCapacity && (
+                  <tr>
+                    <th>Seating Capacity</th>
+                    <td>{product.specs.seatingCapacity}</td>
+                  </tr>
+                )}
+                {product.specs.loadCapacity && (
+                  <tr>
+                    <th>Payload / Load Capacity</th>
+                    <td>{product.specs.loadCapacity}</td>
+                  </tr>
+                )}
                 <tr>
                   <th>Battery Chemistry</th>
                   <td>{product.specs.batteryType}</td>
