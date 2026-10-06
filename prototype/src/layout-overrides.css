@@ -1693,6 +1693,32 @@ main#top:not(.home-old) .button-link.ghost:focus-visible {
   color: var(--midnight, #071c1b) !important;
 }
 
+/* ==========================================================================
+   GLOBAL CTA BUTTON ARROW STYLING & HOVER ANIMATION
+   ========================================================================== */
+.button-link svg,
+.button-link > svg,
+.nav-cta svg,
+.nav-cta > svg,
+.button-link span + svg {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 15px;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.button-link:hover svg,
+.button-link:hover > svg,
+.button-link:focus-visible svg,
+.button-link:focus-visible > svg,
+.nav-cta:hover svg,
+.nav-cta:hover > svg,
+.nav-cta:focus-visible svg,
+.nav-cta:focus-visible > svg {
+  transform: translateX(4px) !important;
+}
+
 main#top:not(.home-old) .application-controls button {
   border-color: var(--deep-teal);
   color: var(--deep-teal);
@@ -5477,38 +5503,143 @@ select::-ms-expand {
     margin-bottom: 10px !important;
   }
 
-  .problem-solution-box {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    margin-bottom: 14px !important;
-    max-width: none !important;
+  /* Mobile Accordions for Applications Page */
+  .sector-mobile-accordions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
   }
 
-  .ps-block {
+  .mob-accordion-item {
+    background: #ffffff !important;
+    border: 1px solid var(--sage, #d3dcd6) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .mob-accordion-item.is-open {
+    border-color: rgba(16, 67, 54, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(5, 28, 23, 0.05) !important;
+  }
+
+  .mob-accordion-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
     padding: 12px 14px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    -webkit-tap-highlight-color: transparent !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
   }
 
-  .ps-block h4 {
+  .mob-accordion-header:active {
+    background-color: rgba(5, 28, 23, 0.02) !important;
+  }
+
+  .mob-accordion-title {
+    font-family: 'Outfit', sans-serif !important;
     font-size: 11px !important;
-    margin-bottom: 4px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.3 !important;
+    flex: 1 !important;
   }
 
-  .ps-block p {
+  .mob-accordion-title.problem-title {
+    color: #b91c1c !important;
+  }
+
+  .mob-accordion-title.solution-title {
+    color: var(--canopy, #051c17) !important;
+  }
+
+  .mob-accordion-title.proof-title {
+    color: var(--canopy, #051c17) !important;
+  }
+
+  .mob-accordion-chevron {
+    font-size: 16px !important;
+    color: var(--slate, #556b62) !important;
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mob-accordion-item.is-open .mob-accordion-chevron {
+    transform: rotate(180deg) !important;
+    color: var(--canopy, #051c17) !important;
+  }
+
+  /* Reliable pure-CSS accordion collapse & expansion without height overflow */
+  .mob-accordion-content {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    transition: max-height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, visibility 0.35s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  .mob-accordion-item.is-open .mob-accordion-content {
+    max-height: 1200px !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .mob-accordion-inner {
+    padding: 0 14px 14px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .mob-accordion-inner p {
     font-size: 12.5px !important;
-    line-height: 1.45 !important;
+    line-height: 1.5 !important;
+    color: var(--slate, #445950) !important;
+    margin: 0 !important;
+  }
+
+  .mob-accordion-inner ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    gap: 7px !important;
+  }
+
+  .mob-accordion-inner li {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 7px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    color: var(--bark, #051c17) !important;
+  }
+
+  .mob-accordion-inner .proof-icon {
+    color: #1ea868 !important;
+    font-size: 14px !important;
+    margin-top: 1px !important;
+    flex-shrink: 0 !important;
   }
 
   .sector-vehicles-strip {
-    margin-bottom: 14px !important;
-  }
-
-  .sector-proof-points {
-    margin-bottom: 18px !important;
-  }
-
-  .sector-proof-points li {
-    font-size: 12.5px !important;
-    line-height: 1.35 !important;
+    margin-bottom: 12px !important;
+    margin-top: 0 !important;
   }
 
   .sector-actions {
@@ -6353,15 +6484,88 @@ select::-ms-expand {
   color: var(--slate);
   margin: 0;
 }
+/* Integrated Testing Partners & Certifications Note Box */
 .certifications-note-box {
-  margin-top: 40px;
+  margin-top: 24px;
   background: var(--white);
+  border: 1px solid rgba(5, 28, 23, 0.08);
   border-left: 4px solid var(--canopy);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 20px 28px;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  box-shadow: 0 4px 16px rgba(5, 28, 23, 0.03);
+}
+
+.certifications-note-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.certifications-note-label {
+  margin-bottom: 6px;
+}
+
+.tp-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--canopy);
+}
+
+.certifications-note-box p {
+  font-size: 13.5px;
   line-height: 1.5;
   color: var(--slate);
+  margin: 0;
+}
+
+.certifications-note-box p strong {
+  color: var(--canopy);
+  font-weight: 600;
+}
+
+.certifications-note-logos {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-left: 28px;
+  border-left: 1px solid rgba(5, 28, 23, 0.1);
+}
+
+.testing-partner-logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+}
+
+.testing-partner-logo-box img {
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.testing-partner-logo-box img.logo-arai {
+  max-height: 48px;
+  max-width: 140px;
+}
+
+.testing-partner-logo-box img.logo-natrax {
+  max-height: 48px;
+  max-width: 180px;
+}
+
+.testing-partner-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(5, 28, 23, 0.12);
 }
 .after-sales-section {
   padding: 90px 0;
@@ -12185,11 +12389,39 @@ select::-ms-expand {
     line-height: 1.45 !important;
   }
   .quality-standards-section .certifications-note-box {
-    margin-top: 8px !important;
-    padding: 14px 16px !important;
+    margin-top: 14px !important;
+    padding: 16px 18px !important;
     border-radius: 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+  }
+  .quality-standards-section .certifications-note-box p {
     font-size: 12px !important;
     line-height: 1.5 !important;
+  }
+  .quality-standards-section .certifications-note-logos {
+    padding-left: 0 !important;
+    border-left: none !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(5, 28, 23, 0.08) !important;
+  }
+  .quality-standards-section .testing-partner-logo-box {
+    height: 42px !important;
+  }
+  .quality-standards-section .testing-partner-logo-box img.logo-arai {
+    max-height: 38px !important;
+    max-width: 115px !important;
+  }
+  .quality-standards-section .testing-partner-logo-box img.logo-natrax {
+    max-height: 38px !important;
+    max-width: 150px !important;
+  }
+  .quality-standards-section .testing-partner-divider {
+    height: 26px !important;
   }
 }
 
@@ -12465,6 +12697,9 @@ select::-ms-expand {
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* 3. Category Models Grid */
@@ -12809,6 +13044,7 @@ select::-ms-expand {
     box-sizing: border-box;
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+    touch-action: pan-y !important;
   }
   .category-hero-carousels {
     display: flex;
@@ -12820,19 +13056,21 @@ select::-ms-expand {
     overflow: hidden;
     padding: 0;
     margin: 0;
+    touch-action: pan-y !important;
   }
   .hero-carousel-col {
     position: relative;
     width: 100%;
     height: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     display: flex;
     flex-direction: row;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    touch-action: pan-y !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
   }
   .hero-carousel-col::-webkit-scrollbar {
     display: none;
@@ -12845,6 +13083,7 @@ select::-ms-expand {
     width: max-content;
     flex-shrink: 0;
     will-change: transform;
+    touch-action: pan-y !important;
   }
   .carousel-col-up .track-up {
     animation: horizontalInfiniteScrollLeft 26s linear infinite;
@@ -12867,6 +13106,16 @@ select::-ms-expand {
     align-items: center;
     justify-content: center;
     width: auto;
+    touch-action: pan-y !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+  .hero-carousel-card img {
+    pointer-events: none !important;
+    -webkit-user-drag: none !important;
+    -webkit-touch-callout: none !important;
+    user-select: none !important;
   }
   .hero-carousel-card.card-short {
     width: 195px;

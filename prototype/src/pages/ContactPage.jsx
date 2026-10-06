@@ -72,6 +72,7 @@ export function ContactPage() {
                       }}
                     >
                       <span>Send Another Message</span>
+                      <PiArrowRight aria-hidden="true" />
                     </button>
                   </div>
                 ) : (

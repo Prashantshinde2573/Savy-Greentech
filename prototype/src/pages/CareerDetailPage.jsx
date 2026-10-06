@@ -212,6 +212,7 @@ export function CareerDetailPage({ slug }) {
                   }}
                 >
                   <span>Submit Another Application</span>
+                  <PiArrowRight aria-hidden="true" />
                 </button>
               </div>
             ) : (

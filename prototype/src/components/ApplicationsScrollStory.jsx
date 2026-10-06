@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   PiArrowRight, 
+  PiCaretDown,
   PiCheckCircle, 
   PiFactory, 
   PiFirstAid, 
@@ -35,6 +36,144 @@ const tabLabels = {
   'food-retail': 'Food & Retail',
   'fmcg-delivery': 'FMCG & Delivery',
 };
+
+function MobileSectorCard({ app, index, totalSlides, onInquireSector }) {
+  const Icon = sectorIcons[app.id] || PiFactory;
+  const isEven = index % 2 === 0;
+
+  const [challengeOpen, setChallengeOpen] = useState(false);
+  const [solutionOpen, setSolutionOpen] = useState(false);
+  const [proofOpen, setProofOpen] = useState(false);
+
+  return (
+    <section
+      id={`mob-${app.slug}`}
+      data-index={index}
+      className={`application-sector-block ${isEven ? 'section-white' : 'section-cream'}`}
+    >
+      <div className="container">
+        <div className="sector-mobile-card">
+          <div className="sector-mobile-number">
+            <span>{String(index + 1).padStart(2, '0')}</span> / {String(totalSlides).padStart(2, '0')}
+          </div>
+          <div className="sector-image-wrap">
+            <img src={app.image} alt={`${app.title} electric mobility`} loading="lazy" />
+            <div className="sector-quote-card">
+              <p>“{app.highlightQuote}”</p>
+            </div>
+          </div>
+
+          <div className="sector-info-col" style={{ marginTop: '20px' }}>
+            {/* Category tag / badge */}
+            <div className="sector-badge">
+              <Icon />
+              <span>{app.subtitle}</span>
+            </div>
+
+            {/* Category title */}
+            <h2>{app.title}</h2>
+
+            {/* Main description */}
+            <p className="sector-lead-copy">{app.leadCopy}</p>
+
+            {/* Top Accordions: Problem & Solution */}
+            <div className="sector-mobile-accordions">
+              {/* 1. Operational Challenge Accordion */}
+              <div className={`mob-accordion-item problem-accordion ${challengeOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="mob-accordion-header"
+                  onClick={() => setChallengeOpen(!challengeOpen)}
+                  aria-expanded={challengeOpen}
+                >
+                  <span className="mob-accordion-title problem-title">The Operational Challenge:</span>
+                  <PiCaretDown className="mob-accordion-chevron" aria-hidden="true" />
+                </button>
+                <div className="mob-accordion-content">
+                  <div className="mob-accordion-inner">
+                    <p>{app.problem}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Savy Engineering Solution Accordion */}
+              <div className={`mob-accordion-item solution-accordion ${solutionOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="mob-accordion-header"
+                  onClick={() => setSolutionOpen(!solutionOpen)}
+                  aria-expanded={solutionOpen}
+                >
+                  <span className="mob-accordion-title solution-title">The SAVY Engineering Solution:</span>
+                  <PiCaretDown className="mob-accordion-chevron" aria-hidden="true" />
+                </button>
+                <div className="mob-accordion-content">
+                  <div className="mob-accordion-inner">
+                    <p>{app.solution}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recommended Platforms */}
+            <div className="sector-vehicles-strip">
+              <span className="sv-label">Recommended Platforms:</span>
+              <div className="sv-pills">
+                {app.relevantVehicles.map((veh, i) => (
+                  <span key={i} className="sv-pill">{veh}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Accordion: Proof & Impact */}
+            <div className="sector-mobile-accordions">
+              {/* 3. Deployment Proof & Impact Accordion */}
+              <div className={`mob-accordion-item proof-accordion ${proofOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="mob-accordion-header"
+                  onClick={() => setProofOpen(!proofOpen)}
+                  aria-expanded={proofOpen}
+                >
+                  <span className="mob-accordion-title proof-title">Deployment Proof &amp; Impact:</span>
+                  <PiCaretDown className="mob-accordion-chevron" aria-hidden="true" />
+                </button>
+                <div className="mob-accordion-content">
+                  <div className="mob-accordion-inner">
+                    <ul>
+                      {app.proofPoints.map((pt, i) => (
+                        <li key={i}>
+                          <PiCheckCircle className="proof-icon" />
+                          <span>{pt}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="sector-actions">
+              <button
+                type="button"
+                className="button-link primary btn-sm"
+                onClick={() => onInquireSector(app.title)}
+              >
+                <span>Request Proposal for {app.title}</span>
+                <PiArrowRight aria-hidden="true" />
+              </button>
+              <a href="/products" className="button-link secondary btn-sm">
+                <span>View Matching Vehicles</span>
+                <PiArrowRight aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function ApplicationsScrollStory({ onInquireSector }) {
   const containerRef = useRef(null);
@@ -401,6 +540,7 @@ export function ApplicationsScrollStory({ onInquireSector }) {
                           </button>
                           <a href="/products" className="button-link secondary btn-sm">
                             <span>View Matching Vehicles</span>
+                            <PiArrowRight aria-hidden="true" />
                           </a>
                         </div>
                       </article>
@@ -415,89 +555,15 @@ export function ApplicationsScrollStory({ onInquireSector }) {
 
         {/* Mobile Stream (Clean, zero duplicate nav) */}
         <div className="story-mobile-stream">
-          {applicationsData.map((app, index) => {
-            const Icon = sectorIcons[app.id] || PiFactory;
-            const isEven = index % 2 === 0;
-            return (
-              <section
-                key={`mob-${app.id}`}
-                id={`mob-${app.slug}`}
-                data-index={index}
-                className={`application-sector-block ${isEven ? 'section-white' : 'section-cream'}`}
-              >
-                <div className="container">
-                  <div className="sector-mobile-card">
-                    <div className="sector-mobile-number">
-                      <span>{String(index + 1).padStart(2, '0')}</span> / {String(totalSlides).padStart(2, '0')}
-                    </div>
-                    <div className="sector-image-wrap">
-                      <img src={app.image} alt={`${app.title} electric mobility`} loading="lazy" />
-                      <div className="sector-quote-card">
-                        <p>“{app.highlightQuote}”</p>
-                      </div>
-                    </div>
-
-                    <div className="sector-info-col" style={{ marginTop: '20px' }}>
-                      <div className="sector-badge">
-                        <Icon />
-                        <span>{app.subtitle}</span>
-                      </div>
-
-                      <h2>{app.title}</h2>
-                      <p className="sector-lead-copy">{app.leadCopy}</p>
-
-                      <div className="problem-solution-box">
-                        <div className="ps-block problem">
-                          <h4>The Operational Challenge:</h4>
-                          <p>{app.problem}</p>
-                        </div>
-
-                        <div className="ps-block solution">
-                          <h4>The SAVY Engineering Solution:</h4>
-                          <p>{app.solution}</p>
-                        </div>
-                      </div>
-
-                      <div className="sector-vehicles-strip">
-                        <span className="sv-label">Recommended Platforms:</span>
-                        <div className="sv-pills">
-                          {app.relevantVehicles.map((veh, i) => (
-                            <span key={i} className="sv-pill">{veh}</span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="sector-proof-points">
-                        <h5>Deployment Proof &amp; Impact:</h5>
-                        <ul>
-                          {app.proofPoints.map((pt, i) => (
-                            <li key={i}>
-                              <PiCheckCircle className="proof-icon" />
-                              <span>{pt}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="sector-actions">
-                        <button
-                          type="button"
-                          className="button-link primary btn-sm"
-                          onClick={() => onInquireSector(app.title)}
-                        >
-                          <span>Request Proposal for {app.title}</span>
-                          <PiArrowRight aria-hidden="true" />
-                        </button>
-                        <a href="/products" className="button-link secondary btn-sm">
-                          <span>View Matching Vehicles</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            );
-          })}
+          {applicationsData.map((app, index) => (
+            <MobileSectorCard
+              key={`mob-${app.id}`}
+              app={app}
+              index={index}
+              totalSlides={totalSlides}
+              onInquireSector={onInquireSector}
+            />
+          ))}
         </div>
       </div>
     </div>

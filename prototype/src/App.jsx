@@ -923,6 +923,7 @@ export function App() {
                   onClick={() => handleOpenQuote('Custom 900kg Electruck', 'quote')}
                 >
                   <span>Request Similar Build</span>
+                  <PiArrowRight aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -1139,6 +1140,7 @@ export function App() {
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <a className="button-link primary" href="/products">
               <span>Explore Products</span>
+              <PiArrowRight aria-hidden="true" />
             </a>
             <button
               type="button"
@@ -1146,6 +1148,7 @@ export function App() {
               onClick={() => handleOpenQuote('', 'quote')}
             >
               <span>Request a Quote</span>
+              <PiArrowRight aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -1153,6 +1156,7 @@ export function App() {
               onClick={() => handleOpenQuote('', 'demo')}
             >
               <span>Book a Demo</span>
+              <PiArrowRight aria-hidden="true" />
             </button>
           </div>
         </div>

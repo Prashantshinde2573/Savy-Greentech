@@ -171,6 +171,7 @@ export function BlogPage() {
               <p>No articles found matching your query.</p>
               <button type="button" className="button-link primary" onClick={() => { setSelectedCategory('All'); setSearchQuery(''); setCurrentPage(1); }}>
                 <span>View All Articles</span>
+                <PiArrowRight aria-hidden="true" />
               </button>
             </div>
           ) : (

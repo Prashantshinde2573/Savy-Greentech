@@ -246,12 +246,12 @@ export function MediaPage() {
               <p>Download official high-resolution vehicle photography, company brand marks, founder portraits, and company background briefs for editorial use.</p>
               <div className="kit-actions">
                 <button type="button" className="button-link primary" onClick={handleDownloadPressKit}>
-                  <PiDownloadSimple aria-hidden="true" />
                   <span>Download Press Kit (ZIP)</span>
+                  <PiArrowRight aria-hidden="true" />
                 </button>
                 <a href="mailto:info@savygreentech.com?subject=Press%20Inquiry%20SAVY" className="button-link secondary">
-                  <PiEnvelopeSimple aria-hidden="true" />
                   <span>Contact Media Relations</span>
+                  <PiArrowRight aria-hidden="true" />
                 </a>
               </div>
             </div>

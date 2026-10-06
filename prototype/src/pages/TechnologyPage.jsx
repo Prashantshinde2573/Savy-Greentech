@@ -352,7 +352,31 @@ export function TechnologyPage() {
           </div>
 
           <div className="certifications-note-box">
-            <p><strong>Compliance &amp; Certifications Reference:</strong> SAVY electric passenger platforms (such as Tuk Tuk ë 4+1) hold on-road type approval. For institutional and industrial platforms, SAVY adheres to verified national manufacturing, electrical, and safety benchmarks.</p>
+            <div className="certifications-note-content">
+              <div className="certifications-note-label">
+                <span className="tp-eyebrow">Testing &amp; Certification Partners</span>
+              </div>
+              <p><strong>Compliance &amp; Certifications Reference:</strong> SAVY electric passenger platforms (such as Tuk Tuk ë 4+1) hold on-road type approval. For institutional and industrial platforms, SAVY adheres to verified national manufacturing, electrical, and safety benchmarks.</p>
+            </div>
+            <div className="certifications-note-logos">
+              <div className="testing-partner-logo-box">
+                <img
+                  src="/assets/certifications/arai-logo.png"
+                  alt="ARAI - Automotive Research Association of India"
+                  className="logo-arai"
+                  loading="lazy"
+                />
+              </div>
+              <div className="testing-partner-divider" aria-hidden="true" />
+              <div className="testing-partner-logo-box">
+                <img
+                  src="/assets/certifications/natrax-logo.png"
+                  alt="NATRAX - National Automotive Test Tracks"
+                  className="logo-natrax"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

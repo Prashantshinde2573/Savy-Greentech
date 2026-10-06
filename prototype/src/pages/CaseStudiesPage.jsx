@@ -144,6 +144,7 @@ export function CaseStudiesPage() {
                       style={{ marginTop: '10px' }}
                     >
                       <span>Inquire About Similar Solution</span>
+                      <PiArrowRight aria-hidden="true" />
                     </button>
                   </div>
                 </div>

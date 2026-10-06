@@ -305,8 +305,8 @@ export function ProductCategoryPage({ categorySlug }) {
                 <PiArrowRight aria-hidden="true" />
               </button>
               <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" className="button-link secondary">
-                <PiPhoneCall aria-hidden="true" />
                 <span>Talk to Sales Engineer</span>
+                <PiArrowRight aria-hidden="true" />
               </a>
             </div>
           </div>

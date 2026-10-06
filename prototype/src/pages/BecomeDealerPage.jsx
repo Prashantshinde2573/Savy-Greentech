@@ -136,6 +136,7 @@ export function BecomeDealerPage() {
                   }}
                 >
                   <span>Submit Another Form</span>
+                  <PiArrowRight aria-hidden="true" />
                 </button>
               </div>
             ) : (

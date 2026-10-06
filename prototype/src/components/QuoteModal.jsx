@@ -46,6 +46,7 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <p>Our commercial and engineering team will contact you within 24 hours with a comprehensive proposal.</p>
             <button type="button" className="button-link primary" onClick={onClose}>
               <span>Close</span>
+              <PiArrowRight aria-hidden="true" />
             </button>
           </div>
         ) : (

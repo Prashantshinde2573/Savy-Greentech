@@ -176,6 +176,7 @@ export function ProductsPage() {
                 }}
               >
                 <span>View All 14 Vehicles</span>
+                <PiArrowRight aria-hidden="true" />
               </button>
             </div>
           ) : (

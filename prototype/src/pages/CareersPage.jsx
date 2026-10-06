@@ -152,6 +152,7 @@ export function CareersPage() {
                         style={{ padding: '8px 14px', fontSize: '13px' }}
                       >
                         <span>Details</span>
+                        <PiArrowRight aria-hidden="true" />
                       </a>
                       <button
                         type="button"
@@ -217,6 +218,7 @@ export function CareersPage() {
                   }}
                 >
                   <span>Submit Another Application</span>
+                  <PiArrowRight aria-hidden="true" />
                 </button>
               </div>
             ) : (
