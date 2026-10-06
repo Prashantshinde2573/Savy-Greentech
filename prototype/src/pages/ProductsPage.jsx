@@ -269,7 +269,7 @@ export function ProductsPage() {
                   <span>Discuss Custom Requirements</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
-                <a href="/technology" className="button-link ghost">
+                <a href="/technology" className="button-link secondary">
                   <span>Explore In-House R&amp;D</span>
                   <PiArrowRight aria-hidden="true" />
                 </a>

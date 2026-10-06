@@ -587,7 +587,7 @@ export function ProductDetailPage({ slug }) {
               <span>Request a Quote</span>
               <PiArrowRight aria-hidden="true" />
             </button>
-            <a href="/contact" className="button-link ghost-light">
+            <a href="/contact" className="button-link secondary">
               <span>Contact Sales Team</span>
               <PiArrowRight aria-hidden="true" />
             </a>

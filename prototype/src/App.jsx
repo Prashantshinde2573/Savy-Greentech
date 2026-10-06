@@ -606,13 +606,13 @@ export function App() {
           <p className="eyebrow mint">Electric mobility · Since 2014</p>
           <h1 id="hero-title">Electric vehicles built around your requirements.</h1>
           <div className="hero-actions">
-            <a className="button-link mint" href="#vehicles">
+            <a className="button-link primary" href="#vehicles">
               <span>Explore Our Vehicles</span>
               <PiArrowRight aria-hidden="true" />
             </a>
             <button
               type="button"
-              className="button-link ghost-light"
+              className="button-link secondary"
               onClick={() => handleOpenQuote('', 'quote')}
             >
               <span>Request a Custom Quote</span>
@@ -919,7 +919,7 @@ export function App() {
                 </a>
                 <button
                   type="button"
-                  className="button-link ghost"
+                  className="button-link secondary"
                   onClick={() => handleOpenQuote('Custom 900kg Electruck', 'quote')}
                 >
                   <span>Request Similar Build</span>
@@ -1142,14 +1142,14 @@ export function App() {
             </a>
             <button
               type="button"
-              className="button-link primary"
+              className="button-link secondary"
               onClick={() => handleOpenQuote('', 'quote')}
             >
               <span>Request a Quote</span>
             </button>
             <button
               type="button"
-              className="button-link ghost-light"
+              className="button-link secondary"
               onClick={() => handleOpenQuote('', 'demo')}
             >
               <span>Book a Demo</span>

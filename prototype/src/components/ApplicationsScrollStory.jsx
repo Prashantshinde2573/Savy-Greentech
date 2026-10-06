@@ -399,7 +399,7 @@ export function ApplicationsScrollStory({ onInquireSector }) {
                             <span>Request Proposal for {app.title}</span>
                             <PiArrowRight aria-hidden="true" />
                           </button>
-                          <a href="/products" className="button-link ghost btn-sm">
+                          <a href="/products" className="button-link secondary btn-sm">
                             <span>View Matching Vehicles</span>
                           </a>
                         </div>
@@ -488,7 +488,7 @@ export function ApplicationsScrollStory({ onInquireSector }) {
                           <span>Request Proposal for {app.title}</span>
                           <PiArrowRight aria-hidden="true" />
                         </button>
-                        <a href="/products" className="button-link ghost btn-sm">
+                        <a href="/products" className="button-link secondary btn-sm">
                           <span>View Matching Vehicles</span>
                         </a>
                       </div>

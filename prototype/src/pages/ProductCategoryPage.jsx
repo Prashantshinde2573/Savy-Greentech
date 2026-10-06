@@ -126,7 +126,7 @@ export function ProductCategoryPage({ categorySlug }) {
                 <span>Request Fleet Quote</span>
                 <PiArrowRight aria-hidden="true" />
               </button>
-              <a href="#models-grid" className="button-link ghost">
+              <a href="#models-grid" className="button-link secondary">
                 <span>Explore Models ({categoryProducts.length})</span>
                 <PiArrowRight aria-hidden="true" />
               </a>
@@ -304,7 +304,7 @@ export function ProductCategoryPage({ categorySlug }) {
                 <span>Request a Custom Quote</span>
                 <PiArrowRight aria-hidden="true" />
               </button>
-              <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" className="button-link ghost-light">
+              <a href="https://wa.me/919284830085" target="_blank" rel="noreferrer" className="button-link secondary">
                 <PiPhoneCall aria-hidden="true" />
                 <span>Talk to Sales Engineer</span>
               </a>

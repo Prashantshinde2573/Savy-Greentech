@@ -249,7 +249,7 @@ export function MediaPage() {
                   <PiDownloadSimple aria-hidden="true" />
                   <span>Download Press Kit (ZIP)</span>
                 </button>
-                <a href="mailto:info@savygreentech.com?subject=Press%20Inquiry%20SAVY" className="button-link ghost-light">
+                <a href="mailto:info@savygreentech.com?subject=Press%20Inquiry%20SAVY" className="button-link secondary">
                   <PiEnvelopeSimple aria-hidden="true" />
                   <span>Contact Media Relations</span>
                 </a>
@@ -283,7 +283,7 @@ export function MediaPage() {
               <span>Send Media Inquiry</span>
               <PiArrowRight aria-hidden="true" />
             </a>
-            <a className="button-link ghost-light" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
+            <a className="button-link secondary" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
               <span>Chat on WhatsApp</span>
               <PiArrowRight aria-hidden="true" />
             </a>

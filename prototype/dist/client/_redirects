@@ -1,2 +1,0 @@
-/api/wp/*    https://savygreen.upwardsonwards.io/wp-json/wp/v2/:splat   200!
-/*           /index.html                                                200

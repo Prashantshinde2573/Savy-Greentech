@@ -1593,24 +1593,104 @@ main#top:not(.home-old) .hero-shade {
   );
 }
 
+/* ==========================================================================
+   PRIMARY vs SECONDARY CTA BUTTON SYSTEM
+   - Primary: var(--mint, #ccf434) with dark text var(--midnight, #071c1b)
+   - Secondary: #36C8E9 (electric cyan) with dark text var(--midnight, #071c1b)
+   - Secondary on Hover: transitions smoothly to Primary CTA color (var(--mint, #ccf434))
+   ========================================================================== */
+
 main#top:not(.home-old) .button-link.button-link,
+main#top:not(.home-old) .button-link.primary,
+main#top:not(.home-old) .button-link.mint,
 main#top:not(.home-old) .site-header .nav .nav-cta,
 main#top:not(.home-old) .site-header:not(.scrolled):not(.menu-active) .nav-cta {
-  background: var(--mint);
-  border-color: var(--mint);
+  background: var(--mint, #ccf434);
+  border-color: var(--mint, #ccf434);
   border-radius: 100px;
-  color: var(--midnight);
+  color: var(--midnight, #071c1b);
   transition: background-color .32s cubic-bezier(0.22, 1, 0.36, 1), border-color .32s cubic-bezier(0.22, 1, 0.36, 1), color .32s cubic-bezier(0.22, 1, 0.36, 1), border-radius .32s cubic-bezier(0.22, 1, 0.36, 1), transform .32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 main#top:not(.home-old) .button-link.button-link:hover,
 main#top:not(.home-old) .button-link.button-link:focus-visible,
+main#top:not(.home-old) .button-link.primary:hover,
+main#top:not(.home-old) .button-link.primary:focus-visible,
+main#top:not(.home-old) .button-link.mint:hover,
+main#top:not(.home-old) .button-link.mint:focus-visible,
 main#top:not(.home-old) .site-header .nav .nav-cta:hover,
 main#top:not(.home-old) .site-header .nav .nav-cta:focus-visible {
-  background: var(--electric-blue);
-  border-color: var(--electric-blue);
+  background: #36C8E9;
+  border-color: #36C8E9;
   border-radius: 8px;
-  color: var(--midnight);
+  color: var(--midnight, #071c1b);
+}
+
+/* Secondary CTA Styling across all sections */
+.button-link.secondary,
+.button-link.ghost-light,
+.button-link.ghost,
+main#top:not(.home-old) .button-link.secondary,
+main#top:not(.home-old) .button-link.ghost-light,
+main#top:not(.home-old) .button-link.ghost {
+  background: #36C8E9 !important;
+  border: 1px solid #36C8E9 !important;
+  border-radius: 100px !important;
+  color: var(--midnight, #071c1b) !important;
+  transition: background-color .32s cubic-bezier(0.22, 1, 0.36, 1), border-color .32s cubic-bezier(0.22, 1, 0.36, 1), color .32s cubic-bezier(0.22, 1, 0.36, 1), border-radius .32s cubic-bezier(0.22, 1, 0.36, 1), transform .32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.button-link.secondary:hover,
+.button-link.secondary:focus-visible,
+.button-link.ghost-light:hover,
+.button-link.ghost-light:focus-visible,
+.button-link.ghost:hover,
+.button-link.ghost:focus-visible,
+main#top:not(.home-old) .button-link.secondary:hover,
+main#top:not(.home-old) .button-link.secondary:focus-visible,
+main#top:not(.home-old) .button-link.ghost-light:hover,
+main#top:not(.home-old) .button-link.ghost-light:focus-visible,
+main#top:not(.home-old) .button-link.ghost:hover,
+main#top:not(.home-old) .button-link.ghost:focus-visible {
+  background: var(--mint, #ccf434) !important;
+  border-color: var(--mint, #ccf434) !important;
+  border-radius: 8px !important;
+  color: var(--midnight, #071c1b) !important;
+  transform: translateY(-2px) !important;
+}
+
+.contact-inner div .button-link.secondary,
+.contact-inner div .button-link.ghost-light,
+.contact-inner .button-link.secondary,
+.contact-inner .button-link.ghost-light,
+.hero-actions .button-link.secondary,
+.hero-actions .button-link.ghost-light,
+.cs-actions .button-link.secondary,
+.cs-actions .button-link.ghost,
+.product-final-cta-actions .button-link.secondary,
+.product-final-cta-actions .button-link.ghost-light,
+.kit-actions .button-link.secondary,
+.kit-actions .button-link.ghost-light {
+  background: #36C8E9 !important;
+  border-color: #36C8E9 !important;
+  color: var(--midnight, #071c1b) !important;
+}
+
+.contact-inner div .button-link.secondary:hover,
+.contact-inner div .button-link.ghost-light:hover,
+.contact-inner .button-link.secondary:hover,
+.contact-inner .button-link.ghost-light:hover,
+.hero-actions .button-link.secondary:hover,
+.hero-actions .button-link.ghost-light:hover,
+.cs-actions .button-link.secondary:hover,
+.cs-actions .button-link.ghost:hover,
+.product-final-cta-actions .button-link.secondary:hover,
+.product-final-cta-actions .button-link.ghost-light:hover,
+.kit-actions .button-link.secondary:hover,
+.kit-actions .button-link.ghost-light:hover {
+  background: var(--mint, #ccf434) !important;
+  border-color: var(--mint, #ccf434) !important;
+  color: var(--midnight, #071c1b) !important;
 }
 
 main#top:not(.home-old) .application-controls button {

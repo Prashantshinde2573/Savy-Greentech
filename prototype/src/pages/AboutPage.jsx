@@ -466,11 +466,11 @@ export function AboutPage() {
             <h1 id="about-title">Building India’s electric future.</h1>
             <p className="about-hero-copy">Over a decade of purpose-built electric mobility.</p>
             <div className="hero-actions">
-              <a className="button-link mint" href="/technology">
+              <a className="button-link primary" href="/technology">
                 <span>Explore Manufacturing Capability</span>
                 <PiArrowRight aria-hidden="true" />
               </a>
-              <a className="button-link ghost-light" href="/contact">
+              <a className="button-link secondary" href="/contact">
                 <span>Talk to SAVY</span>
                 <PiArrowRight aria-hidden="true" />
               </a>
@@ -961,7 +961,7 @@ export function AboutPage() {
               <span>Discuss Your Requirement</span>
               <PiArrowRight aria-hidden="true" />
             </button>
-            <a className="button-link ghost-light" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
+            <a className="button-link secondary" href="https://wa.me/919284830085" target="_blank" rel="noreferrer">
               <span>Talk on WhatsApp</span>
               <PiArrowRight aria-hidden="true" />
             </a>

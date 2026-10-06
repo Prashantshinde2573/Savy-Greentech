@@ -33,12 +33,12 @@ export function PageHero({
           <div className="hero-actions">
             {primaryCtaText && (
               onPrimaryClick ? (
-                <button type="button" className="button-link mint" onClick={onPrimaryClick}>
+                <button type="button" className="button-link primary" onClick={onPrimaryClick}>
                   <span>{primaryCtaText}</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
               ) : (
-                <a className="button-link mint" href={primaryCtaHref}>
+                <a className="button-link primary" href={primaryCtaHref}>
                   <span>{primaryCtaText}</span>
                   <PiArrowRight aria-hidden="true" />
                 </a>
@@ -46,12 +46,12 @@ export function PageHero({
             )}
             {secondaryCtaText && (
               onSecondaryClick ? (
-                <button type="button" className="button-link ghost-light" onClick={onSecondaryClick}>
+                <button type="button" className="button-link secondary" onClick={onSecondaryClick}>
                   <span>{secondaryCtaText}</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
               ) : (
-                <a className="button-link ghost-light" href={secondaryCtaHref}>
+                <a className="button-link secondary" href={secondaryCtaHref}>
                   <span>{secondaryCtaText}</span>
                   <PiArrowRight aria-hidden="true" />
                 </a>
