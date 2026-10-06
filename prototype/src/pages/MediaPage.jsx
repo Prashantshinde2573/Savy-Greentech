@@ -121,6 +121,9 @@ export function MediaPage() {
           fetchIndustryParticipationPosts()
         ]);
 
+        console.log("Media posts:", { newsPosts, industryPosts });
+        console.log("Media post count:", (newsPosts?.length || 0) + (industryPosts?.length || 0));
+
         if (isMounted) {
           setPressList(newsPosts || []);
           setAwardsList(industryPosts || []);

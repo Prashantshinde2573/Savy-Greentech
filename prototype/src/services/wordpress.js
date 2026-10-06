@@ -500,28 +500,59 @@ export function mapWordPressMediaPost(post) {
  */
 export async function fetchAllWpPosts({ search = '', categories = '', categoriesExclude = '', slug = '' } = {}) {
   const base = getWordpressApiBase();
-  try {
-    const params = new URLSearchParams();
-    params.set('_embed', '1');
-    params.set('per_page', '100');
-    if (search) params.set('search', search);
-    if (categories) params.set('categories', String(categories));
-    if (categoriesExclude) params.set('categories_exclude', String(categoriesExclude));
-    if (slug) params.set('slug', slug);
+  const params = new URLSearchParams();
+  params.set('_embed', '1');
+  params.set('per_page', '100');
+  params.set('_t', Date.now().toString());
+  if (search) params.set('search', search);
+  if (categories) params.set('categories', String(categories));
+  if (categoriesExclude) params.set('categories_exclude', String(categoriesExclude));
+  if (slug) params.set('slug', slug);
 
-    const url = `${base}/posts?${params.toString()}`;
-    console.log("CMS API:", url);
-    const res = await fetch(url);
-    console.log("CMS response:", res.status);
+  const primaryUrl = `${base}/posts?${params.toString()}`;
+  console.log("CMS API URL:", primaryUrl);
+
+  try {
+    let res = await fetch(primaryUrl);
+    console.log("CMS response status:", res.status);
+    console.log("CMS response ok:", res.ok);
+
+    if (!res.ok) {
+      // If direct fetch returned error and we're not on /api/wp, try relative proxy
+      if (typeof window !== 'undefined' && !base.startsWith('/api/wp')) {
+        const proxyUrl = `/api/wp/posts?${params.toString()}`;
+        console.warn("Retrying fetch via proxy:", proxyUrl);
+        res = await fetch(proxyUrl);
+      }
+    }
+
     if (!res.ok) {
       throw new Error(`WordPress API error: ${res.status} ${res.statusText}`);
     }
 
     const data = await res.json();
+    console.log("CMS raw data:", data);
     const posts = Array.isArray(data) ? data : [];
-    console.log("CMS posts:", posts.length);
+    console.log("CMS post count:", Array.isArray(data) ? data.length : "NOT ARRAY");
     return posts;
   } catch (err) {
+    // If CORS or network error occurred, try proxy fallback
+    if (typeof window !== 'undefined' && !base.startsWith('/api/wp')) {
+      try {
+        const proxyUrl = `/api/wp/posts?${params.toString()}`;
+        console.warn("Direct fetch failed (likely CORS), falling back to proxy:", proxyUrl);
+        const proxyRes = await fetch(proxyUrl);
+        if (proxyRes.ok) {
+          const proxyData = await proxyRes.json();
+          console.log("CMS raw data (via proxy):", proxyData);
+          const posts = Array.isArray(proxyData) ? proxyData : [];
+          console.log("CMS post count (via proxy):", posts.length);
+          return posts;
+        }
+      } catch (proxyErr) {
+        console.error("Proxy fallback also failed:", proxyErr);
+      }
+    }
     console.error("CMS fetch error:", err);
     throw err;
   }

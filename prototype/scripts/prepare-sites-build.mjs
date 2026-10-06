@@ -20,8 +20,8 @@ mkdirSync(path.join(dist, ".openai"), { recursive: true });
 copyFileSync(worker, path.join(dist, "server", "index.js"));
 copyFileSync(hosting, path.join(dist, ".openai", "hosting.json"));
 
-// Ensure Netlify _redirects file exists with SPA rule
-const redirectContent = "/*    /index.html   200\n";
+// Ensure Netlify _redirects file exists with API proxy and SPA rules
+const redirectContent = "/api/wp/*    https://savygreen.upwardsonwards.io/wp-json/wp/v2/:splat   200!\n/*           /index.html                                                200\n";
 writeFileSync(path.join(clientDist, "_redirects"), redirectContent);
 
 // Mirror build output to root dist directory as well (for Netlify default root builds)

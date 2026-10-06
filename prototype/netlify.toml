@@ -3,6 +3,12 @@
   publish = "dist/client"
 
 [[redirects]]
+  from = "/api/wp/*"
+  to = "https://savygreen.upwardsonwards.io/wp-json/wp/v2/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
