@@ -512,19 +512,22 @@ h1, h2, h3, h4, h5, h6,
   .hero-actions {
     display: flex !important;
     flex-direction: column !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
     gap: 12px !important;
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
   .hero-actions .button-link {
-    width: 100% !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    align-self: flex-start !important;
     min-height: 48px !important;
-    text-align: center !important;
-    justify-content: center !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
     margin: 0 !important;
   }
 }
@@ -1717,6 +1720,113 @@ main#top:not(.home-old) .button-link.ghost:focus-visible {
 .nav-cta:focus-visible svg,
 .nav-cta:focus-visible > svg {
   transform: translateX(4px) !important;
+}
+
+/* ==========================================================================
+   GLOBAL MOBILE CTA BUTTON SIZING & ALIGNMENT SYSTEM
+   - Sizing: Buttons are content-sized (width: fit-content; max-width: 100%)
+   - Left-aligned sections: Buttons align to the left and stack naturally
+   - Center-aligned sections: Buttons remain horizontally centered
+   - Form submit buttons with .full-width remain 100% width
+   ========================================================================== */
+
+.button-link,
+a.button-link,
+button.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.button-link.full-width,
+a.button-link.full-width,
+button.button-link.full-width,
+form button[type="submit"].button-link.full-width {
+  width: 100% !important;
+  max-width: 100% !important;
+  justify-content: center !important;
+}
+
+@media (max-width: 768px) {
+  /* 1. Global left-aligned action groups on mobile */
+  .hero-actions,
+  .sector-actions,
+  .category-hero-actions,
+  .custom-box-actions,
+  .engineering-cta-wrap,
+  .kit-actions,
+  .product-hero-ctas,
+  .app-hero-actions,
+  .cat-hero-actions,
+  .career-hero-actions,
+  .dealer-hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hero-actions .button-link,
+  .sector-actions .button-link,
+  .sector-actions button,
+  .category-hero-actions .button-link,
+  .custom-box-actions .button-link,
+  .engineering-cta-wrap .button-link,
+  .kit-actions .button-link,
+  .product-hero-ctas .button-link,
+  .app-hero-actions .button-link,
+  .cat-hero-actions .button-link,
+  .career-hero-actions .button-link,
+  .dealer-hero-actions .button-link {
+    width: fit-content !important;
+    max-width: 100% !important;
+    align-self: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    margin: 0 !important;
+  }
+
+  /* 2. Global center-aligned action groups on mobile */
+  .contact-inner > div,
+  .contact-inner .product-final-cta-actions,
+  .product-final-cta-actions,
+  .cs-actions,
+  .center-action,
+  .no-products-found {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  .contact-inner .button-link,
+  .product-final-cta-actions .button-link,
+  .cs-actions .button-link,
+  .center-action .button-link,
+  .no-products-found .button-link {
+    width: fit-content !important;
+    max-width: 100% !important;
+    align-self: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+  }
 }
 
 main#top:not(.home-old) .application-controls button {
@@ -5645,16 +5755,20 @@ select::-ms-expand {
   .sector-actions {
     display: flex !important;
     flex-direction: column !important;
+    align-items: flex-start !important;
     gap: 10px !important;
     width: 100% !important;
   }
 
   .sector-actions .button-link,
   .sector-actions button {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 11px 16px !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    align-self: flex-start !important;
+    justify-content: flex-start !important;
+    padding: 11px 18px !important;
     font-size: 13px !important;
+    text-align: left !important;
   }
 }
 
@@ -9788,10 +9902,11 @@ select::-ms-expand {
     line-height: 1.5;
   }
   .manufacturing-overview-section .engineering-cta-wrap .button-link {
-    width: 100%;
-    max-width: 320px;
-    justify-content: center;
-    text-align: center;
+    width: fit-content;
+    max-width: 100%;
+    align-self: flex-start;
+    justify-content: flex-start;
+    text-align: left;
   }
 
   /* Section 8: Executive Leadership Carousel */
@@ -9858,12 +9973,16 @@ select::-ms-expand {
   }
   .contact-inner > div {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    max-width: 320px;
+    margin-inline: auto;
     gap: 12px;
   }
   .contact-inner .button-link {
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
+    align-self: center;
     text-align: center;
     justify-content: center;
   }
@@ -9872,12 +9991,15 @@ select::-ms-expand {
 @media (max-width: 680px) {
   .hero-actions {
     width: 100%;
-    max-width: 320px;
+    max-width: 100%;
+    align-items: flex-start;
   }
   .hero-actions .button-link {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    align-self: flex-start;
+    text-align: left;
+    justify-content: flex-start;
   }
   .intro .metrics {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -11324,8 +11446,9 @@ select::-ms-expand {
     align-items: center;
   }
   .cs-actions .button-link {
-    width: 100%;
-    max-width: 320px;
+    width: fit-content;
+    max-width: 100%;
+    align-self: center;
     justify-content: center;
     text-align: center;
   }
