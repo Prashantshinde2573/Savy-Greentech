@@ -12,6 +12,10 @@ export function getWordpressApiBase() {
     (typeof process !== 'undefined' && process.env && process.env.VITE_WORDPRESS_API_URL) ||
     DEFAULT_API_BASE;
 
+  if (!base || base === 'undefined' || base === 'null' || typeof base !== 'string') {
+    base = DEFAULT_API_BASE;
+  }
+
   base = base.trim().replace(/\/+$/, '');
   if (base.endsWith('/posts')) {
     base = base.slice(0, -6);
@@ -506,15 +510,19 @@ export async function fetchAllWpPosts({ search = '', categories = '', categories
     if (slug) params.set('slug', slug);
 
     const url = `${base}/posts?${params.toString()}`;
+    console.log("CMS API:", url);
     const res = await fetch(url);
+    console.log("CMS response:", res.status);
     if (!res.ok) {
       throw new Error(`WordPress API error: ${res.status} ${res.statusText}`);
     }
 
     const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    const posts = Array.isArray(data) ? data : [];
+    console.log("CMS posts:", posts.length);
+    return posts;
   } catch (err) {
-    console.error('Failed to fetch WordPress posts:', err);
+    console.error("CMS fetch error:", err);
     throw err;
   }
 }
