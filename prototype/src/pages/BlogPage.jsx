@@ -4,7 +4,6 @@ import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
-import { blogCategories, blogs as fallbackBlogs } from '../data/blogs';
 import { fetchPublishedPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
@@ -23,21 +22,14 @@ export function BlogPage() {
     async function loadPosts() {
       try {
         setLoading(true);
-        const wpPosts = await fetchPublishedPosts(100);
+        const wpPosts = await fetchPublishedPosts();
         if (isMounted) {
-          if (wpPosts && wpPosts.length > 0) {
-            // Merge with fallback blogs to ensure complete library, prioritizing WP CMS posts
-            const existingSlugs = new Set(wpPosts.map((p) => p.slug));
-            const merged = [...wpPosts, ...fallbackBlogs.filter((fb) => !existingSlugs.has(fb.slug))];
-            setPosts(merged);
-          } else {
-            setPosts(fallbackBlogs);
-          }
+          setPosts(wpPosts || []);
         }
       } catch (err) {
-        console.warn('WordPress API unavailable, loading fallback blogs:', err);
+        console.error('WordPress API error for blog posts:', err);
         if (isMounted) {
-          setPosts(fallbackBlogs);
+          setPosts([]);
         }
       } finally {
         if (isMounted) {
@@ -62,17 +54,12 @@ export function BlogPage() {
     setCurrentPage(1);
   };
 
-  // Compute dynamic categories merged with default categories (strictly excluding Careers)
+  // Compute dynamic categories directly from posts
   const categoriesList = useMemo(() => {
     const set = new Set(['All']);
     posts.forEach((p) => {
-      if (p.category && p.category.toLowerCase() !== 'careers') {
+      if (p.category && p.category.toLowerCase() !== 'careers' && p.category.toLowerCase() !== 'news') {
         set.add(p.category);
-      }
-    });
-    blogCategories.forEach((c) => {
-      if (c.toLowerCase() !== 'careers') {
-        set.add(c);
       }
     });
     return Array.from(set);
@@ -206,7 +193,7 @@ export function BlogPage() {
                       </h3>
                       <p className="blog-excerpt">{post.excerpt}</p>
                       <a href={`/blog/${post.slug}`} className="blog-read-link">
-                        Read full article <PiArrowRight aria-hidden="true" />
+                        Read Full Blog <PiArrowRight aria-hidden="true" />
                       </a>
                     </div>
                   </article>

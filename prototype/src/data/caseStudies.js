@@ -21,7 +21,7 @@ export const caseStudies = [
       '/assets/for-ramdev-study.webp',
       '/assets/applications/electruck-logistics.webp'
     ],
-    relatedProduct: 'custom-electruck-900kg',
+    relatedProduct: 'electruck',
     relatedIndustry: 'industrial-logistics'
   },
   {
@@ -45,7 +45,7 @@ export const caseStudies = [
       '/assets/products/classic-golf/Classic Golf1.webp',
       '/assets/products/club-cart/Club Cart1.webp'
     ],
-    relatedProduct: 'classic-golf',
+    relatedProduct: 'classic-golf-cart',
     relatedIndustry: 'healthcare'
   },
   {
@@ -95,7 +95,7 @@ export const caseStudies = [
       '/assets/electruck.jpg',
       '/assets/applications/airport.jpg'
     ],
-    relatedProduct: 'classic-golf',
+    relatedProduct: 'classic-golf-cart',
     relatedIndustry: 'defence-campuses'
   }
 ];

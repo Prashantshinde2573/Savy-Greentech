@@ -233,19 +233,11 @@ export function ProductCategoryPage({ categorySlug }) {
                   <div className="cat-product-card-actions">
                     <a
                       href={`/products/${product.slug}`}
-                      className="button-link ghost-dark btn-sm"
+                      className="button-link primary btn-sm"
                     >
-                      <span>View Specifications</span>
+                      <span>View Product</span>
                       <PiArrowRight aria-hidden="true" />
                     </a>
-                    <button
-                      type="button"
-                      className="button-link primary btn-sm"
-                      onClick={() => handleOpenQuote(product.name)}
-                    >
-                      <span>Enquire Now</span>
-                      <PiArrowRight aria-hidden="true" />
-                    </button>
                   </div>
                 </div>
               </article>

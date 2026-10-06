@@ -169,7 +169,7 @@ export function ProductDetailPage({ slug }) {
     <main id="top" className="product-detail-page" ref={pageRef}>
       <SEOHead
         title={`${product.name} | Electric Vehicle Specifications & Quote`}
-        description={`${product.name} by SAVY Greentech: ${product.shortCopy} View full technical specifications, features, applications, and book a demonstration.`}
+        description={`${product.name} by SAVY Greentech: ${product.shortCopy} View full technical specifications, features, applications, and request a quotation.`}
       />
       <SiteHeader currentPath="/products" transparentInitially={false} />
 
@@ -266,14 +266,6 @@ export function ProductDetailPage({ slug }) {
                 >
                   <span>Request a Quote</span>
                   <PiArrowRight aria-hidden="true" />
-                </button>
-
-                <button
-                  type="button"
-                  className="button-link ghost"
-                  onClick={() => openQuoteModal('demo')}
-                >
-                  <span>Book a Demo</span>
                 </button>
 
                 {product.pdf ? (
@@ -560,7 +552,7 @@ export function ProductDetailPage({ slug }) {
                   <p className="catalog-card-tagline">{rel.tagline || rel.shortCopy}</p>
                   <div className="catalog-card-actions">
                     <a href={`/products/${rel.slug}`} className="button-link primary btn-sm">
-                      <span>View Specs</span>
+                      <span>View Product</span>
                       <PiArrowRight aria-hidden="true" />
                     </a>
                   </div>
@@ -590,15 +582,15 @@ export function ProductDetailPage({ slug }) {
           <p className="eyebrow mint">Ready to place your order?</p>
           <h2 id="product-final-cta">Get direct OEM pricing for {product.name}</h2>
           <p>Contact our sales and engineering team for volume pricing, customization, and delivery timelines.</p>
-          <div>
+          <div className="product-final-cta-actions">
             <button type="button" className="button-link primary" onClick={() => openQuoteModal('quote')}>
               <span>Request a Quote</span>
               <PiArrowRight aria-hidden="true" />
             </button>
-            <button type="button" className="button-link ghost-light" onClick={() => openQuoteModal('demo')}>
-              <span>Book a Demo</span>
+            <a href="/contact" className="button-link ghost-light">
+              <span>Contact Sales Team</span>
               <PiArrowRight aria-hidden="true" />
-            </button>
+            </a>
           </div>
         </div>
       </section>

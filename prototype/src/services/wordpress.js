@@ -136,7 +136,7 @@ export function extractFeaturedImage(post, fallback = '/assets/classic-golf.jpeg
 }
 
 /**
- * Fetches all categories from the CMS (cached).
+ * Fetches all categories from WordPress CMS (cached).
  */
 export async function fetchAllCategories() {
   if (cachedCategories) return cachedCategories;
@@ -165,35 +165,83 @@ export async function fetchAllCategories() {
 }
 
 /**
- * Helper to get categorized category IDs.
+ * Helper to get category classifications.
  */
 export async function getCategoryClassification() {
   const cats = await fetchAllCategories();
   const careerIds = [];
-  const mediaIds = [];
+  const newsIds = [];
+  const industryIds = [];
 
   cats.forEach((c) => {
     const slug = (c.slug || '').toLowerCase();
     const name = (c.name || '').toLowerCase();
 
-    if (slug === 'careers' || name.includes('career') || name.includes('job')) {
+    if (slug === 'careers' || name === 'careers' || name.includes('career')) {
       careerIds.push(c.id);
+    } else if (slug === 'news' || name === 'news') {
+      newsIds.push(c.id);
     } else if (
-      ['news', 'media', 'industry-participation', 'press', 'exhibitions', 'awards-exhibitions'].includes(slug) ||
-      name.includes('news') ||
-      name.includes('media') ||
+      slug === 'industry-participation' ||
+      slug === 'exhibitions' ||
       name.includes('industry participation') ||
-      name.includes('press')
+      name.includes('exhibition')
     ) {
-      mediaIds.push(c.id);
+      industryIds.push(c.id);
     }
   });
 
   return {
     careerIds,
-    mediaIds,
-    blogExcludeIds: [...careerIds, ...mediaIds],
+    newsIds,
+    industryIds,
+    mediaIds: [...newsIds, ...industryIds],
+    blogExcludeIds: [...careerIds, ...newsIds, ...industryIds],
   };
+}
+
+
+
+/**
+ * Checks if a WordPress post belongs to Industry Participation.
+ */
+export function isIndustryParticipationPost(post) {
+  if (!post) return false;
+  if (Array.isArray(post.categories) && post.categories.includes(5)) return true;
+  if (Array.isArray(post.class_list) && post.class_list.includes('category-industry-participation')) return true;
+  const terms = getPostTerms(post);
+  if (
+    terms.some(
+      (t) =>
+        t.slug === 'industry-participation' ||
+        t.slug === 'exhibitions' ||
+        t.name.toLowerCase().includes('industry participation') ||
+        t.name.toLowerCase().includes('exhibition')
+    )
+  ) {
+    return true;
+  }
+  if (post.acf && (post.acf.exhibitions_name || post.acf.year)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Checks if a WordPress post is a News post.
+ */
+export function isNewsPost(post) {
+  if (!post) return false;
+  if (Array.isArray(post.categories) && post.categories.includes(4)) return true;
+  if (Array.isArray(post.class_list) && post.class_list.includes('category-news')) return true;
+  const terms = getPostTerms(post);
+  if (terms.some((t) => t.slug === 'news' || t.name.toLowerCase() === 'news')) {
+    return true;
+  }
+  if (post.acf && (post.acf.publication_name || post.acf.news_link)) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -201,6 +249,8 @@ export async function getCategoryClassification() {
  */
 export function isCareerPost(post) {
   if (!post) return false;
+  if (Array.isArray(post.categories) && post.categories.includes(2)) return true;
+  if (Array.isArray(post.class_list) && post.class_list.includes('category-careers')) return true;
   const terms = getPostTerms(post);
   if (
     terms.some(
@@ -212,7 +262,7 @@ export function isCareerPost(post) {
   ) {
     return true;
   }
-  if (post.acf && (post.acf.job_type || post.acf.experience || post.acf.job_location)) {
+  if (post.acf && (post.acf.job_type || post.acf.job_category || (post.acf.experience && !isIndustryParticipationPost(post)))) {
     return true;
   }
   if (post.slug && post.slug.toLowerCase().startsWith('job-')) {
@@ -222,31 +272,10 @@ export function isCareerPost(post) {
 }
 
 /**
- * Checks if a WordPress post belongs to Media / News / Industry Participation.
+ * Checks if a WordPress post belongs to Media (News OR Industry Participation).
  */
 export function isMediaPost(post) {
-  if (!post) return false;
-  const terms = getPostTerms(post);
-  const mediaSlugs = ['news', 'media', 'industry-participation', 'press', 'press-release', 'awards-exhibitions', 'exhibitions'];
-  if (
-    terms.some(
-      (t) =>
-        mediaSlugs.includes(t.slug) ||
-        mediaSlugs.some((s) => t.name.toLowerCase().includes(s))
-    )
-  ) {
-    return true;
-  }
-  if (
-    post.acf &&
-    (post.acf.news_name ||
-      post.acf['participation_in_:'] ||
-      post.acf.article_link ||
-      post.acf.publication)
-  ) {
-    return true;
-  }
-  return false;
+  return isNewsPost(post) || isIndustryParticipationPost(post);
 }
 
 /**
@@ -254,7 +283,7 @@ export function isMediaPost(post) {
  */
 export function isBlogPost(post) {
   if (!post) return false;
-  return !isCareerPost(post) && !isMediaPost(post);
+  return !isCareerPost(post) && !isNewsPost(post) && !isIndustryParticipationPost(post);
 }
 
 /**
@@ -267,7 +296,8 @@ export function extractBlogCategory(post) {
       t.slug !== 'careers' &&
       t.slug !== 'blog' &&
       t.slug !== 'uncategorized' &&
-      !['news', 'media', 'industry-participation', 'press'].includes(t.slug)
+      t.slug !== 'news' &&
+      t.slug !== 'industry-participation'
   );
   if (nonGeneral) {
     return nonGeneral.name;
@@ -280,75 +310,6 @@ export function extractBlogCategory(post) {
 }
 
 /**
- * Extracts Department for Career posts.
- */
-export function extractCareerDepartment(post) {
-  if (post.acf && post.acf.department) {
-    return stripHtml(post.acf.department);
-  }
-  const terms = getPostTerms(post).filter((t) => t.taxonomy === 'category');
-  const nonCareer = terms.find((t) => t.slug !== 'careers');
-  return nonCareer?.name || 'Engineering & Operations';
-}
-
-/**
- * Extracts Career metadata (Location, Experience, Employment Type).
- */
-export function extractCareerTags(post) {
-  const terms = getPostTerms(post).filter((t) => t.taxonomy === 'post_tag');
-  const tagList = terms.map((t) => t.name);
-
-  let location = (post.acf && post.acf.location) || '';
-  let experience = (post.acf && post.acf.experience) || '';
-  let type = (post.acf && (post.acf.job_type || post.acf.employment_type)) || '';
-
-  const remaining = [];
-
-  tagList.forEach((tag) => {
-    const raw = stripHtml(tag).trim();
-    if (!raw) return;
-    const lower = raw.toLowerCase();
-
-    if (
-      !experience &&
-      (/(\d+\s*[-–+to]+\s*\d*|\d+\+?)\s*(year|yr|month|exp)/i.test(lower) ||
-        lower.includes('experience') ||
-        lower.includes('fresher'))
-    ) {
-      experience = raw;
-      return;
-    }
-
-    if (
-      !type &&
-      (lower.includes('full') ||
-        lower.includes('part') ||
-        lower.includes('contract') ||
-        lower.includes('intern') ||
-        lower.includes('remote') ||
-        lower.includes('time') ||
-        lower.includes('hybrid'))
-    ) {
-      type = raw;
-      return;
-    }
-
-    remaining.push(raw);
-  });
-
-  if (remaining.length > 0 && !location) location = remaining.shift();
-  if (remaining.length > 0 && !experience) experience = remaining.shift();
-  if (remaining.length > 0 && !type) type = remaining.shift();
-
-  return {
-    location: location || 'Pune, India',
-    experience: experience || '2+ Years',
-    type: type || 'Full Time',
-    allTags: tagList,
-  };
-}
-
-/**
  * Maps a raw WordPress post to a clean Blog structure.
  */
 export function mapWordPressBlogPost(post) {
@@ -357,13 +318,17 @@ export function mapWordPressBlogPost(post) {
   const cleanExcerpt = stripHtml(post.excerpt?.rendered || post.excerpt || '');
   const content = post.content?.rendered || (typeof post.content === 'string' ? post.content : '') || '';
   const image = extractFeaturedImage(post, fallbackImage);
+  const primaryTerm = post._embedded?.['wp:term']?.[0]?.[0];
+  const categoryName = primaryTerm?.name ? stripHtml(primaryTerm.name) : extractBlogCategory(post);
 
   return {
     id: post.id || post.ID || post.slug,
     slug: post.slug,
     title: cleanTitle,
     rawTitle: post.title?.rendered || post.title || '',
-    category: extractBlogCategory(post),
+    category: categoryName,
+    categorySlug: primaryTerm?.slug || '',
+    categoryId: primaryTerm?.id || null,
     date: formatBlogDate(post.date),
     isoDate: post.date,
     author: post._embedded?.author?.[0]?.name || post.author?.name || 'SAVY Engineering Team',
@@ -371,30 +336,50 @@ export function mapWordPressBlogPost(post) {
     image,
     excerpt: cleanExcerpt,
     content,
+    acf: post.acf || {},
     status: post.status || 'publish',
   };
 }
 
 /**
  * Maps a raw WordPress post to a clean Career/Job structure.
+ * ACF fields: location, experience, job_type, job_category
  */
 export function mapWordPressCareerPost(post) {
   const cleanTitle = stripHtml(post.title?.rendered || post.title || '');
   const content = post.content?.rendered || (typeof post.content === 'string' ? post.content : '') || '';
   const cleanExcerpt = stripHtml(post.excerpt?.rendered || post.excerpt || '');
-  const tagsMeta = extractCareerTags(post);
+  const acf = (post.acf && typeof post.acf === 'object' && !Array.isArray(post.acf)) ? post.acf : {};
+
+  const location = acf.location ? stripHtml(acf.location) : '';
+  const experience = acf.experience ? stripHtml(acf.experience) : '';
+  const jobType = acf.job_type ? stripHtml(acf.job_type) : '';
+  const jobCategory = acf.job_category ? stripHtml(acf.job_category) : '';
+  const department = jobCategory;
 
   return {
+    ...post,
     id: post.id || post.ID || post.slug,
     slug: post.slug,
     title: cleanTitle,
     rawTitle: post.title?.rendered || post.title || '',
-    department: extractCareerDepartment(post),
-    location: (post.acf && post.acf.location) || tagsMeta.location,
-    experience: (post.acf && post.acf.experience) || tagsMeta.experience,
-    type: (post.acf && (post.acf.job_type || post.acf.employment_type)) || tagsMeta.type,
-    description: cleanExcerpt || (content ? stripHtml(content).slice(0, 180) + '...' : 'Exciting career opportunity at SAVY Greentech.'),
+    department,
+    job_category: jobCategory,
+    jobCategory,
+    location,
+    experience,
+    type: jobType,
+    job_type: jobType,
+    jobType,
+    description: cleanExcerpt || (content ? stripHtml(content).slice(0, 180) + '...' : ''),
     content,
+    acf: {
+      location,
+      experience,
+      job_type: jobType,
+      job_category: jobCategory,
+      ...acf,
+    },
     date: formatBlogDate(post.date),
     isoDate: post.date,
     status: post.status || 'publish',
@@ -402,155 +387,148 @@ export function mapWordPressCareerPost(post) {
 }
 
 /**
- * Maps a raw WordPress post to a clean Media/News structure.
+ * Maps a raw WordPress post to a clean News structure.
+ * ACF fields: publication_name, news_link, date
+ * The Read Article button MUST use post.acf?.news_link.
  */
-export function mapWordPressMediaPost(post) {
+export function mapWordPressNewsPost(post) {
   const cleanTitle = stripHtml(post.title?.rendered || post.title || '');
-  const cleanExcerpt = stripHtml(post.excerpt?.rendered || post.excerpt || post.content?.rendered || '');
+  const cleanExcerpt = stripHtml(post.excerpt?.rendered || post.excerpt || '');
   const content = post.content?.rendered || (typeof post.content === 'string' ? post.content : '') || '';
-  const image = extractFeaturedImage(post, '/assets/design-option-1.png');
-  const terms = getPostTerms(post);
+  const image = extractFeaturedImage(post, '/assets/news/ipm-premium-electric-mobility.png');
+  const acf = (post.acf && typeof post.acf === 'object' && !Array.isArray(post.acf)) ? post.acf : {};
 
-  const isEvent =
-    Boolean(post.acf && post.acf['participation_in_:']) ||
-    terms.some((t) => t.slug === 'industry-participation' || t.slug === 'exhibitions');
-
-  const publication =
-    (post.acf && (post.acf.news_name || post.acf.publication)) ||
-    'SAVY Press Coverage';
-
-  const href =
-    (post.acf && (post.acf.article_link || post.acf.link)) ||
-    post.link ||
-    '#';
-
-  const category =
-    (post.acf && post.acf['participation_in_:']) ||
-    (terms.find((t) => t.taxonomy === 'category' && t.slug !== 'uncategorized')?.name) ||
-    (isEvent ? 'International Exhibition' : 'News & Coverage');
-
-  const location = (post.acf && post.acf.location) || 'India';
-  const year = (post.acf && post.acf.year) || (post.date ? new Date(post.date).getFullYear().toString() : '2026');
-  const role = (post.acf && (post.acf['participation_in_:'] || post.acf.role)) || 'Exhibitor';
-  const highlight = (post.acf && post.acf.highlight) || '';
+  const publicationName = acf.publication_name ? stripHtml(acf.publication_name) : '';
+  const newsLink = acf.news_link ? String(acf.news_link).trim() : '';
+  const newsDate = acf.date ? stripHtml(acf.date) : '';
+  const metaDate = publicationName && newsDate ? `${publicationName} · ${newsDate}` : (publicationName || newsDate || '');
 
   return {
+    ...post,
     id: post.id || post.ID || post.slug,
     slug: post.slug,
     title: cleanTitle,
+    rawTitle: post.title?.rendered || post.title || '',
     copy: cleanExcerpt,
+    description: cleanExcerpt,
+    excerpt: cleanExcerpt,
     content,
     image,
-    publication,
-    category,
-    href,
-    isEvent,
-    location,
-    year,
-    role,
-    highlight,
-    date: formatBlogDate(post.date),
+    publication: publicationName,
+    publication_name: publicationName,
+    publicationName: publicationName,
+    metaDate,
+    category: metaDate,
+    href: newsLink,
+    news_link: newsLink,
+    newsLink: newsLink,
+    isEvent: false,
+    date: newsDate,
     isoDate: post.date,
+    acf: {
+      publication_name: publicationName,
+      news_link: newsLink,
+      date: newsDate,
+      ...acf,
+    },
     status: post.status || 'publish',
   };
 }
 
 /**
- * Core fetcher with pagination support for WordPress v2 REST API.
+ * Maps a raw WordPress post to a clean Industry Participation structure.
+ * ACF fields: exhibitions_name, location, year
+ * The year MUST come strictly from post.acf?.year.
  */
-export async function fetchWpPosts({
-  page = 1,
-  perPage = 10,
-  search = '',
-  categories = '',
-  categoriesExclude = '',
-  slug = '',
-  status = 'publish',
-} = {}) {
-  const base = getWordpressApiBase();
-  const params = new URLSearchParams();
-  params.set('_embed', '1');
-  if (status) params.set('status', status);
-  if (page) params.set('page', String(page));
-  if (perPage) params.set('per_page', String(perPage));
-  if (search) params.set('search', search);
-  if (categories) params.set('categories', String(categories));
-  if (categoriesExclude) params.set('categories_exclude', String(categoriesExclude));
-  if (slug) params.set('slug', slug);
+export function mapWordPressIndustryParticipationPost(post) {
+  const cleanTitle = stripHtml(post.title?.rendered || post.title || '');
+  const cleanExcerpt = stripHtml(post.excerpt?.rendered || post.excerpt || '');
+  const content = post.content?.rendered || (typeof post.content === 'string' ? post.content : '') || '';
+  const image = extractFeaturedImage(post, '/assets/news/city-pod-netherlands.jpg');
+  const acf = (post.acf && typeof post.acf === 'object' && !Array.isArray(post.acf)) ? post.acf : {};
 
-  const url = `${base}/posts?${params.toString()}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    if (res.status === 404) {
-      return {
-        rawPosts: [],
-        totalPosts: 0,
-        totalPages: 0,
-        currentPage: page,
-        perPage,
-        hasNextPage: false,
-        hasPrevPage: false,
-      };
-    }
-    throw new Error(`WordPress API error: ${res.status} ${res.statusText}`);
-  }
-
-  const totalPostsHeader = res.headers.get('X-WP-Total') || res.headers.get('x-wp-total') || '0';
-  const totalPagesHeader = res.headers.get('X-WP-TotalPages') || res.headers.get('x-wp-totalpages') || '1';
-
-  const totalPosts = parseInt(totalPostsHeader, 10) || 0;
-  const totalPages = parseInt(totalPagesHeader, 10) || (totalPosts > 0 ? Math.ceil(totalPosts / perPage) : 1);
-  const data = await res.json();
-  const rawPosts = Array.isArray(data) ? data : [];
+  const exhibitionsName = acf.exhibitions_name ? stripHtml(acf.exhibitions_name) : '';
+  const location = acf.location ? stripHtml(acf.location) : '';
+  const year = acf.year ? String(acf.year).trim() : '';
+  const role = acf.role ? stripHtml(acf.role) : '';
 
   return {
-    rawPosts,
-    totalPosts,
-    totalPages,
-    currentPage: Number(page),
-    perPage: Number(perPage),
-    hasNextPage: Number(page) < totalPages,
-    hasPrevPage: Number(page) > 1,
+    ...post,
+    id: post.id || post.ID || post.slug,
+    slug: post.slug,
+    title: cleanTitle,
+    rawTitle: post.title?.rendered || post.title || '',
+    copy: cleanExcerpt,
+    description: cleanExcerpt,
+    excerpt: cleanExcerpt,
+    content,
+    image,
+    category: exhibitionsName,
+    exhibitions_name: exhibitionsName,
+    exhibitionsName: exhibitionsName,
+    location,
+    year,
+    role,
+    acf: {
+      exhibitions_name: exhibitionsName,
+      location,
+      year,
+      role,
+      ...acf,
+    },
+    isEvent: true,
+    status: post.status || 'publish',
   };
 }
 
 /**
- * Fetches published Blog posts with pagination.
- * Supports both `fetchPublishedPosts(20)` (returns Array) and `fetchPublishedPosts({ page: 1, perPage: 10, search: '', category: '' })` (returns paginated object).
+ * Combined Media post mapper.
  */
-export async function fetchPublishedPosts(options = 20) {
-  const isNumber = typeof options === 'number';
-  const { page = 1, perPage = isNumber ? options : 10, search = '', category = '' } = isNumber ? {} : options || {};
+export function mapWordPressMediaPost(post) {
+  if (isIndustryParticipationPost(post)) {
+    return mapWordPressIndustryParticipationPost(post);
+  }
+  return mapWordPressNewsPost(post);
+}
 
+/**
+ * WordPress API fetcher that retrieves published posts preserving full raw data and ACF fields.
+ */
+export async function fetchAllWpPosts({ search = '', categories = '', categoriesExclude = '', slug = '' } = {}) {
+  const base = getWordpressApiBase();
   try {
-    const { blogExcludeIds } = await getCategoryClassification();
-    const categoriesExclude = blogExcludeIds.length > 0 ? blogExcludeIds.join(',') : '';
+    const params = new URLSearchParams();
+    params.set('_embed', '1');
+    params.set('per_page', '100');
+    if (search) params.set('search', search);
+    if (categories) params.set('categories', String(categories));
+    if (categoriesExclude) params.set('categories_exclude', String(categoriesExclude));
+    if (slug) params.set('slug', slug);
 
-    const result = await fetchWpPosts({
-      page,
-      perPage,
-      search,
-      categories: category || undefined,
-      categoriesExclude,
-    });
-
-    const blogPosts = result.rawPosts
-      .filter((p) => p.status === 'publish' && isBlogPost(p))
-      .map(mapWordPressBlogPost);
-
-    if (isNumber) {
-      return blogPosts;
+    const url = `${base}/posts?${params.toString()}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`WordPress API error: ${res.status} ${res.statusText}`);
     }
 
-    return {
-      posts: blogPosts,
-      totalPosts: result.totalPosts,
-      totalPages: result.totalPages,
-      currentPage: result.currentPage,
-      perPage: result.perPage,
-      hasNextPage: result.hasNextPage,
-      hasPrevPage: result.hasPrevPage,
-    };
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('Failed to fetch WordPress posts:', err);
+    throw err;
+  }
+}
+
+/**
+ * Fetches all published Blog posts from the WordPress CMS.
+ * Returns exactly the published items present in WordPress CMS.
+ */
+export async function fetchPublishedPosts() {
+  try {
+    const rawPosts = await fetchAllWpPosts();
+    return rawPosts
+      .filter((p) => p.status === 'publish' && isBlogPost(p))
+      .map(mapWordPressBlogPost);
   } catch (err) {
     console.error('Failed to fetch WordPress blog posts:', err);
     throw err;
@@ -558,40 +536,15 @@ export async function fetchPublishedPosts(options = 20) {
 }
 
 /**
- * Fetches published Career posts.
+ * Fetches all published Career posts from the WordPress CMS.
+ * Returns exactly the published items present in WordPress CMS.
  */
-export async function fetchCareerPosts(options = 50) {
-  const isNumber = typeof options === 'number';
-  const { page = 1, perPage = isNumber ? options : 50, search = '' } = isNumber ? {} : options || {};
-
+export async function fetchCareerPosts() {
   try {
-    const { careerIds } = await getCategoryClassification();
-    const categories = careerIds.length > 0 ? careerIds.join(',') : '';
-
-    const result = await fetchWpPosts({
-      page,
-      perPage,
-      search,
-      categories: categories || undefined,
-    });
-
-    const careers = result.rawPosts
+    const rawPosts = await fetchAllWpPosts();
+    return rawPosts
       .filter((p) => p.status === 'publish' && isCareerPost(p))
       .map(mapWordPressCareerPost);
-
-    if (isNumber) {
-      return careers;
-    }
-
-    return {
-      posts: careers,
-      totalPosts: result.totalPosts,
-      totalPages: result.totalPages,
-      currentPage: result.currentPage,
-      perPage: result.perPage,
-      hasNextPage: result.hasNextPage,
-      hasPrevPage: result.hasPrevPage,
-    };
   } catch (err) {
     console.error('Failed to fetch WordPress career posts:', err);
     throw err;
@@ -599,40 +552,46 @@ export async function fetchCareerPosts(options = 50) {
 }
 
 /**
- * Fetches published Media, News, and Exhibition posts.
+ * Fetches all published News posts from the WordPress CMS.
+ * Returns exactly the published items present in WordPress CMS with their custom article links.
  */
-export async function fetchMediaPosts(options = 50) {
-  const isNumber = typeof options === 'number';
-  const { page = 1, perPage = isNumber ? options : 50, search = '' } = isNumber ? {} : options || {};
-
+export async function fetchNewsPosts() {
   try {
-    const { mediaIds } = await getCategoryClassification();
-    const categories = mediaIds.length > 0 ? mediaIds.join(',') : '';
+    const rawPosts = await fetchAllWpPosts();
+    return rawPosts
+      .filter((p) => p.status === 'publish' && isNewsPost(p))
+      .map(mapWordPressNewsPost);
+  } catch (err) {
+    console.error('Failed to fetch WordPress news posts:', err);
+    throw err;
+  }
+}
 
-    const result = await fetchWpPosts({
-      page,
-      perPage,
-      search,
-      categories: categories || undefined,
-    });
+/**
+ * Fetches all published Industry Participation posts from the WordPress CMS.
+ * Returns exactly the published items present in WordPress CMS with their custom ACF year.
+ */
+export async function fetchIndustryParticipationPosts() {
+  try {
+    const rawPosts = await fetchAllWpPosts();
+    return rawPosts
+      .filter((p) => p.status === 'publish' && isIndustryParticipationPost(p))
+      .map(mapWordPressIndustryParticipationPost);
+  } catch (err) {
+    console.error('Failed to fetch WordPress industry participation posts:', err);
+    throw err;
+  }
+}
 
-    const mediaItems = result.rawPosts
+/**
+ * Fetches all published Media items (both News and Industry Participation).
+ */
+export async function fetchMediaPosts() {
+  try {
+    const rawPosts = await fetchAllWpPosts();
+    return rawPosts
       .filter((p) => p.status === 'publish' && isMediaPost(p))
       .map(mapWordPressMediaPost);
-
-    if (isNumber) {
-      return mediaItems;
-    }
-
-    return {
-      posts: mediaItems,
-      totalPosts: result.totalPosts,
-      totalPages: result.totalPages,
-      currentPage: result.currentPage,
-      perPage: result.perPage,
-      hasNextPage: result.hasNextPage,
-      hasPrevPage: result.hasPrevPage,
-    };
   } catch (err) {
     console.error('Failed to fetch WordPress media posts:', err);
     throw err;
@@ -645,9 +604,9 @@ export async function fetchMediaPosts(options = 50) {
 export async function fetchPostBySlug(slug) {
   if (!slug) return null;
   try {
-    const result = await fetchWpPosts({ slug: encodeURIComponent(slug), perPage: 1 });
-    if (!result.rawPosts || result.rawPosts.length === 0) return null;
-    const post = result.rawPosts[0];
+    const rawPosts = await fetchAllWpPosts({ slug: encodeURIComponent(slug) });
+    if (!rawPosts || rawPosts.length === 0) return null;
+    const post = rawPosts[0];
     if (isCareerPost(post)) return null;
     return mapWordPressBlogPost(post);
   } catch (error) {
@@ -662,9 +621,9 @@ export async function fetchPostBySlug(slug) {
 export async function fetchCareerPostBySlug(slug) {
   if (!slug) return null;
   try {
-    const result = await fetchWpPosts({ slug: encodeURIComponent(slug), perPage: 1 });
-    if (!result.rawPosts || result.rawPosts.length === 0) return null;
-    const post = result.rawPosts[0];
+    const rawPosts = await fetchAllWpPosts({ slug: encodeURIComponent(slug) });
+    if (!rawPosts || rawPosts.length === 0) return null;
+    const post = rawPosts[0];
     if (!isCareerPost(post)) return null;
     return mapWordPressCareerPost(post);
   } catch (error) {
@@ -679,9 +638,9 @@ export async function fetchCareerPostBySlug(slug) {
 export async function fetchMediaPostBySlug(slug) {
   if (!slug) return null;
   try {
-    const result = await fetchWpPosts({ slug: encodeURIComponent(slug), perPage: 1 });
-    if (!result.rawPosts || result.rawPosts.length === 0) return null;
-    const post = result.rawPosts[0];
+    const rawPosts = await fetchAllWpPosts({ slug: encodeURIComponent(slug) });
+    if (!rawPosts || rawPosts.length === 0) return null;
+    const post = rawPosts[0];
     if (!isMediaPost(post)) return null;
     return mapWordPressMediaPost(post);
   } catch (error) {
@@ -689,3 +648,13 @@ export async function fetchMediaPostBySlug(slug) {
     throw error;
   }
 }
+
+// Unified aliases
+export const getPosts = fetchAllWpPosts;
+export const getBlogs = fetchPublishedPosts;
+export const getCareers = fetchCareerPosts;
+export const getNews = fetchNewsPosts;
+export const getIndustryParticipation = fetchIndustryParticipationPosts;
+export const getMedia = fetchMediaPosts;
+export const getPostBySlug = fetchPostBySlug;
+export const getCareerBySlug = fetchCareerPostBySlug;

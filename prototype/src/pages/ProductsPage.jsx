@@ -224,16 +224,9 @@ export function ProductsPage() {
 
                     <div className="catalog-card-actions">
                       <a href={`/products/${vehicle.slug}`} className="button-link primary btn-sm">
-                        <span>View Specs &amp; Details</span>
+                        <span>View Product</span>
                         <PiArrowRight aria-hidden="true" />
                       </a>
-                      <button
-                        type="button"
-                        className="button-link ghost-dark btn-sm"
-                        onClick={() => handleInquire(vehicle.name)}
-                      >
-                        <span>Enquire</span>
-                      </button>
                     </div>
                   </div>
                 </article>

@@ -5,15 +5,109 @@ import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
-import { pressArticles as fallbackPress, amsterdamFeature, awardsExhibitions as fallbackAwards } from '../data/newsMedia';
-import { fetchMediaPosts } from '../services/wordpress';
+import { amsterdamFeature } from '../data/newsMedia';
+import { fetchNewsPosts, fetchIndustryParticipationPosts, stripHtml } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
+
+function NewsCard({ post }) {
+  const acf = (post?.acf && !Array.isArray(post.acf)) ? post.acf : {};
+  const publicationName = acf.publication_name ? stripHtml(acf.publication_name) : (post?.publication_name || post?.publicationName || '');
+  const newsDate = acf.date ? stripHtml(acf.date) : (post?.date || '');
+  const newsLink = acf.news_link ? String(acf.news_link).trim() : (post?.news_link || post?.newsLink || post?.href || '');
+  const metaDate = publicationName && newsDate ? `${publicationName} · ${newsDate}` : (publicationName || newsDate || '');
+  const title = stripHtml(post?.title?.rendered || post?.title || '');
+  const description = stripHtml(post?.excerpt?.rendered || post?.excerpt || post?.description || '');
+  const image = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url || post?.image || '/assets/news/ipm-premium-electric-mobility.png';
+
+  return (
+    <article className="press-card">
+      {newsLink ? (
+        <a className="press-card-media" href={newsLink} target="_blank" rel="noopener noreferrer" aria-label={`Read ${title}`}>
+          <img src={image} alt={title} loading="lazy" />
+          {publicationName && <span className="press-publication-tag">{publicationName}</span>}
+        </a>
+      ) : (
+        <div className="press-card-media">
+          <img src={image} alt={title} loading="lazy" />
+          {publicationName && <span className="press-publication-tag">{publicationName}</span>}
+        </div>
+      )}
+      <div className="press-card-body">
+        {metaDate && <p className="press-meta-date">{metaDate}</p>}
+        <h3>
+          {newsLink ? (
+            <a href={newsLink} target="_blank" rel="noopener noreferrer">{title}</a>
+          ) : (
+            <span>{title}</span>
+          )}
+        </h3>
+        {description && <p className="press-excerpt">{description}</p>}
+        {newsLink && (
+          <a className="press-read-link" href={newsLink} target="_blank" rel="noopener noreferrer">
+            Read full article <PiArrowRight aria-hidden="true" />
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function IndustryParticipationCard({ post }) {
+  const acf = (post?.acf && !Array.isArray(post.acf)) ? post.acf : {};
+  const year = acf.year || post?.year || '';
+  const exhibitionsName = acf.exhibitions_name ? stripHtml(acf.exhibitions_name) : (post?.exhibitions_name || post?.exhibitionsName || post?.category || '');
+  const location = acf.location ? stripHtml(acf.location) : (post?.location || '');
+  const title = stripHtml(post?.title?.rendered || post?.title || '');
+  const description = stripHtml(post?.excerpt?.rendered || post?.excerpt || post?.description || '');
+  const image = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url || post?.image || '/assets/news/city-pod-netherlands.jpg';
+  const role = acf.role ? stripHtml(acf.role) : (post?.role || '');
+  const highlight = acf.highlight ? stripHtml(acf.highlight) : (post?.highlight || '');
+
+  return (
+    <article className="award-card">
+      <div className="award-card-media">
+        <img src={image} alt={title} loading="lazy" />
+        <div className="award-media-overlay" />
+        {year && (
+          <span className="award-year-badge">
+            <PiCalendarBlank aria-hidden="true" />
+            <span>{year}</span>
+          </span>
+        )}
+        {highlight && (
+          <span className="award-highlight-pill">
+            <PiSparkle aria-hidden="true" />
+            <span>{highlight}</span>
+          </span>
+        )}
+      </div>
+      <div className="award-card-body">
+        <div className="award-meta-row">
+          {exhibitionsName && <span className="award-category">{exhibitionsName}</span>}
+          {location && (
+            <span className="award-location">
+              <PiMapPin aria-hidden="true" />
+              <span>{location}</span>
+            </span>
+          )}
+        </div>
+        <h3>{title}</h3>
+        {description && <p>{description}</p>}
+        {role && (
+          <div className="award-card-footer">
+            <span className="award-role-tag">{role}</span>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
 
 export function MediaPage() {
   const pageRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [pressList, setPressList] = useState(fallbackPress);
-  const [awardsList, setAwardsList] = useState(fallbackAwards);
+  const [pressList, setPressList] = useState([]);
+  const [awardsList, setAwardsList] = useState([]);
   const [loading, setLoading] = useState(true);
   usePageAnimations(pageRef);
 
@@ -22,33 +116,20 @@ export function MediaPage() {
     async function loadMedia() {
       try {
         setLoading(true);
-        const wpMedia = await fetchMediaPosts(50);
-        if (isMounted && wpMedia && wpMedia.length > 0) {
-          const livePress = wpMedia.filter((m) => !m.isEvent);
-          const liveAwards = wpMedia.filter((m) => m.isEvent);
+        const [newsPosts, industryPosts] = await Promise.all([
+          fetchNewsPosts(),
+          fetchIndustryParticipationPosts()
+        ]);
 
-          if (livePress.length > 0) {
-            const liveTitles = new Set(livePress.map((p) => p.title.toLowerCase()));
-            setPressList([...livePress, ...fallbackPress.filter((fp) => !liveTitles.has(fp.title.toLowerCase()))]);
-          } else {
-            setPressList(fallbackPress);
-          }
-
-          if (liveAwards.length > 0) {
-            const liveAwardTitles = new Set(liveAwards.map((a) => a.title.toLowerCase()));
-            setAwardsList([...liveAwards, ...fallbackAwards.filter((fa) => !liveAwardTitles.has(fa.title.toLowerCase()))]);
-          } else {
-            setAwardsList(fallbackAwards);
-          }
-        } else if (isMounted) {
-          setPressList(fallbackPress);
-          setAwardsList(fallbackAwards);
+        if (isMounted) {
+          setPressList(newsPosts || []);
+          setAwardsList(industryPosts || []);
         }
       } catch (err) {
-        console.warn('WordPress API unavailable for media, using fallback data:', err);
+        console.error('WordPress API error for media:', err);
         if (isMounted) {
-          setPressList(fallbackPress);
-          setAwardsList(fallbackAwards);
+          setPressList([]);
+          setAwardsList([]);
         }
       } finally {
         if (isMounted) {
@@ -129,23 +210,8 @@ export function MediaPage() {
           </div>
 
           <div className="press-articles-grid">
-            {pressList.map((story) => (
-              <article className="press-card" key={story.id || story.title}>
-                <a className="press-card-media" href={story.href} target="_blank" rel="noreferrer" aria-label={`Read ${story.title}`}>
-                  <img src={story.image} alt="" loading="lazy" />
-                  <span className="press-publication-tag">{story.publication}</span>
-                </a>
-                <div className="press-card-body">
-                  <p className="press-meta-date">{story.category}</p>
-                  <h3>
-                    <a href={story.href} target="_blank" rel="noreferrer">{story.title}</a>
-                  </h3>
-                  <p className="press-excerpt">{story.copy}</p>
-                  <a className="press-read-link" href={story.href} target="_blank" rel="noreferrer">
-                    Read full article <PiArrowRight aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
+            {pressList.map((post) => (
+              <NewsCard key={post.id || post.slug} post={post} />
             ))}
           </div>
         </div>
@@ -160,37 +226,8 @@ export function MediaPage() {
           </div>
 
           <div className="awards-grid">
-            {awardsList.map((item, idx) => (
-              <article className="award-card" key={item.id || idx}>
-                <div className="award-card-media">
-                  <img src={item.image} alt={item.title} loading="lazy" />
-                  <div className="award-media-overlay" />
-                  <span className="award-year-badge">
-                    <PiCalendarBlank aria-hidden="true" />
-                    <span>{item.year}</span>
-                  </span>
-                  {item.highlight && (
-                    <span className="award-highlight-pill">
-                      <PiSparkle aria-hidden="true" />
-                      <span>{item.highlight}</span>
-                    </span>
-                  )}
-                </div>
-                <div className="award-card-body">
-                  <div className="award-meta-row">
-                    <span className="award-category">{item.category}</span>
-                    <span className="award-location">
-                      <PiMapPin aria-hidden="true" />
-                      <span>{item.location}</span>
-                    </span>
-                  </div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description || item.copy}</p>
-                  <div className="award-card-footer">
-                    <span className="award-role-tag">{item.role}</span>
-                  </div>
-                </div>
-              </article>
+            {awardsList.map((post) => (
+              <IndustryParticipationCard key={post.id || post.slug} post={post} />
             ))}
           </div>
         </div>

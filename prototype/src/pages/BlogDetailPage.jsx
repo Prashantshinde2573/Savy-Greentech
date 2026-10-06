@@ -4,14 +4,12 @@ import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
-import { blogs as fallbackBlogs, getBlogBySlug } from '../data/blogs';
 import { fetchPostBySlug, fetchPublishedPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 export function BlogDetailPage({ slug }) {
   const pageRef = useRef(null);
-  const fallback = getBlogBySlug(slug) || fallbackBlogs[0];
-  const [post, setPost] = useState(fallback);
+  const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,26 +22,23 @@ export function BlogDetailPage({ slug }) {
         setLoading(true);
         // Fetch current post by slug
         const wpPost = await fetchPostBySlug(slug);
-        if (isMounted && wpPost) {
-          setPost(wpPost);
-        } else if (isMounted) {
-          setPost(getBlogBySlug(slug) || fallbackBlogs[0]);
+        if (isMounted) {
+          setPost(wpPost || null);
         }
 
         // Fetch related posts
-        const allWpPosts = await fetchPublishedPosts(6);
-        if (isMounted) {
-          const list = (allWpPosts && allWpPosts.length > 0 ? allWpPosts : fallbackBlogs)
+        const allWpPosts = await fetchPublishedPosts();
+        if (isMounted && allWpPosts) {
+          const list = allWpPosts
             .filter((b) => b.slug !== slug)
             .slice(0, 2);
           setRelatedPosts(list);
         }
       } catch (err) {
-        console.warn(`Error loading blog "${slug}", using fallback:`, err);
+        console.error(`Error loading blog "${slug}":`, err);
         if (isMounted) {
-          const fb = getBlogBySlug(slug) || fallbackBlogs[0];
-          setPost(fb);
-          setRelatedPosts(fallbackBlogs.filter((b) => b.slug !== fb.slug).slice(0, 2));
+          setPost(null);
+          setRelatedPosts([]);
         }
       } finally {
         if (isMounted) {
@@ -70,6 +65,45 @@ export function BlogDetailPage({ slug }) {
       alert('Article link copied to clipboard!');
     }
   };
+
+  if (loading) {
+    return (
+      <main id="top" className="blog-detail-page" ref={pageRef}>
+        <SiteHeader currentPath="/blog" transparentInitially={false} />
+        <section className="section-white article-header-section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+          <div className="container article-container" style={{ textAlign: 'center', minHeight: '300px' }}>
+            <p className="eyebrow mint">SAVY Insights</p>
+            <h2>Loading Article...</h2>
+          </div>
+        </section>
+        <SiteFooter />
+      </main>
+    );
+  }
+
+  if (!post) {
+    return (
+      <main id="top" className="blog-detail-page" ref={pageRef}>
+        <SiteHeader currentPath="/blog" transparentInitially={false} />
+        <section className="section-white article-header-section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+          <div className="container article-container" style={{ textAlign: 'center', minHeight: '300px' }}>
+            <div className="breadcrumb-inner" style={{ marginBottom: '24px' }}>
+              <a href="/blog" className="breadcrumb-back-link">
+                <PiArrowLeft aria-hidden="true" /> Back to Insights
+              </a>
+            </div>
+            <h2>Article Not Found</h2>
+            <p style={{ marginTop: '12px', marginBottom: '24px' }}>The article you are looking for is no longer available or has been moved.</p>
+            <a href="/blog" className="button-link primary">
+              <span>View All Articles</span>
+              <PiArrowRight aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+        <SiteFooter />
+      </main>
+    );
+  }
 
   return (
     <main id="top" className="blog-detail-page" ref={pageRef}>
@@ -188,7 +222,7 @@ export function BlogDetailPage({ slug }) {
                     </h3>
                     <p className="blog-excerpt">{rel.excerpt}</p>
                     <a href={`/blog/${rel.slug}`} className="blog-read-link">
-                      Read article <PiArrowRight aria-hidden="true" />
+                      Read Full Blog <PiArrowRight aria-hidden="true" />
                     </a>
                   </div>
                 </article>

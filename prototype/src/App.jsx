@@ -1137,7 +1137,7 @@ export function App() {
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a className="button-link primary" href="#vehicles">
+            <a className="button-link primary" href="/products">
               <span>Explore Products</span>
             </a>
             <button

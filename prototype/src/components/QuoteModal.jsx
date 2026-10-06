@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PiArrowRight, PiCheckCircle, PiX } from 'react-icons/pi';
+import { products } from '../data/products';
 
 export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote' }) {
   const [submitted, setSubmitted] = useState(false);
@@ -12,6 +13,12 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
     quantity: '1',
     message: ''
   });
+
+  useEffect(() => {
+    if (defaultVehicle) {
+      setFormData((prev) => ({ ...prev, vehicle: defaultVehicle }));
+    }
+  }, [defaultVehicle, isOpen]);
 
   if (!isOpen) return null;
 
@@ -101,13 +108,23 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
               <div className="form-grid-2">
                 <div className="form-group">
                   <label htmlFor="modal-vehicle">Vehicle Model</label>
-                  <input
+                  <select
                     id="modal-vehicle"
-                    type="text"
-                    placeholder="e.g. Classic Golf, Electruck, Dump Truck"
                     value={formData.vehicle}
                     onChange={(e) => setFormData({ ...formData, vehicle: e.target.value })}
-                  />
+                  >
+                    <option value="">Select vehicle model...</option>
+                    {formData.vehicle && !products.some((p) => p.name === formData.vehicle) && (
+                      <option value={formData.vehicle}>{formData.vehicle}</option>
+                    )}
+                    {products.map((p) => (
+                      <option key={p.slug} value={p.name}>
+                        {p.name} ({p.categoryName})
+                      </option>
+                    ))}
+                    <option value="Custom SPV / Bespoke Solution">Custom SPV / Bespoke Fleet Solution</option>
+                    <option value="Multiple Vehicles / Institutional Fleet">Multiple Vehicles / Institutional Fleet</option>
+                  </select>
                 </div>
                 <div className="form-group">
                   <label htmlFor="modal-qty">Fleet Quantity</label>

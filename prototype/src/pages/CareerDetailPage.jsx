@@ -3,21 +3,19 @@ import { PiArrowLeft, PiArrowRight, PiBriefcase, PiCheckCircle, PiClock, PiFileA
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { SEOHead } from '../components/SEOHead';
-import { getCareerBySlug, openPositions as fallbackPositions } from '../data/careers';
 import { fetchCareerPostBySlug } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 export function CareerDetailPage({ slug }) {
   const pageRef = useRef(null);
-  const fallback = getCareerBySlug(slug) || fallbackPositions[0];
-  const [job, setJob] = useState(fallback);
+  const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    role: fallback ? fallback.title : '',
+    role: '',
     portfolio: '',
     message: ''
   });
@@ -34,17 +32,13 @@ export function CareerDetailPage({ slug }) {
             setJob(wpJob);
             setFormData((prev) => ({ ...prev, role: wpJob.title }));
           } else {
-            const fb = getCareerBySlug(slug) || fallbackPositions[0];
-            setJob(fb);
-            setFormData((prev) => ({ ...prev, role: fb.title }));
+            setJob(null);
           }
         }
       } catch (err) {
-        console.warn(`Error loading career post "${slug}":`, err);
+        console.error(`Error loading career post "${slug}":`, err);
         if (isMounted) {
-          const fb = getCareerBySlug(slug) || fallbackPositions[0];
-          setJob(fb);
-          setFormData((prev) => ({ ...prev, role: fb.title }));
+          setJob(null);
         }
       } finally {
         if (isMounted) {
@@ -71,6 +65,45 @@ export function CareerDetailPage({ slug }) {
       formElem.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  if (loading) {
+    return (
+      <main id="top" className="career-detail-page" ref={pageRef}>
+        <SiteHeader currentPath="/careers" transparentInitially={false} />
+        <section className="section-white article-header-section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+          <div className="container article-container" style={{ textAlign: 'center', minHeight: '300px' }}>
+            <p className="eyebrow mint">SAVY Careers</p>
+            <h2>Loading Position Details...</h2>
+          </div>
+        </section>
+        <SiteFooter />
+      </main>
+    );
+  }
+
+  if (!job) {
+    return (
+      <main id="top" className="career-detail-page" ref={pageRef}>
+        <SiteHeader currentPath="/careers" transparentInitially={false} />
+        <section className="section-white article-header-section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+          <div className="container article-container" style={{ textAlign: 'center', minHeight: '300px' }}>
+            <div className="breadcrumb-inner" style={{ marginBottom: '24px' }}>
+              <a href="/careers" className="breadcrumb-back-link">
+                <PiArrowLeft aria-hidden="true" /> Back to Open Positions
+              </a>
+            </div>
+            <h2>Position Not Found</h2>
+            <p style={{ marginTop: '12px', marginBottom: '24px' }}>The position you are looking for is no longer active or has been moved.</p>
+            <a href="/careers" className="button-link primary">
+              <span>View All Open Positions</span>
+              <PiArrowRight aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+        <SiteFooter />
+      </main>
+    );
+  }
 
   return (
     <main id="top" className="career-detail-page" ref={pageRef}>

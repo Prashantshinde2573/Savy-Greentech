@@ -4,6 +4,7 @@ import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
+import { products } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
 export function ContactPage() {
@@ -143,13 +144,20 @@ export function ContactPage() {
 
                     <div className="form-group">
                       <label htmlFor="c-req">Vehicle of Interest / Requirement</label>
-                      <input
+                      <select
                         id="c-req"
-                        type="text"
-                        placeholder="e.g. 4 Classic Golf Carts, 2 Dump Tippers, or Custom EV"
                         value={formData.requirement}
                         onChange={(e) => setFormData({ ...formData, requirement: e.target.value })}
-                      />
+                      >
+                        <option value="">Select a vehicle of interest...</option>
+                        {products.map((p) => (
+                          <option key={p.slug} value={p.name}>
+                            {p.name} ({p.categoryName})
+                          </option>
+                        ))}
+                        <option value="Custom SPV / Bespoke Solution">Custom SPV / Bespoke Fleet Solution</option>
+                        <option value="Multiple Vehicles / Fleet Order">Multiple Vehicles / Institutional Fleet Order</option>
+                      </select>
                     </div>
 
                     <div className="form-group">

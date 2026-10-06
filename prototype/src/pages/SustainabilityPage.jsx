@@ -5,34 +5,58 @@ import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { QuoteModal } from '../components/QuoteModal';
+import { products } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
-const vehicleProfiles = {
-  'golf-cart': {
-    name: 'Electric Golf Cart / Campus Cart',
+const CATEGORY_BENCHMARKS = {
+  'electric-campus-cart': {
     dieselMileage: 14,
     evKwhPerKm: 0.08,
     co2PerLiter: 2.68,
   },
-  'cargo-electruck': {
-    name: 'Electruck Cargo 3-Wheeler',
+  'electric-loading-rickshaw': {
     dieselMileage: 18,
     evKwhPerKm: 0.10,
     co2PerLiter: 2.68,
   },
-  'dump-truck': {
-    name: 'Electric Dump Truck (Sanitation)',
+  'electric-passenger-rickshaw': {
+    dieselMileage: 20,
+    evKwhPerKm: 0.09,
+    co2PerLiter: 2.68,
+  },
+  'waste-collection-rickshaw': {
     dieselMileage: 12,
     evKwhPerKm: 0.12,
     co2PerLiter: 2.68,
   },
-  'passenger-auto': {
-    name: 'Tuk Tuk ë Passenger Auto',
-    dieselMileage: 20,
+  'food-cart': {
+    dieselMileage: 16,
     evKwhPerKm: 0.09,
+    co2PerLiter: 2.68,
+  },
+  'special-purpose-vehicle': {
+    dieselMileage: 12,
+    evKwhPerKm: 0.12,
     co2PerLiter: 2.68,
   }
 };
+
+const DEFAULT_BENCHMARK = {
+  dieselMileage: 16,
+  evKwhPerKm: 0.10,
+  co2PerLiter: 2.68,
+};
+
+// Generate vehicle profiles dynamically for all products
+const vehicleProfiles = products.reduce((acc, product) => {
+  const benchmark = CATEGORY_BENCHMARKS[product.category] || DEFAULT_BENCHMARK;
+  acc[product.slug] = {
+    name: product.name,
+    categoryName: product.categoryName,
+    ...benchmark
+  };
+  return acc;
+}, {});
 
 export function SustainabilityPage() {
   const pageRef = useRef(null);
@@ -40,7 +64,7 @@ export function SustainabilityPage() {
   usePageAnimations(pageRef);
 
   // Calculator State
-  const [selectedVehicleType, setSelectedVehicleType] = useState('cargo-electruck');
+  const [selectedVehicleType, setSelectedVehicleType] = useState('classic-golf-cart');
   const [dailyKm, setDailyKm] = useState(60);
   const [fuelPrice, setFuelPrice] = useState(95);
   const [electricityTariff, setElectricityTariff] = useState(8.5);
@@ -144,10 +168,11 @@ export function SustainabilityPage() {
                   value={selectedVehicleType}
                   onChange={(e) => setSelectedVehicleType(e.target.value)}
                 >
-                  <option value="golf-cart">Electric Golf Cart / Campus Cart</option>
-                  <option value="cargo-electruck">Electruck Cargo 3-Wheeler</option>
-                  <option value="dump-truck">Electric Dump Truck (Sanitation)</option>
-                  <option value="passenger-auto">Tuk Tuk ë Passenger Auto</option>
+                  {products.map((p) => (
+                    <option key={p.slug} value={p.slug}>
+                      {p.name} ({p.categoryName})
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -255,16 +280,6 @@ export function SustainabilityPage() {
                   <strong className="carbon-val">{calculations.co2TonsAvoided} Tons of CO₂ Avoided</strong>
                 </div>
               </div>
-
-              <button
-                type="button"
-                className="button-link primary full-width"
-                onClick={() => setModalOpen(true)}
-                style={{ marginTop: '20px' }}
-              >
-                <span>Request Fleet Cost Analysis</span>
-                <PiArrowRight aria-hidden="true" />
-              </button>
             </div>
           </div>
         </div>

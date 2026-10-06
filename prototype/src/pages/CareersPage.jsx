@@ -4,7 +4,7 @@ import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
-import { openPositions as fallbackPositions, cultureBenefits } from '../data/careers';
+import { cultureBenefits } from '../data/careers';
 import { fetchCareerPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 
@@ -29,18 +29,14 @@ export function CareersPage() {
     async function loadCareers() {
       try {
         setLoading(true);
-        const wpCareers = await fetchCareerPosts(50);
+        const wpCareers = await fetchCareerPosts();
         if (isMounted) {
-          if (wpCareers && wpCareers.length > 0) {
-            setJobs(wpCareers);
-          } else {
-            setJobs(fallbackPositions);
-          }
+          setJobs(wpCareers || []);
         }
       } catch (err) {
-        console.warn('WordPress API unavailable for careers, loading fallback roles:', err);
+        console.error('WordPress API error for careers:', err);
         if (isMounted) {
-          setJobs(fallbackPositions);
+          setJobs([]);
         }
       } finally {
         if (isMounted) {
