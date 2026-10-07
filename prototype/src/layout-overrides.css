@@ -1595,9 +1595,8 @@ main#top:not(.home-old) .hero-shade {
 
 /* ==========================================================================
    PRIMARY vs SECONDARY CTA BUTTON SYSTEM
-   - Primary: var(--mint, #ccf434) with dark text var(--midnight, #071c1b)
-   - Secondary: #36C8E9 (electric cyan) with dark text var(--midnight, #071c1b)
-   - Secondary on Hover: transitions smoothly to Primary CTA color (var(--mint, #ccf434))
+   - Primary: var(--mint, #ccf434) with dark text var(--midnight, #071c1b) -> transforms to #36C8E9 with 8px radius on hover
+   - Secondary: Option 1 – Outline Button (Dark outline on light backgrounds, White outline on dark/video backgrounds) -> morphs from 100px to 8px radius on hover
    ========================================================================== */
 
 main#top:not(.home-old) .button-link.button-link,
@@ -1626,71 +1625,312 @@ main#top:not(.home-old) .site-header .nav .nav-cta:focus-visible {
   color: var(--midnight, #071c1b);
 }
 
-/* Secondary CTA Styling across all sections */
+/* ==========================================================================
+   SECONDARY CTA BUTTON SYSTEM (Option 1 – Outline Button)
+   - Light/White Backgrounds: Transparent background + 1px dark/black border + dark/black text
+   - Dark/Video/Image Backgrounds: Transparent background + 1px white border + white text
+   - Hover Animation: Exactly matches Primary CTA's border-radius transition (100px -> 8px)
+     with duration .32s, easing cubic-bezier(0.22, 1, 0.36, 1), and translateY(-2px)
+   ========================================================================== */
+
+/* 1. Secondary Button on White / Light Backgrounds (Default) */
 .button-link.secondary,
-.button-link.ghost-light,
 .button-link.ghost,
 main#top:not(.home-old) .button-link.secondary,
-main#top:not(.home-old) .button-link.ghost-light,
-main#top:not(.home-old) .button-link.ghost {
-  background: #36C8E9 !important;
-  border: 1px solid #36C8E9 !important;
+main#top:not(.home-old) .button-link.ghost,
+.cs-actions .button-link.secondary,
+.cs-actions .button-link.ghost,
+.kit-actions .button-link.secondary,
+.kit-actions .button-link.ghost,
+.sector-actions .button-link.secondary,
+.custom-box-actions .button-link.secondary,
+.specs-table-actions .button-link.secondary,
+.not-found-actions .button-link.secondary {
+  background: transparent !important;
+  border: 1px solid var(--bark, #071c1b) !important;
   border-radius: 100px !important;
-  color: var(--midnight, #071c1b) !important;
+  color: var(--bark, #071c1b) !important;
   transition: background-color .32s cubic-bezier(0.22, 1, 0.36, 1), border-color .32s cubic-bezier(0.22, 1, 0.36, 1), color .32s cubic-bezier(0.22, 1, 0.36, 1), border-radius .32s cubic-bezier(0.22, 1, 0.36, 1), transform .32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.button-link.secondary svg,
+.button-link.ghost svg,
+.button-link.secondary > svg,
+.button-link.ghost > svg,
+main#top:not(.home-old) .button-link.secondary svg,
+main#top:not(.home-old) .button-link.ghost svg,
+main#top:not(.home-old) .button-link.secondary > svg,
+main#top:not(.home-old) .button-link.ghost > svg {
+  color: var(--bark, #071c1b) !important;
 }
 
 .button-link.secondary:hover,
 .button-link.secondary:focus-visible,
-.button-link.ghost-light:hover,
-.button-link.ghost-light:focus-visible,
 .button-link.ghost:hover,
 .button-link.ghost:focus-visible,
 main#top:not(.home-old) .button-link.secondary:hover,
 main#top:not(.home-old) .button-link.secondary:focus-visible,
-main#top:not(.home-old) .button-link.ghost-light:hover,
-main#top:not(.home-old) .button-link.ghost-light:focus-visible,
 main#top:not(.home-old) .button-link.ghost:hover,
-main#top:not(.home-old) .button-link.ghost:focus-visible {
-  background: var(--mint, #ccf434) !important;
-  border-color: var(--mint, #ccf434) !important;
+main#top:not(.home-old) .button-link.ghost:focus-visible,
+.cs-actions .button-link.secondary:hover,
+.cs-actions .button-link.secondary:focus-visible,
+.cs-actions .button-link.ghost:hover,
+.cs-actions .button-link.ghost:focus-visible,
+.kit-actions .button-link.secondary:hover,
+.kit-actions .button-link.secondary:focus-visible,
+.kit-actions .button-link.ghost:hover,
+.kit-actions .button-link.ghost:focus-visible,
+.sector-actions .button-link.secondary:hover,
+.sector-actions .button-link.secondary:focus-visible,
+.custom-box-actions .button-link.secondary:hover,
+.custom-box-actions .button-link.secondary:focus-visible,
+.specs-table-actions .button-link.secondary:hover,
+.specs-table-actions .button-link.secondary:focus-visible,
+.not-found-actions .button-link.secondary:hover,
+.not-found-actions .button-link.secondary:focus-visible {
+  background: transparent !important;
+  border-color: var(--bark, #071c1b) !important;
   border-radius: 8px !important;
-  color: var(--midnight, #071c1b) !important;
+  color: var(--bark, #071c1b) !important;
   transform: translateY(-2px) !important;
 }
 
-.contact-inner div .button-link.secondary,
-.contact-inner div .button-link.ghost-light,
-.contact-inner .button-link.secondary,
-.contact-inner .button-link.ghost-light,
+/* 2. Secondary Button on Video / Image / Dark / Green Backgrounds */
 .hero-actions .button-link.secondary,
 .hero-actions .button-link.ghost-light,
-.cs-actions .button-link.secondary,
-.cs-actions .button-link.ghost,
+.hero .hero-actions .button-link.secondary,
+.page-hero .hero-actions .button-link.secondary,
+.about-hero .hero-actions .button-link.secondary,
+.contact .button-link.secondary,
+.contact .button-link.ghost-light,
+.contact-inner .button-link.secondary,
+.contact-inner .button-link.ghost-light,
+.contact-inner div .button-link.secondary,
+.contact-inner div .button-link.ghost-light,
 .product-final-cta-actions .button-link.secondary,
 .product-final-cta-actions .button-link.ghost-light,
-.kit-actions .button-link.secondary,
-.kit-actions .button-link.ghost-light {
-  background: #36C8E9 !important;
-  border-color: #36C8E9 !important;
-  color: var(--midnight, #071c1b) !important;
+.category-enquiry-card .button-link.secondary,
+.category-enquiry-card .button-link.ghost,
+.category-enquiry-card .button-link.ghost-light,
+.category-enquiry-banner .category-enquiry-card .button-link.secondary,
+.enquiry-card-actions .button-link.secondary,
+.enquiry-card-actions .button-link.ghost,
+.home-sustainability-section .button-link.secondary,
+.home-sustainability-section .button-link.ghost,
+.sustainability-split .button-link.secondary,
+.intro-impact .button-link.secondary,
+.conversation-copy .button-link.secondary,
+.conversation-details .button-link.secondary,
+.bento-card.theme-dark-green .button-link.secondary,
+.section-dark .button-link.secondary,
+.section-dark .button-link.ghost-light,
+.dark-section .button-link.secondary,
+.dark-section .button-link.ghost-light,
+[data-theme="dark"] .button-link.secondary,
+.bg-dark .button-link.secondary,
+.button-link.ghost-light,
+main#top:not(.home-old) .hero .button-link.secondary,
+main#top:not(.home-old) .page-hero .button-link.secondary,
+main#top:not(.home-old) .about-hero .button-link.secondary,
+main#top:not(.home-old) .hero-actions .button-link.secondary,
+main#top:not(.home-old) .hero-actions .button-link.ghost-light,
+main#top:not(.home-old) .page-hero .hero-actions .button-link.secondary,
+main#top:not(.home-old) .page-hero .hero-actions .button-link.ghost-light,
+main#top:not(.home-old) .about-hero .hero-actions .button-link.secondary,
+main#top:not(.home-old) .contact .button-link.secondary,
+main#top:not(.home-old) .contact .button-link.ghost-light,
+main#top:not(.home-old) .contact-inner .button-link.secondary,
+main#top:not(.home-old) .contact-inner .button-link.ghost-light,
+main#top:not(.home-old) .product-final-cta-actions .button-link.secondary,
+main#top:not(.home-old) .category-enquiry-card .button-link.secondary,
+main#top:not(.home-old) .category-enquiry-card .button-link.ghost,
+main#top:not(.home-old) .category-enquiry-banner .category-enquiry-card .button-link.secondary,
+main#top:not(.home-old) .enquiry-card-actions .button-link.secondary,
+main#top:not(.home-old) .enquiry-card-actions .button-link.ghost,
+main#top:not(.home-old) .home-sustainability-section .button-link.secondary,
+main#top:not(.home-old) .home-sustainability-section .button-link.ghost,
+main#top:not(.home-old) .sustainability-split .button-link.secondary,
+main#top:not(.home-old) .intro-impact .button-link.secondary,
+main#top:not(.home-old) .conversation-copy .button-link.secondary,
+main#top:not(.home-old) .bento-card.theme-dark-green .button-link.secondary,
+main#top:not(.home-old) .section-dark .button-link.secondary,
+main#top:not(.home-old) .dark-section .button-link.secondary,
+main#top:not(.home-old) [data-theme="dark"] .button-link.secondary,
+main#top:not(.home-old) .bg-dark .button-link.secondary,
+main#top:not(.home-old) .button-link.ghost-light {
+  background: transparent !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 100px !important;
+  color: #ffffff !important;
+  transition: background-color .32s cubic-bezier(0.22, 1, 0.36, 1), border-color .32s cubic-bezier(0.22, 1, 0.36, 1), color .32s cubic-bezier(0.22, 1, 0.36, 1), border-radius .32s cubic-bezier(0.22, 1, 0.36, 1), transform .32s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
-.contact-inner div .button-link.secondary:hover,
-.contact-inner div .button-link.ghost-light:hover,
-.contact-inner .button-link.secondary:hover,
-.contact-inner .button-link.ghost-light:hover,
+.hero-actions .button-link.secondary svg,
+.hero-actions .button-link.ghost-light svg,
+.hero-actions .button-link.secondary > svg,
+.hero-actions .button-link.ghost-light > svg,
+.contact .button-link.secondary svg,
+.contact .button-link.secondary > svg,
+.contact .button-link.ghost-light svg,
+.contact .button-link.ghost-light > svg,
+.contact-inner .button-link.secondary svg,
+.contact-inner .button-link.secondary > svg,
+.contact-inner .button-link.ghost-light svg,
+.contact-inner .button-link.ghost-light > svg,
+.product-final-cta-actions .button-link.secondary svg,
+.product-final-cta-actions .button-link.secondary > svg,
+.product-final-cta-actions .button-link.ghost-light svg,
+.product-final-cta-actions .button-link.ghost-light > svg,
+.category-enquiry-card .button-link.secondary svg,
+.category-enquiry-card .button-link.secondary > svg,
+.category-enquiry-card .button-link.ghost svg,
+.category-enquiry-card .button-link.ghost > svg,
+.category-enquiry-banner .category-enquiry-card .button-link.secondary svg,
+.category-enquiry-banner .category-enquiry-card .button-link.secondary > svg,
+.enquiry-card-actions .button-link.secondary svg,
+.enquiry-card-actions .button-link.secondary > svg,
+.home-sustainability-section .button-link.secondary svg,
+.home-sustainability-section .button-link.secondary > svg,
+.button-link.ghost-light svg,
+.button-link.ghost-light > svg,
+main#top:not(.home-old) .hero .button-link.secondary svg,
+main#top:not(.home-old) .page-hero .button-link.secondary svg,
+main#top:not(.home-old) .hero-actions .button-link.secondary svg,
+main#top:not(.home-old) .hero-actions .button-link.secondary > svg,
+main#top:not(.home-old) .contact .button-link.secondary svg,
+main#top:not(.home-old) .contact .button-link.secondary > svg,
+main#top:not(.home-old) .contact-inner .button-link.secondary svg,
+main#top:not(.home-old) .contact-inner .button-link.secondary > svg,
+main#top:not(.home-old) .product-final-cta-actions .button-link.secondary svg,
+main#top:not(.home-old) .product-final-cta-actions .button-link.secondary > svg,
+main#top:not(.home-old) .category-enquiry-card .button-link.secondary svg,
+main#top:not(.home-old) .category-enquiry-card .button-link.secondary > svg,
+main#top:not(.home-old) .category-enquiry-banner .category-enquiry-card .button-link.secondary svg,
+main#top:not(.home-old) .category-enquiry-banner .category-enquiry-card .button-link.secondary > svg,
+main#top:not(.home-old) .enquiry-card-actions .button-link.secondary svg,
+main#top:not(.home-old) .enquiry-card-actions .button-link.secondary > svg,
+main#top:not(.home-old) .home-sustainability-section .button-link.secondary svg,
+main#top:not(.home-old) .home-sustainability-section .button-link.secondary > svg,
+main#top:not(.home-old) .button-link.ghost-light svg,
+main#top:not(.home-old) .button-link.ghost-light > svg {
+  color: #ffffff !important;
+}
+
 .hero-actions .button-link.secondary:hover,
+.hero-actions .button-link.secondary:focus-visible,
 .hero-actions .button-link.ghost-light:hover,
-.cs-actions .button-link.secondary:hover,
-.cs-actions .button-link.ghost:hover,
+.hero-actions .button-link.ghost-light:focus-visible,
+.hero .hero-actions .button-link.secondary:hover,
+.hero .hero-actions .button-link.secondary:focus-visible,
+.page-hero .hero-actions .button-link.secondary:hover,
+.page-hero .hero-actions .button-link.secondary:focus-visible,
+.about-hero .hero-actions .button-link.secondary:hover,
+.about-hero .hero-actions .button-link.secondary:focus-visible,
+.contact .button-link.secondary:hover,
+.contact .button-link.secondary:focus-visible,
+.contact .button-link.ghost-light:hover,
+.contact .button-link.ghost-light:focus-visible,
+.contact-inner .button-link.secondary:hover,
+.contact-inner .button-link.secondary:focus-visible,
+.contact-inner .button-link.ghost-light:hover,
+.contact-inner .button-link.ghost-light:focus-visible,
+.contact-inner div .button-link.secondary:hover,
+.contact-inner div .button-link.secondary:focus-visible,
+.contact-inner div .button-link.ghost-light:hover,
+.contact-inner div .button-link.ghost-light:focus-visible,
 .product-final-cta-actions .button-link.secondary:hover,
+.product-final-cta-actions .button-link.secondary:focus-visible,
 .product-final-cta-actions .button-link.ghost-light:hover,
-.kit-actions .button-link.secondary:hover,
-.kit-actions .button-link.ghost-light:hover {
-  background: var(--mint, #ccf434) !important;
-  border-color: var(--mint, #ccf434) !important;
-  color: var(--midnight, #071c1b) !important;
+.product-final-cta-actions .button-link.ghost-light:focus-visible,
+.category-enquiry-card .button-link.secondary:hover,
+.category-enquiry-card .button-link.secondary:focus-visible,
+.category-enquiry-card .button-link.ghost:hover,
+.category-enquiry-card .button-link.ghost:focus-visible,
+.category-enquiry-banner .category-enquiry-card .button-link.secondary:hover,
+.category-enquiry-banner .category-enquiry-card .button-link.secondary:focus-visible,
+.enquiry-card-actions .button-link.secondary:hover,
+.enquiry-card-actions .button-link.secondary:focus-visible,
+.enquiry-card-actions .button-link.ghost:hover,
+.enquiry-card-actions .button-link.ghost:focus-visible,
+.home-sustainability-section .button-link.secondary:hover,
+.home-sustainability-section .button-link.secondary:focus-visible,
+.sustainability-split .button-link.secondary:hover,
+.sustainability-split .button-link.secondary:focus-visible,
+.intro-impact .button-link.secondary:hover,
+.intro-impact .button-link.secondary:focus-visible,
+.conversation-copy .button-link.secondary:hover,
+.conversation-copy .button-link.secondary:focus-visible,
+.conversation-details .button-link.secondary:hover,
+.conversation-details .button-link.secondary:focus-visible,
+.bento-card.theme-dark-green .button-link.secondary:hover,
+.bento-card.theme-dark-green .button-link.secondary:focus-visible,
+.section-dark .button-link.secondary:hover,
+.section-dark .button-link.secondary:focus-visible,
+.section-dark .button-link.ghost-light:hover,
+.section-dark .button-link.ghost-light:focus-visible,
+.dark-section .button-link.secondary:hover,
+.dark-section .button-link.secondary:focus-visible,
+.dark-section .button-link.ghost-light:hover,
+.dark-section .button-link.ghost-light:focus-visible,
+[data-theme="dark"] .button-link.secondary:hover,
+[data-theme="dark"] .button-link.secondary:focus-visible,
+.bg-dark .button-link.secondary:hover,
+.bg-dark .button-link.secondary:focus-visible,
+.button-link.ghost-light:hover,
+.button-link.ghost-light:focus-visible,
+main#top:not(.home-old) .hero .button-link.secondary:hover,
+main#top:not(.home-old) .hero .button-link.secondary:focus-visible,
+main#top:not(.home-old) .page-hero .button-link.secondary:hover,
+main#top:not(.home-old) .page-hero .button-link.secondary:focus-visible,
+main#top:not(.home-old) .hero-actions .button-link.secondary:hover,
+main#top:not(.home-old) .hero-actions .button-link.secondary:focus-visible,
+main#top:not(.home-old) .hero-actions .button-link.ghost-light:hover,
+main#top:not(.home-old) .hero-actions .button-link.ghost-light:focus-visible,
+main#top:not(.home-old) .page-hero .hero-actions .button-link.secondary:hover,
+main#top:not(.home-old) .page-hero .hero-actions .button-link.secondary:focus-visible,
+main#top:not(.home-old) .about-hero .hero-actions .button-link.secondary:hover,
+main#top:not(.home-old) .about-hero .hero-actions .button-link.secondary:focus-visible,
+main#top:not(.home-old) .contact .button-link.secondary:hover,
+main#top:not(.home-old) .contact .button-link.secondary:focus-visible,
+main#top:not(.home-old) .contact-inner .button-link.secondary:hover,
+main#top:not(.home-old) .contact-inner .button-link.secondary:focus-visible,
+main#top:not(.home-old) .product-final-cta-actions .button-link.secondary:hover,
+main#top:not(.home-old) .product-final-cta-actions .button-link.secondary:focus-visible,
+main#top:not(.home-old) .category-enquiry-card .button-link.secondary:hover,
+main#top:not(.home-old) .category-enquiry-card .button-link.secondary:focus-visible,
+main#top:not(.home-old) .category-enquiry-card .button-link.ghost:hover,
+main#top:not(.home-old) .category-enquiry-card .button-link.ghost:focus-visible,
+main#top:not(.home-old) .category-enquiry-banner .category-enquiry-card .button-link.secondary:hover,
+main#top:not(.home-old) .category-enquiry-banner .category-enquiry-card .button-link.secondary:focus-visible,
+main#top:not(.home-old) .enquiry-card-actions .button-link.secondary:hover,
+main#top:not(.home-old) .enquiry-card-actions .button-link.secondary:focus-visible,
+main#top:not(.home-old) .enquiry-card-actions .button-link.ghost:hover,
+main#top:not(.home-old) .enquiry-card-actions .button-link.ghost:focus-visible,
+main#top:not(.home-old) .home-sustainability-section .button-link.secondary:hover,
+main#top:not(.home-old) .home-sustainability-section .button-link.secondary:focus-visible,
+main#top:not(.home-old) .sustainability-split .button-link.secondary:hover,
+main#top:not(.home-old) .sustainability-split .button-link.secondary:focus-visible,
+main#top:not(.home-old) .intro-impact .button-link.secondary:hover,
+main#top:not(.home-old) .intro-impact .button-link.secondary:focus-visible,
+main#top:not(.home-old) .conversation-copy .button-link.secondary:hover,
+main#top:not(.home-old) .conversation-copy .button-link.secondary:focus-visible,
+main#top:not(.home-old) .bento-card.theme-dark-green .button-link.secondary:hover,
+main#top:not(.home-old) .bento-card.theme-dark-green .button-link.secondary:focus-visible,
+main#top:not(.home-old) .section-dark .button-link.secondary:hover,
+main#top:not(.home-old) .section-dark .button-link.secondary:focus-visible,
+main#top:not(.home-old) .dark-section .button-link.secondary:hover,
+main#top:not(.home-old) .dark-section .button-link.secondary:focus-visible,
+main#top:not(.home-old) [data-theme="dark"] .button-link.secondary:hover,
+main#top:not(.home-old) [data-theme="dark"] .button-link.secondary:focus-visible,
+main#top:not(.home-old) .bg-dark .button-link.secondary:hover,
+main#top:not(.home-old) .bg-dark .button-link.secondary:focus-visible,
+main#top:not(.home-old) .button-link.ghost-light:hover,
+main#top:not(.home-old) .button-link.ghost-light:focus-visible {
+  background: transparent !important;
+  border-color: #ffffff !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }
 
 /* ==========================================================================
@@ -4524,26 +4764,23 @@ select::-ms-expand {
   gap: 8px;
   box-sizing: border-box;
 }
-.product-hero-ctas .button-link.ghost {
-  background: transparent;
-  border: 1px solid var(--canopy);
-  color: var(--canopy);
-  padding: 0 24px;
-}
-.product-hero-ctas .button-link.ghost:hover {
-  background: var(--canopy);
-  color: #ffffff;
-}
+.product-hero-ctas .button-link.ghost,
 .product-hero-ctas .button-link.secondary {
-  background: #36C8E9 !important;
-  border-color: #36C8E9 !important;
-  color: var(--midnight, #071c1b) !important;
+  background: transparent !important;
+  border: 1px solid var(--bark, #071c1b) !important;
+  border-radius: 100px !important;
+  color: var(--bark, #071c1b) !important;
+  padding: 0 24px;
+  transition: background-color .32s cubic-bezier(0.22, 1, 0.36, 1), border-color .32s cubic-bezier(0.22, 1, 0.36, 1), color .32s cubic-bezier(0.22, 1, 0.36, 1), border-radius .32s cubic-bezier(0.22, 1, 0.36, 1), transform .32s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
+.product-hero-ctas .button-link.ghost:hover,
+.product-hero-ctas .button-link.ghost:focus-visible,
 .product-hero-ctas .button-link.secondary:hover,
 .product-hero-ctas .button-link.secondary:focus-visible {
-  background: var(--mint, #ccf434) !important;
-  border-color: var(--mint, #ccf434) !important;
-  color: var(--midnight, #071c1b) !important;
+  background: transparent !important;
+  border-color: var(--bark, #071c1b) !important;
+  border-radius: 8px !important;
+  color: var(--bark, #071c1b) !important;
   transform: translateY(-2px) !important;
 }
 .product-direct-support-strip {
