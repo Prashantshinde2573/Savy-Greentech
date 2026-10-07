@@ -273,19 +273,19 @@ export function ProductDetailPage({ slug }) {
                     href={encodeURI(product.pdf)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="button-link text-download"
+                    className="button-link secondary"
                   >
-                    <PiDownloadSimple aria-hidden="true" />
                     <span>Download Spec Sheet</span>
+                    <PiDownloadSimple aria-hidden="true" />
                   </a>
                 ) : (
                   <button
                     type="button"
-                    className="button-link text-download"
+                    className="button-link secondary"
                     onClick={handleDownloadBrochure}
                   >
-                    <PiDownloadSimple aria-hidden="true" />
                     <span>Download Spec Sheet</span>
+                    <PiDownloadSimple aria-hidden="true" />
                   </button>
                 )}
               </div>
@@ -428,6 +428,20 @@ export function ProductDetailPage({ slug }) {
             <PiShieldCheck />
             <span>Specifications represent standard manufacturer baselines and may be customized based on institutional order specifications.</span>
           </div>
+
+          {product.pdf && (
+            <div className="specs-table-actions" style={{ marginTop: '28px', display: 'flex', justifyContent: 'center' }}>
+              <a
+                href={encodeURI(product.pdf)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="button-link secondary"
+              >
+                <span>Download {product.name} Technical Spec Sheet (PDF)</span>
+                <PiDownloadSimple aria-hidden="true" />
+              </a>
+            </div>
+          )}
         </div>
       </section>
 

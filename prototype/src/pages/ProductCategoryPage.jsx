@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   PiArrowLeft,
   PiArrowRight,
@@ -58,9 +58,16 @@ export function ProductCategoryPage({ categorySlug }) {
 
   const CategoryIcon = CATEGORY_ICONS[category.slug] || PiCar;
 
-  // Extract actual category product images ONLY (no lifestyle/application/stock assets)
+  // Extract ALL available images across ALL products in the current category
   const categoryImages = [];
   categoryProducts.forEach((prod) => {
+    if (Array.isArray(prod.gallery) && prod.gallery.length > 0) {
+      prod.gallery.forEach((img) => {
+        if (img && !categoryImages.includes(img)) {
+          categoryImages.push(img);
+        }
+      });
+    }
     if (prod.image && !categoryImages.includes(prod.image)) {
       categoryImages.push(prod.image);
     }
@@ -71,18 +78,91 @@ export function ProductCategoryPage({ categorySlug }) {
   }
 
   // Define editorial masonry height variations for Column 1 and Column 2
-  const col1Heights = ['card-tall', 'card-short', 'card-medium', 'card-tall', 'card-short', 'card-medium'];
-  const col2Heights = ['card-short', 'card-tall', 'card-medium', 'card-short', 'card-tall', 'card-medium'];
+  const heightCycle1 = ['card-tall', 'card-short', 'card-medium', 'card-tall', 'card-short', 'card-medium'];
+  const heightCycle2 = ['card-short', 'card-tall', 'card-medium', 'card-short', 'card-tall', 'card-medium'];
 
-  const buildColumnItems = (imgList, heightPatterns, offset = 0) => {
-    return heightPatterns.map((hClass, idx) => ({
-      src: imgList[(idx + offset) % imgList.length],
-      heightClass: hClass
-    }));
+  // Ensure minimum items for seamless CSS infinite marquee loop
+  const getSufficientImageList = (imgList, minCount = 6) => {
+    if (!imgList || imgList.length === 0) return [];
+    if (imgList.length >= minCount) return imgList;
+    const repeated = [...imgList];
+    while (repeated.length < minCount) {
+      repeated.push(...imgList);
+    }
+    return repeated;
   };
 
-  const col1Base = buildColumnItems(categoryImages, col1Heights, 0);
-  const col2Base = buildColumnItems(categoryImages, col2Heights, 1);
+  const col1ImageList = getSufficientImageList(categoryImages, 6);
+  const offset = Math.max(1, Math.floor(col1ImageList.length / 2));
+  const col2ImageList = col1ImageList.map((_, idx) => col1ImageList[(idx + offset) % col1ImageList.length]);
+
+  const col1Base = col1ImageList.map((src, idx) => ({
+    src,
+    heightClass: heightCycle1[idx % heightCycle1.length]
+  }));
+
+  const col2Base = col2ImageList.map((src, idx) => ({
+    src,
+    heightClass: heightCycle2[idx % heightCycle2.length]
+  }));
+
+  const trackUpRef = useRef(null);
+  const trackDownRef = useRef(null);
+
+  // Dynamically calculate speed in pixels-per-second so carousel moves at the exact same visual speed regardless of image count
+  useEffect(() => {
+    const updateSpeeds = () => {
+      const isMobile = window.innerWidth <= 960;
+      const speedUp = 55;   // ~55 px/sec
+      const speedDown = 48; // ~48 px/sec for natural organic parallax
+
+      if (trackUpRef.current) {
+        const distance = isMobile
+          ? trackUpRef.current.scrollWidth / 2
+          : trackUpRef.current.scrollHeight / 2;
+        if (distance > 0) {
+          const duration = Math.max(6, distance / speedUp);
+          trackUpRef.current.style.setProperty('--track-duration', `${duration.toFixed(2)}s`);
+        }
+      }
+
+      if (trackDownRef.current) {
+        const distance = isMobile
+          ? trackDownRef.current.scrollWidth / 2
+          : trackDownRef.current.scrollHeight / 2;
+        if (distance > 0) {
+          const duration = Math.max(6, distance / speedDown);
+          trackDownRef.current.style.setProperty('--track-duration', `${duration.toFixed(2)}s`);
+        }
+      }
+    };
+
+    updateSpeeds();
+
+    const ro = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(() => updateSpeeds())
+      : null;
+
+    if (ro) {
+      if (trackUpRef.current) ro.observe(trackUpRef.current);
+      if (trackDownRef.current) ro.observe(trackDownRef.current);
+    }
+
+    window.addEventListener('resize', updateSpeeds);
+    const timer = setTimeout(updateSpeeds, 250);
+
+    return () => {
+      if (ro) ro.disconnect();
+      window.removeEventListener('resize', updateSpeeds);
+      clearTimeout(timer);
+    };
+  }, [category.slug, categoryImages.length]);
+
+  // Initial computed fallback duration to ensure zero flash on mount
+  const isInitialMobile = typeof window !== 'undefined' && window.innerWidth <= 960;
+  const avgItemDim = isInitialMobile ? 245 : 268;
+  const initialDurationUp = Math.max(8, Math.round((col1Base.length * avgItemDim) / 55));
+  const initialDurationDown = Math.max(8, Math.round((col2Base.length * avgItemDim) / 48));
 
   return (
     <main id="top" className="product-category-page" ref={pageRef}>
@@ -138,7 +218,11 @@ export function ProductCategoryPage({ categorySlug }) {
             <div className="category-hero-carousels" aria-hidden="true">
               {/* Column 1: Scrolls Upward */}
               <div className="hero-carousel-col carousel-col-up">
-                <div className="carousel-track track-up">
+                <div
+                  ref={trackUpRef}
+                  className="carousel-track track-up"
+                  style={{ '--track-duration': `${initialDurationUp}s` }}
+                >
                   {col1Base.map((item, idx) => (
                     <div key={`c1-a-${idx}`} className={`hero-carousel-card ${item.heightClass}`}>
                       <img src={item.src} alt={category.name} loading="eager" />
@@ -155,7 +239,11 @@ export function ProductCategoryPage({ categorySlug }) {
 
               {/* Column 2: Scrolls Downward */}
               <div className="hero-carousel-col carousel-col-down">
-                <div className="carousel-track track-down">
+                <div
+                  ref={trackDownRef}
+                  className="carousel-track track-down"
+                  style={{ '--track-duration': `${initialDurationDown}s` }}
+                >
                   {col2Base.map((item, idx) => (
                     <div key={`c2-a-${idx}`} className={`hero-carousel-card ${item.heightClass}`}>
                       <img src={item.src} alt={category.name} loading="eager" />

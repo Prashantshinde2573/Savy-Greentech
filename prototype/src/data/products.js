@@ -17,7 +17,7 @@ export const productCategories = [
     name: 'Electric Loading Rickshaw',
     shortName: 'Loading Rickshaws',
     tagline: 'Heavy-duty electric cargo, freight, water tankers, and commercial logistics solutions.',
-    heroImage: '/assets/electruck.jpg',
+    heroImage: '/assets/products/electruck/Electruck1.webp',
     icon: 'truck',
     description: 'Heavy-payload 3-wheel electric carriers engineered for industrial material handling, urban freight, liquid transport, and commercial deliveries.'
   },
@@ -28,7 +28,7 @@ export const productCategories = [
     name: 'Electric Passenger Rickshaw',
     shortName: 'Passenger Rickshaws',
     tagline: 'Certified on-road & institutional 3-wheel passenger electric rickshaws engineered for reliable, economical micro-mobility.',
-    heroImage: '/assets/tuk-tuk.jpg',
+    heroImage: '/assets/products/electric-passenger/Electric Passenger1.webp',
     icon: 'users',
     description: 'Safe, economical, and approved electric passenger rickshaws for urban micro-mobility, tourist circuits, and group transit.'
   },
@@ -39,7 +39,7 @@ export const productCategories = [
     name: 'Waste Collection Rickshaw',
     shortName: 'Waste Collection',
     tagline: 'Swachh Bharat & municipal sanitation electric vehicles engineered for clean, efficient waste collection.',
-    heroImage: '/assets/dump-truck.jpg',
+    heroImage: '/assets/products/dumptruck/Dumptruck1.webp',
     icon: 'trash',
     description: 'Purpose-built electric waste collection and tipping rickshaws for municipal corporations, smart cities, and gram panchayats.'
   },
@@ -50,7 +50,7 @@ export const productCategories = [
     name: 'Food Cart',
     shortName: 'Food Carts',
     tagline: 'Mobile electric culinary and retail dispensing stations for street food, beverages, and event vending.',
-    heroImage: '/assets/applications/food-cart.webp',
+    heroImage: '/assets/products/food-cart/Food cart1.webp',
     icon: 'store',
     description: 'Food-grade stainless steel electric mobile retail units designed for pollution-free street vending, fast food, beverages, catering, and event refreshments.'
   },
@@ -61,7 +61,7 @@ export const productCategories = [
     name: 'Special Purpose Vehicle',
     shortName: 'Special Purpose',
     tagline: 'Bespoke engineered electric vehicles customized for specialized industrial, institutional, and government operations.',
-    heroImage: '/assets/electruck.jpg',
+    heroImage: '/assets/products/special-purpose/Special Purpose Vehical1.webp',
     icon: 'gear',
     description: 'Tailored electric mobility engineering built from the ground up to match unique operational workflows, specialized equipment, and heavy payload specifications.'
   }
@@ -253,6 +253,7 @@ export const products = [
     categoryName: 'Electric Campus Cart',
     tagline: 'High-power electric utility vehicle for heavy campus logistics and facility maintenance.',
     image: '/assets/products/utility-cart/utility Cart1.webp',
+    pdf: '/assets/Downloadable PDF/Utility Cart .pdf',
     gallery: [
       '/assets/products/utility-cart/utility Cart1.webp',
       '/assets/products/utility-cart/utility Cart2.webp',
@@ -308,11 +309,20 @@ export const products = [
     category: 'electric-loading-rickshaw',
     categoryName: 'Electric Loading Rickshaw',
     tagline: 'Heavy-duty open-body cargo platform for industrial logistics & commercial deliveries.',
-    image: '/assets/electruck.jpg',
+    image: '/assets/products/electruck/Electruck1.webp',
     pdf: '/assets/Downloadable PDF/Savy Electruck.pdf',
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/logistics.jpg'
+      '/assets/products/electruck/Electruck1.webp',
+      '/assets/products/electruck/Electruck2.webp',
+      '/assets/products/electruck/Electruck3.webp',
+      '/assets/products/electruck/Electruck4.webp',
+      '/assets/products/electruck/Electruck5.webp',
+      '/assets/products/electruck/Electruck6.webp',
+      '/assets/products/electruck/Electruck7.webp',
+      '/assets/products/electruck/Electruck8.webp',
+      '/assets/products/electruck/Electruck9.webp',
+      '/assets/products/electruck/Electruck10.webp',
+      '/assets/products/electruck/Electruck11.webp'
     ],
     shortCopy: 'Electruck is a heavy-duty open-body cargo platform with 1000W BLDC motor and 500 kg payload capacity for industrial logistics & commercial deliveries.',
     overview: 'The SAVY Electruck delivers dependable commercial freight capability with its heavy-duty open-body cargo platform, reinforced chassis, and 1000W BLDC electric powertrain. Ideal for industrial logistics, warehouse operations, and urban commercial deliveries.',
@@ -355,11 +365,17 @@ export const products = [
     category: 'electric-loading-rickshaw',
     categoryName: 'Electric Loading Rickshaw',
     tagline: 'Enclosed weatherproof container cargo body for secure urban & express logistics.',
-    image: '/assets/electruck.jpg',
+    image: '/assets/products/electruck-dlx/Electruck DLX1.webp',
     pdf: '/assets/Downloadable PDF/Savy Electruck-DLX.pdf',
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/logistics.jpg'
+      '/assets/products/electruck-dlx/Electruck DLX1.webp',
+      '/assets/products/electruck-dlx/Electruck DLX2.webp',
+      '/assets/products/electruck-dlx/Electruck DLX3.webp',
+      '/assets/products/electruck-dlx/Electruck DLX4.webp',
+      '/assets/products/electruck-dlx/Electruck DLX5.webp',
+      '/assets/products/electruck-dlx/Electruck DLX6.webp',
+      '/assets/products/electruck-dlx/Electruck DLX7.webp',
+      '/assets/products/electruck-dlx/Electruck DLX8.webp'
     ],
     shortCopy: 'Electruck DLX features an enclosed weatherproof container cargo body with 2000W High Torque BLDC motor for 1 - 3 ton secure urban & express logistics.',
     overview: 'Built for demanding freight environments, the SAVY Electruck DLX features a fully enclosed weatherproof container body, high-tonnage structural steel chassis, and a 2000W High Torque BLDC powertrain rated for 1 to 3 ton payloads.',
@@ -397,15 +413,17 @@ export const products = [
   },
   {
     slug: 'tobu-truck',
-    aliasSlugs: [],
+    aliasSlugs: ['nano-truck'],
     name: 'Tobu Truck',
     category: 'electric-loading-rickshaw',
     categoryName: 'Electric Loading Rickshaw',
     tagline: 'High maneuverability design for tight spaces, markets & narrow city streets.',
-    image: '/assets/electruck.jpg',
+    image: '/assets/products/tobu-truck/Tobu truck1.webp',
+    pdf: '/assets/Downloadable PDF/Nano truck.pdf',
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/logistics.jpg'
+      '/assets/products/tobu-truck/Tobu truck1.webp',
+      '/assets/products/tobu-truck/Tobu truck2.webp',
+      '/assets/products/tobu-truck/Tobu truck3.webp'
     ],
     shortCopy: 'Tobu Truck features a high maneuverability design with 1000W BLDC motor and 500 kg payload capacity tailored for tight spaces, markets & narrow city streets.',
     overview: 'Designed for quick trips, narrow market lanes, and crowded urban hubs, the SAVY Tobu Truck offers unmatched maneuverability, a 500 kg payload rating, and a 1000W BLDC electric drive that navigates congested alleys effortlessly.',
@@ -447,11 +465,15 @@ export const products = [
     category: 'electric-loading-rickshaw',
     categoryName: 'Electric Loading Rickshaw',
     tagline: '500-liter electric liquid transport and pressure spraying tanker.',
-    image: '/assets/electruck.jpg',
+    image: '/assets/products/ecotanker/EcoTanker1.webp',
+    pdf: '/assets/Downloadable PDF/Savy Eco tanker .pdf',
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/government.jpg',
-      '/assets/applications/agriculture.jpg'
+      '/assets/products/ecotanker/EcoTanker1.webp',
+      '/assets/products/ecotanker/EcoTanker2.webp',
+      '/assets/products/ecotanker/EcoTanker3.webp',
+      '/assets/products/ecotanker/EcoTanker4.webp',
+      '/assets/products/ecotanker/EcoTanker5.webp',
+      '/assets/products/ecotanker/EcoTanker6.webp'
     ],
     shortCopy: 'EcoTanker is an electric vehicle mounted with a 500 Ltr tank and 2000W BLDC motor for water spraying, liquid transport, and mobile utility sanitation tanks.',
     overview: 'The SAVY EcoTanker provides a silent, zero-emission liquid transport and spraying solution. Equipped with a 500-liter baffled anti-slosh tank, high-pressure dispensing pump, and 2000W BLDC motor, it handles municipal horticulture, road dust suppression, and mobile utility sanitation.',
@@ -498,12 +520,14 @@ export const products = [
     category: 'electric-passenger-rickshaw',
     categoryName: 'Electric Passenger Rickshaw',
     tagline: 'Standard eco-friendly last-mile urban passenger connectivity.',
-    image: '/assets/tuk-tuk.jpg',
+    image: '/assets/products/electric-passenger/Electric Passenger1.webp',
     pdf: '/assets/Downloadable PDF/Savy Tuk Tuk E.pdf',
     gallery: [
-      '/assets/tuk-tuk.jpg',
-      '/assets/applications/community.jpg',
-      '/assets/applications/tourism.jpg'
+      '/assets/products/electric-passenger/Electric Passenger1.webp',
+      '/assets/products/electric-passenger/Electric Passenger2.webp',
+      '/assets/products/electric-passenger/Electric Passenger3.webp',
+      '/assets/products/electric-passenger/Electric Passenger4.webp',
+      '/assets/products/electric-passenger/Electric Passenger5.webp'
     ],
     shortCopy: 'Tuk Tuk e is a standard eco-friendly electric passenger 3-wheeler with 1000W BLDC motor for Driver + 2 - 4 Passengers last-mile connectivity.',
     overview: 'The SAVY Tuk Tuk e is a certified, standard eco-friendly passenger electric rickshaw engineered for dependable last-mile urban connectivity, tourist transport, and institutional campus shuttles. Delivers whisper-quiet rides, excellent battery economy, and robust passenger safety.',
@@ -546,11 +570,14 @@ export const products = [
     category: 'electric-passenger-rickshaw',
     categoryName: 'Electric Passenger Rickshaw',
     tagline: 'Premium extended passenger capacity with reinforced body structure.',
-    image: '/assets/tuk-tuk.jpg',
+    image: '/assets/products/passenger-dlx/Passenger DLX1.webp',
+    pdf: '/assets/Downloadable PDF/Savy_Tuk_Tuk_e_DLX_Spec_Sheet.pdf',
     gallery: [
-      '/assets/tuk-tuk.jpg',
-      '/assets/applications/community.jpg',
-      '/assets/applications/campus.jpg'
+      '/assets/products/passenger-dlx/Passenger DLX1.webp',
+      '/assets/products/passenger-dlx/Passenger DLX2.webp',
+      '/assets/products/passenger-dlx/Passenger DLX3.webp',
+      '/assets/products/passenger-dlx/Passenger DLX4.webp',
+      '/assets/products/passenger-dlx/Passenger DLX5.webp'
     ],
     shortCopy: 'Tuk Tuk DLX features premium extended passenger capacity for Driver + 6 - 9 Passengers, reinforced body structure, and heavy-duty suspension.',
     overview: 'The SAVY Tuk Tuk DLX is engineered for high-capacity passenger transport, accommodating Driver + 6 to 9 passengers. Built with reinforced structural steel bodywork, upgraded heavy-duty multi-leaf suspension, and a 1000W high-capacity powertrain for dependable group shuttle operations.',
@@ -597,12 +624,17 @@ export const products = [
     category: 'waste-collection-rickshaw',
     categoryName: 'Waste Collection Rickshaw',
     tagline: 'Municipal door-to-door waste collection with manual or mechanical dump mechanism.',
-    image: '/assets/dump-truck.jpg',
+    image: '/assets/products/dumptruck/Dumptruck1.webp',
     pdf: '/assets/Downloadable PDF/Savy Dumptruck.pdf',
     gallery: [
-      '/assets/dump-truck.jpg',
-      '/assets/applications/government.jpg',
-      '/assets/applications/community.jpg'
+      '/assets/products/dumptruck/Dumptruck1.webp',
+      '/assets/products/dumptruck/Dumptruck2.webp',
+      '/assets/products/dumptruck/Dumptruck3.webp',
+      '/assets/products/dumptruck/Dumptruck4.webp',
+      '/assets/products/dumptruck/Dumptruck5.webp',
+      '/assets/products/dumptruck/Dumptruck6.webp',
+      '/assets/products/dumptruck/Dumptruck7.webp',
+      '/assets/products/dumptruck/Dumptruck8.webp'
     ],
     shortCopy: 'Dumptruck is a municipal door-to-door waste collection electric vehicle with 1200W BLDC motor, 500 kg waste capacity, and manual or mechanical dump mechanism.',
     overview: 'Built to support Swachh Bharat and municipal solid waste management initiatives, the SAVY Dumptruck features a 1200W BLDC powertrain, 500 kg waste payload capacity, dual wet/dry segregation compartments, and manual or mechanical dump discharge for narrow-lane civic cleanliness.',
@@ -640,15 +672,20 @@ export const products = [
   },
   {
     slug: 'tipper',
-    aliasSlugs: [],
+    aliasSlugs: ['e-tipper'],
     name: 'Tipper',
     category: 'waste-collection-rickshaw',
     categoryName: 'Waste Collection Rickshaw',
     tagline: 'Hydraulic tipping system for effortless municipal garbage dumping.',
-    image: '/assets/dump-truck.jpg',
+    image: '/assets/products/tipper/Tipper 1.webp',
+    pdf: '/assets/Downloadable PDF/E Tipper .pdf',
     gallery: [
-      '/assets/dump-truck.jpg',
-      '/assets/applications/government.jpg'
+      '/assets/products/tipper/Tipper 1.webp',
+      '/assets/products/tipper/Tipper 2.webp',
+      '/assets/products/tipper/Tipper 3.webp',
+      '/assets/products/tipper/Tipper 4.webp',
+      '/assets/products/tipper/Tipper 5.webp',
+      '/assets/products/tipper/Tipper 6.webp'
     ],
     shortCopy: 'Tipper features an electro-hydraulic tipping system and 1500W* High Torque motor for effortless 600 kg municipal garbage dumping.',
     overview: 'The SAVY Tipper is engineered for high-efficiency municipal waste transport. Featuring a 1500W* high-torque powertrain and an integrated electro-hydraulic tipping hopper, it unloads up to 600 kg of solid waste with the push of a joystick, eliminating manual shoveling.',
@@ -695,10 +732,15 @@ export const products = [
     category: 'food-cart',
     categoryName: 'Food Cart',
     tagline: 'Customized mobile catering platform for street vendors.',
-    image: '/assets/applications/food-cart.webp',
+    image: '/assets/products/food-cart/Food cart1.webp',
     pdf: '/assets/Downloadable PDF/Savy Food  Cart.pdf',
     gallery: [
-      '/assets/applications/food-cart.webp'
+      '/assets/products/food-cart/Food cart1.webp',
+      '/assets/products/food-cart/Food cart2.webp',
+      '/assets/products/food-cart/Food cart3.webp',
+      '/assets/products/food-cart/Food cart4.webp',
+      '/assets/products/food-cart/Food cart5.webp',
+      '/assets/products/food-cart/Food cart6.webp'
     ],
     shortCopy: 'E-Food Cart is a customized mobile catering platform with 1100W BLDC motor and 400 - 450 kg payload capacity tailored for street vendors, ice cream, soda, dosa, and fast-food retail.',
     overview: 'The SAVY E-Food Cart transforms street food and beverage vending into a clean, modern, zero-emission commercial business. Built with food-grade stainless steel surfaces, fold-out serving bays, and auxiliary inverter outputs, it can be customized as an Ice Cream Cart, Soda Cart, Dosa Cart, Coffee Kiosk, or multi-purpose mobile kitchen.',
@@ -768,11 +810,15 @@ export const products = [
     category: 'special-purpose-vehicle',
     categoryName: 'Special Purpose Vehicle',
     tagline: 'Custom-built design and fabrication tailored to specific commercial, industrial, or operational requirements.',
-    image: '/assets/electruck.jpg',
+    image: '/assets/products/special-purpose/Special Purpose Vehical1.webp',
     gallery: [
-      '/assets/electruck.jpg',
-      '/assets/applications/logistics.jpg',
-      '/assets/applications/government.jpg'
+      '/assets/products/special-purpose/Special Purpose Vehical1.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical2.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical3.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical4.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical5.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical6.webp',
+      '/assets/products/special-purpose/Special Purpose Vehical7.webp'
     ],
     shortCopy: 'Custom SPV offers bespoke design and fabrication tailored to specific commercial, industrial, or operational requirements with fully customizable motor power and capacity.',
     overview: 'SAVY Greentech’s in-house R&D, chassis fabrication, and power electronics engineering teams create custom-built Special Purpose Vehicles (SPVs) tailored to unique operational challenges. From heavy multi-shift industrial haulers (Ramdev Foods) to secure Mobile ATM banking units, hospital emergency carts, and specialized civic utilities.',
@@ -814,12 +860,19 @@ export const products = [
 // Helper to look up a category by slug or id or alias
 export const getCategoryBySlug = (slug) => {
   if (!slug) return null;
-  const clean = slug.replace(/^\/|\/$/g, '').toLowerCase();
+  const raw = slug.replace(/^\/|\/$/g, '').toLowerCase();
+  const clean = raw
+    .replace(/^category\//, '')
+    .replace(/^products\/category\//, '')
+    .replace(/^products\//, '');
   return productCategories.find(
     (c) =>
       c.slug.toLowerCase() === clean ||
       c.id.toLowerCase() === clean ||
-      c.aliasSlugs?.some((a) => a.toLowerCase() === clean)
+      c.aliasSlugs?.some((a) => a.toLowerCase() === clean) ||
+      c.slug.toLowerCase() === raw ||
+      c.id.toLowerCase() === raw ||
+      c.aliasSlugs?.some((a) => a.toLowerCase() === raw)
   );
 };
 

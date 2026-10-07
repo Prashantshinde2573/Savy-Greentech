@@ -5,7 +5,8 @@ import { AboutPage } from './pages/AboutPage.jsx';
 import { ProductsPage } from './pages/ProductsPage.jsx';
 import { ProductCategoryPage } from './pages/ProductCategoryPage.jsx';
 import { ProductDetailPage } from './pages/ProductDetailPage.jsx';
-import { getCategoryBySlug } from './data/products.js';
+import { NotFoundPage } from './pages/NotFoundPage.jsx';
+import { getCategoryBySlug, getProductBySlug } from './data/products.js';
 import { ApplicationsPage } from './pages/ApplicationsPage.jsx';
 import { TechnologyPage } from './pages/TechnologyPage.jsx';
 import { SustainabilityPage } from './pages/SustainabilityPage.jsx';
@@ -85,18 +86,34 @@ export function AppRouter() {
 
   // Routing Switch
   const renderPage = () => {
+    if (currentPath === '/' || currentPath === '') return <App key="home" />;
     if (currentPath === '/home-old') return <HomeOld key="home-old" />;
     if (currentPath === '/flow-button') return <FlowButtonDemo key="flow-button" />;
     if (currentPath === '/about') return <AboutPage key="about" />;
     if (currentPath === '/products') return <ProductsPage key="products" />;
+    
+    if (currentPath.startsWith('/category/')) {
+      const rawSlug = currentPath.replace('/category/', '').replace(/\/$/, '');
+      const categoryMatch = getCategoryBySlug(rawSlug);
+      if (categoryMatch) {
+        return <ProductCategoryPage key={`cat-${categoryMatch.slug}`} categorySlug={categoryMatch.slug} />;
+      }
+      return <NotFoundPage key="not-found" />;
+    }
+
     if (currentPath.startsWith('/products/')) {
       const rawSlug = currentPath.replace('/products/', '').replace(/\/$/, '');
       const categoryMatch = getCategoryBySlug(rawSlug);
       if (categoryMatch) {
         return <ProductCategoryPage key={`cat-${categoryMatch.slug}`} categorySlug={categoryMatch.slug} />;
       }
-      return <ProductDetailPage key={`pdp-${rawSlug}`} slug={rawSlug} />;
+      const productMatch = getProductBySlug(rawSlug);
+      if (productMatch) {
+        return <ProductDetailPage key={`pdp-${productMatch.slug}`} slug={productMatch.slug} />;
+      }
+      return <NotFoundPage key="not-found" />;
     }
+
     if (currentPath === '/applications') return <ApplicationsPage key="applications" />;
     if (currentPath === '/technology') return <TechnologyPage key="technology" />;
     if (currentPath === '/sustainability') return <SustainabilityPage key="sustainability" />;
@@ -105,12 +122,12 @@ export function AppRouter() {
     if (currentPath === '/become-a-dealer') return <BecomeDealerPage key="become-a-dealer" />;
     if (currentPath === '/careers') return <CareersPage key="careers" />;
     if (currentPath.startsWith('/careers/')) {
-      const slug = currentPath.replace('/careers/', '');
+      const slug = currentPath.replace('/careers/', '').replace(/\/$/, '');
       return <CareerDetailPage key={`career-${slug}`} slug={slug} />;
     }
     if (currentPath === '/blog') return <BlogPage key="blog" />;
     if (currentPath.startsWith('/blog/')) {
-      const slug = currentPath.replace('/blog/', '');
+      const slug = currentPath.replace('/blog/', '').replace(/\/$/, '');
       return <BlogDetailPage key={`blog-${slug}`} slug={slug} />;
     }
     if (currentPath === '/contact') return <ContactPage key="contact" />;
@@ -119,8 +136,8 @@ export function AppRouter() {
     if (currentPath === '/terms') return <PolicyPage key="policy-terms" policyType="terms" />;
     if (currentPath === '/cookie-policy') return <PolicyPage key="policy-cookie" policyType="cookie-policy" />;
 
-    // Default: Homepage (Locked App.jsx)
-    return <App key="home" />;
+    // 404 Not Found Catch-All
+    return <NotFoundPage key="not-found" />;
   };
 
   return (
