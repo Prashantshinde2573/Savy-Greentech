@@ -157,13 +157,7 @@ export function ProductDetailPage({ slug }) {
     setModalOpen(true);
   };
 
-  const handleDownloadBrochure = () => {
-    if (product.pdf) {
-      window.open(encodeURI(product.pdf), '_blank', 'noopener,noreferrer');
-      return;
-    }
-    alert(`Brochure & Spec Sheet for ${product.name} will be dispatched to your email or downloaded directly once official release PDF is verified.`);
-  };
+
 
   return (
     <main id="top" className="product-detail-page" ref={pageRef}>
@@ -268,7 +262,7 @@ export function ProductDetailPage({ slug }) {
                   <PiArrowRight aria-hidden="true" />
                 </button>
 
-                {product.pdf ? (
+                {product.pdf && (
                   <a
                     href={encodeURI(product.pdf)}
                     target="_blank"
@@ -278,15 +272,6 @@ export function ProductDetailPage({ slug }) {
                     <span>Download Spec Sheet</span>
                     <PiDownloadSimple aria-hidden="true" />
                   </a>
-                ) : (
-                  <button
-                    type="button"
-                    className="button-link secondary"
-                    onClick={handleDownloadBrochure}
-                  >
-                    <span>Download Spec Sheet</span>
-                    <PiDownloadSimple aria-hidden="true" />
-                  </button>
                 )}
               </div>
 
