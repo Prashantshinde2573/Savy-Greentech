@@ -697,3 +697,24 @@ export const getIndustryParticipation = fetchIndustryParticipationPosts;
 export const getMedia = fetchMediaPosts;
 export const getPostBySlug = fetchPostBySlug;
 export const getCareerBySlug = fetchCareerPostBySlug;
+
+/**
+ * Submits the contact/inquiry form to the Netlify serverless function,
+ * which securely forwards to WordPress Narrative Forms (Form ID 69).
+ */
+export async function submitContactForm(formData) {
+  const response = await fetch('/.netlify/functions/submit-contact-form', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || `Submission failed with status ${response.status}`);
+  }
+  return data;
+}
+

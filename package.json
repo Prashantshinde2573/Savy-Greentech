@@ -1,9 +1,11 @@
 {
   "name": "savy-greentech-root",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "npm --prefix prototype run dev",
+    "dev:netlify": "netlify dev",
     "build": "npm --prefix prototype install && npm --prefix prototype run build",
     "preview": "npm --prefix prototype run preview"
   }

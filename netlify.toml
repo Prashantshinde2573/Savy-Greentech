@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = "prototype/dist/client"
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/api/wp/*"

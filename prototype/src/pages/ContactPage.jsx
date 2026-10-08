@@ -10,6 +10,8 @@ import { usePageAnimations } from '../hooks/usePageAnimations';
 export function ContactPage() {
   const pageRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   const [formData, setFormData] = useState({
     userType: 'Buyer',
     name: '',
@@ -21,9 +23,38 @@ export function ContactPage() {
   });
   usePageAnimations(pageRef);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('/.netlify/functions/submit-contact-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+        setSubmitError(null);
+      } else {
+        const errorMsg = result.details
+          ? `${result.message || 'Submission failed'} (${result.details})`
+          : (result.message || 'Unable to submit the form. Please try again or reach out directly.');
+        console.error('Contact form submission failed:', { status: response.status, result });
+        setSubmitError(errorMsg);
+      }
+    } catch (err) {
+      console.error('Contact form network error:', err);
+      setSubmitError('A network error occurred. Please check your internet connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,6 +99,7 @@ export function ContactPage() {
                       className="button-link primary"
                       onClick={() => {
                         setSubmitted(false);
+                        setSubmitError(null);
                         setFormData({ userType: 'Buyer', name: '', company: '', email: '', phone: '', requirement: '', message: '' });
                       }}
                     >
@@ -173,8 +205,31 @@ export function ContactPage() {
                       />
                     </div>
 
-                    <button type="submit" className="button-link primary full-width">
-                      <span>Send Message</span>
+                    {submitError && (
+                      <div
+                        className="form-error-alert"
+                        role="alert"
+                        style={{
+                          backgroundColor: '#FEF2F2',
+                          color: '#991B1B',
+                          padding: '12px 16px',
+                          borderRadius: '8px',
+                          fontSize: '0.875rem',
+                          marginBottom: '16px',
+                          border: '1px solid #FCA5A5',
+                        }}
+                      >
+                        {submitError}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      className="button-link primary full-width"
+                      disabled={isSubmitting}
+                      style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+                    >
+                      <span>{isSubmitting ? 'Sending Message...' : 'Send Message'}</span>
                       <PiArrowRight aria-hidden="true" />
                     </button>
                   </form>
