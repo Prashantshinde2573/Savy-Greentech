@@ -130,32 +130,34 @@ export function VehicleCategoryCard({ vehicle }) {
     }
   };
 
-  // Preload frame 0 immediately with async decoding; defer frames 1..N until near viewport
+  // Defer frame 0 and remaining rotation frames until near viewport
   useEffect(() => {
     let isMounted = true;
     imagesRef.current = [];
     remainingLoadedRef.current = false;
 
-    // Load initial frame 0 asynchronously
-    const img0 = new Image();
-    img0.decoding = 'async';
-    img0.src = frames[0];
-    imagesRef.current[0] = img0;
+    const startLoading = () => {
+      if (!isMounted || imagesRef.current[0]) return;
+      const img0 = new Image();
+      img0.decoding = 'async';
+      img0.src = frames[0];
+      imagesRef.current[0] = img0;
 
-    const handleFrame0Ready = () => {
-      if (!isMounted) return;
-      drawFrameToCanvas(0);
-      setIsLoaded(true);
-    };
-
-    if (img0.complete && img0.naturalWidth > 0) {
-      handleFrame0Ready();
-    } else {
-      img0.onload = handleFrame0Ready;
-      img0.onerror = () => {
-        console.warn(`Failed to preload frame 0: ${frames[0]}`);
+      const handleFrame0Ready = () => {
+        if (!isMounted) return;
+        drawFrameToCanvas(0);
+        setIsLoaded(true);
       };
-    }
+
+      if (img0.complete && img0.naturalWidth > 0) {
+        handleFrame0Ready();
+      } else {
+        img0.onload = handleFrame0Ready;
+        img0.onerror = () => {
+          console.warn(`Failed to preload frame 0: ${frames[0]}`);
+        };
+      }
+    };
 
     // Defer remaining rotation frames until user scrolls near this card
     const el = cardRef.current;
@@ -164,14 +166,16 @@ export function VehicleCategoryCard({ vehicle }) {
       observer = new IntersectionObserver(
         (entries) => {
           if (entries[0]?.isIntersecting) {
+            startLoading();
             loadRemainingFrames();
             observer?.disconnect();
           }
         },
-        { rootMargin: '300px' }
+        { rootMargin: '400px' }
       );
       observer.observe(el);
     } else {
+      startLoading();
       loadRemainingFrames();
     }
 
@@ -248,15 +252,12 @@ export function VehicleCategoryCard({ vehicle }) {
   };
 
   return (
-    <div
+    <article
       ref={cardRef}
       className="savy-proto-card"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleTouchToggle}
-      tabIndex={0}
-      role="region"
-      aria-label={`${vehicle.name} electric vehicle card`}
     >
       {/* Vehicle slot positioned at top-right, extending outside card */}
       <div className="savy-proto-vehicle-slot">
@@ -288,7 +289,7 @@ export function VehicleCategoryCard({ vehicle }) {
           Explore details <PiArrowRight aria-hidden="true" />
         </a>
       </div>
-    </div>
+    </article>
   );
 }
 

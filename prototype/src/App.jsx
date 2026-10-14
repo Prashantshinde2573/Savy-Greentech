@@ -324,6 +324,7 @@ export function App() {
   const manufacturingVideoBoxRef = useRef(null);
   const manufacturingVideoRef = useRef(null);
   const manufacturingCopyRef = useRef(null);
+  const contactVideoRef = useRef(null);
 
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -341,7 +342,7 @@ export function App() {
     });
   };
 
-  // Video autoplay listener
+  // Hero Video play listener
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -350,7 +351,45 @@ export function App() {
     };
     video.addEventListener('playing', reveal);
     if (!video.paused) reveal();
+
+    const isDesktop = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(min-width: 769px)').matches;
+    if (isDesktop && video.paused) {
+      video.play().catch(() => {});
+    }
+
     return () => video.removeEventListener('playing', reveal);
+  }, []);
+
+  // Offscreen video lazy-play observer to prevent downloading ~10MB during initial page load
+  useEffect(() => {
+    const videos = [manufacturingVideoRef.current, contactVideoRef.current].filter(Boolean);
+    if (!videos.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      videos.forEach((v) => v.play().catch(() => {}));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            if (video.paused) {
+              video.play().catch(() => {});
+            }
+          } else {
+            if (!video.paused) {
+              video.pause();
+            }
+          }
+        });
+      },
+      { rootMargin: '350px' }
+    );
+
+    videos.forEach((v) => observer.observe(v));
+    return () => observer.disconnect();
   }, []);
 
   // In-House Manufacturing: Scroll-Driven Full-Width Edge-to-Edge Video to Grid Transformation
@@ -489,13 +528,14 @@ export function App() {
           .from('.hero-content h1', { opacity: 0.2, y: 24, clearProps: 'opacity,transform' }, 0.15)
           .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
 
-        // Section headings reveal
+        // Section headings reveal (uses opacity rather than visibility:hidden to preserve accessibility outline)
         gsap.utils.toArray('.section-heading, .news-header-split, .trust-strip-header, .cs-content-block, .home-dealer-banner').forEach((el) => {
           gsap.from(el, {
-            autoAlpha: 0,
+            opacity: 0,
             y: 28,
             duration: 0.8,
             ease: 'power3.out',
+            clearProps: 'opacity,transform',
             scrollTrigger: { trigger: el, start: 'top 85%', once: true }
           });
         });
@@ -505,12 +545,12 @@ export function App() {
           const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .news-card, .press-card');
           if (!cards.length) return;
           gsap.from(cards, {
-            autoAlpha: 0,
+            opacity: 0,
             y: 28,
             duration: 0.75,
             stagger: 0.08,
             ease: 'power4.out',
-            clearProps: 'transform',
+            clearProps: 'opacity,transform',
             scrollTrigger: { trigger: group, start: 'top 84%', once: true }
           });
         });
@@ -518,19 +558,14 @@ export function App() {
 
       // MOBILE (<= 768px): Clean static section for LATEST FROM SAVY without scroll reveal delay
       mm.add('(max-width: 768px)', () => {
-        // Hero entrance
-        gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
-          .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
-          .from('.hero-content h1', { opacity: 0.2, y: 24, clearProps: 'opacity,transform' }, 0.15)
-          .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
-
         // Section headings reveal (excluding news header)
         gsap.utils.toArray('.section-heading, .trust-strip-header, .cs-content-block, .home-dealer-banner').forEach((el) => {
           gsap.from(el, {
-            autoAlpha: 0,
+            opacity: 0,
             y: 28,
             duration: 0.8,
             ease: 'power3.out',
+            clearProps: 'opacity,transform',
             scrollTrigger: { trigger: el, start: 'top 85%', once: true }
           });
         });
@@ -540,12 +575,12 @@ export function App() {
           const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .press-card');
           if (!cards.length) return;
           gsap.from(cards, {
-            autoAlpha: 0,
+            opacity: 0,
             y: 28,
             duration: 0.75,
             stagger: 0.08,
             ease: 'power4.out',
-            clearProps: 'transform',
+            clearProps: 'opacity,transform',
             scrollTrigger: { trigger: group, start: 'top 84%', once: true }
           });
         });
@@ -600,7 +635,7 @@ export function App() {
           playsInline
           preload="metadata"
         >
-          <source src="/assets/Videos/Hero section video.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Hero section video.mp4" type="video/mp4" media="(min-width: 769px)" />
         </video>
         <div className="hero-shade" />
         
@@ -696,6 +731,7 @@ export function App() {
           className="application-carousel"
           ref={applicationsRef}
           tabIndex="0"
+          role="region"
           aria-label="Operational applications"
         >
           {realWorldApplications.map((app) => (
@@ -906,10 +942,9 @@ export function App() {
               poster="/assets/Videos/manufacturing img.webp"
               src="/assets/Videos/Dump truck manufacturing process .mp4"
               muted
-              autoPlay
               loop
               playsInline
-              preload="metadata"
+              preload="none"
             />
           </div>
 
@@ -1075,12 +1110,12 @@ export function App() {
           ========================================================================= */}
       <section className="contact" id="contact" aria-labelledby="contact-title">
         <video
+          ref={contactVideoRef}
           className="contact-video"
           muted
-          autoPlay
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
         >
           <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />

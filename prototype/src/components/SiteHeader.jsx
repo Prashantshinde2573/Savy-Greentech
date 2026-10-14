@@ -137,10 +137,22 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
   const [activeProductTab, setActiveProductTab] = useState('all');
   const [mobileOpenCategory, setMobileOpenCategory] = useState(null);
   const [headerScrolled, setHeaderScrolled] = useState(!transparentInitially);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const headerRef = useRef(null);
   const closeTimerRef = useRef(null);
   const lastEnterTimeRef = useRef(0);
   const pinnedDropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (openDropdown || menuOpen) {
+      setHasInteracted(true);
+    }
+  }, [openDropdown, menuOpen]);
+
+  const navImg = (url) =>
+    hasInteracted || openDropdown || menuOpen
+      ? url
+      : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
 
   useEffect(() => {
     if (!transparentInitially) {
@@ -341,6 +353,9 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
       <header
         ref={headerRef}
         className={`site-header ${isScrolledOrActive ? 'scrolled' : ''} ${openDropdown ? 'menu-active' : ''}`}
+        onMouseEnter={() => setHasInteracted(true)}
+        onTouchStart={() => setHasInteracted(true)}
+        onFocusCapture={() => setHasInteracted(true)}
       >
       <div className="container nav-shell">
         <a
@@ -467,7 +482,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                   <div className="tabbed-brand-card">
                     <PiLeaf className="brand-card-watermark" />
                     <p className="brand-card-tag">BUILT FOR A</p>
-                    <h4 className="brand-card-heading">Greener Tomorrow</h4>
+                    <div className="brand-card-heading">Greener Tomorrow</div>
                     <p className="brand-card-text">
                       Purpose-built electric mobility across 6 dedicated commercial categories.
                     </p>
@@ -482,7 +497,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">SAVY ELECTRIC VEHICLES</p>
-                          <h3 className="pane-title">6 Core Product Categories</h3>
+                          <div className="pane-title">6 Core Product Categories</div>
                         </div>
                         <a href="/products" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View All Products</span>
@@ -497,7 +512,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Electric Campus Cart" />
+                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Electric Campus Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Electric Campus Cart</strong>
                           <span className="product-tab-card-sub">Campus transit, golf, luxury resort &amp; utility carts</span>
@@ -510,7 +525,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electruck/Electruck1.webp" alt="Electric Loading Rickshaw" />
+                            <img src="/assets/products/electruck/Electruck1.webp" alt="Electric Loading Rickshaw" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Electric Loading Rickshaw</strong>
                           <span className="product-tab-card-sub">Heavy freight, container logistics, tankers &amp; cargo</span>
@@ -523,7 +538,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Electric Passenger Rickshaw" />
+                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Electric Passenger Rickshaw" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Electric Passenger Rickshaw</strong>
                           <span className="product-tab-card-sub">Approved 3-wheel urban passenger &amp; group transit</span>
@@ -536,7 +551,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Waste Collection Rickshaw" />
+                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Waste Collection Rickshaw" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Waste Collection Rickshaw</strong>
                           <span className="product-tab-card-sub">Municipal door-to-door waste collection &amp; tippers</span>
@@ -549,7 +564,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="Food Cart" />
+                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="Food Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Food Cart</strong>
                           <span className="product-tab-card-sub">Mobile culinary catering, ice cream, soda &amp; retail</span>
@@ -562,7 +577,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Special Purpose Vehicle" />
+                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Special Purpose Vehicle" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Special Purpose Vehicle</strong>
                           <span className="product-tab-card-sub">Custom-built design &amp; bespoke engineered platforms</span>
@@ -578,7 +593,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">CAMPUS &amp; RESORT MOBILITY</p>
-                          <h3 className="pane-title">Electric Campus Cart</h3>
+                          <div className="pane-title">Electric Campus Cart</div>
                         </div>
                         <a href="/products/electric-campus-cart" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -589,7 +604,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-4">
                         <a href="/products/classic-golf-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Classic Golf Cart" />
+                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Classic Golf Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Classic Golf Cart</strong>
                           <span className="product-tab-card-sub">2000W* BLDC • 2 - 8 Seater institutional cart</span>
@@ -598,7 +613,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/club-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/club-cart/Club Cart 001.webp" alt="Club Cart" />
+                            <img src="/assets/products/club-cart/Club Cart 001.webp" alt="Club Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Club Cart</strong>
                           <span className="product-tab-card-sub">2000W Heavy Duty BLDC • 2 - 8 Seater resort cart</span>
@@ -607,7 +622,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/elite-vintage-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/elite-vintage/Vintage cart 001.webp" alt="Elite Vintage Cart" />
+                            <img src="/assets/products/elite-vintage/Vintage cart 001.webp" alt="Elite Vintage Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Elite Vintage Cart</strong>
                           <span className="product-tab-card-sub">2000W BLDC • 2 - 8 Seater classic retro luxury</span>
@@ -616,7 +631,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/utility-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/utility-cart/Desert Utility Cart 001.webp" alt="Utility Cart" />
+                            <img src="/assets/products/utility-cart/Desert Utility Cart 001.webp" alt="Utility Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Utility Cart</strong>
                           <span className="product-tab-card-sub">3000W BLDC • 2 Seater + 500 kg Cargo Platform</span>
@@ -632,7 +647,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">HEAVY FREIGHT &amp; LOGISTICS</p>
-                          <h3 className="pane-title">Electric Loading Rickshaw</h3>
+                          <div className="pane-title">Electric Loading Rickshaw</div>
                         </div>
                         <a href="/products/electric-loading-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -643,7 +658,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-4">
                         <a href="/products/electruck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electruck/Electruck1.webp" alt="Electruck" />
+                            <img src="/assets/products/electruck/Electruck1.webp" alt="Electruck" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Electruck</strong>
                           <span className="product-tab-card-sub">1000W BLDC • 500 kg open cargo platform</span>
@@ -652,7 +667,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/electruck-dlx" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electruck-dlx/Electruck DLX1.webp" alt="Electruck DLX" />
+                            <img src="/assets/products/electruck-dlx/Electruck DLX1.webp" alt="Electruck DLX" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Electruck DLX</strong>
                           <span className="product-tab-card-sub">2000W High Torque BLDC • 1 - 3 ton container</span>
@@ -661,7 +676,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tobu-truck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/tobu-truck/Tobu truck 001.webp" alt="Tobu Truck" />
+                            <img src="/assets/products/tobu-truck/Tobu truck 001.webp" alt="Tobu Truck" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Tobu Truck</strong>
                           <span className="product-tab-card-sub">1000W BLDC • 500 kg high maneuverability</span>
@@ -670,7 +685,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/ecotanker" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/ecotanker/Eco Tanker 001.webp" alt="EcoTanker" />
+                            <img src="/assets/products/ecotanker/Eco Tanker 001.webp" alt="EcoTanker" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">EcoTanker</strong>
                           <span className="product-tab-card-sub">2000W BLDC • 500 Ltr liquid &amp; spray tanker</span>
@@ -686,7 +701,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">COMMERCIAL PASSENGER</p>
-                          <h3 className="pane-title">Electric Passenger Rickshaw</h3>
+                          <div className="pane-title">Electric Passenger Rickshaw</div>
                         </div>
                         <a href="/products/electric-passenger-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -697,7 +712,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/tuk-tuk-e" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Tuk Tuk e" />
+                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Tuk Tuk e" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Tuk Tuk e</strong>
                           <span className="product-tab-card-sub">1000W BLDC • Driver + 2 - 4 Passengers</span>
@@ -706,7 +721,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tuk-tuk-dlx" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/passenger-dlx/Tuk Tuk DLX 001.webp" alt="Tuk Tuk DLX" />
+                            <img src="/assets/products/passenger-dlx/Tuk Tuk DLX 001.webp" alt="Tuk Tuk DLX" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Tuk Tuk DLX</strong>
                           <span className="product-tab-card-sub">1000W High Capacity • Driver + 6 - 9 Passengers</span>
@@ -722,7 +737,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">MUNICIPAL &amp; SANITATION</p>
-                          <h3 className="pane-title">Waste Collection Rickshaw</h3>
+                          <div className="pane-title">Waste Collection Rickshaw</div>
                         </div>
                         <a href="/products/waste-collection-rickshaw" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -733,7 +748,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/dumptruck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Dumptruck" />
+                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Dumptruck" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Dumptruck</strong>
                           <span className="product-tab-card-sub">1200W BLDC • 500 kg Waste Capacity</span>
@@ -742,7 +757,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tipper" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/tipper/Tipper 001.webp" alt="Tipper" />
+                            <img src="/assets/products/tipper/Tipper 001.webp" alt="Tipper" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Tipper</strong>
                           <span className="product-tab-card-sub">1500W* High Torque • 600 kg Hydraulic Tipping</span>
@@ -758,7 +773,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">MOBILE CULINARY RETAIL</p>
-                          <h3 className="pane-title">Food Cart</h3>
+                          <div className="pane-title">Food Cart</div>
                         </div>
                         <a href="/products/food-cart" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -769,7 +784,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/e-food-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="E-Food Cart" />
+                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="E-Food Cart" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">E-Food Cart</strong>
                           <span className="product-tab-card-sub">1100W BLDC • 400 - 450 kg • Ice Cream, Soda, Dosa &amp; catering kiosk variants</span>
@@ -785,7 +800,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="pane-header">
                         <div>
                           <p className="pane-eyebrow">BESPOKE ENGINEERING</p>
-                          <h3 className="pane-title">Special Purpose Vehicle</h3>
+                          <div className="pane-title">Special Purpose Vehicle</div>
                         </div>
                         <a href="/products/special-purpose-vehicle" className="pane-header-pill" onClick={closeAllMenus}>
                           <span>View Category Page</span>
@@ -796,7 +811,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/custom-spv" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Custom SPV" />
+                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Custom SPV" loading="lazy" decoding="async" />
                           </div>
                           <strong className="product-tab-card-title">Custom SPV</strong>
                           <span className="product-tab-card-sub">Customizable Motor &amp; Capacity • Tailored design and fabrication</span>
@@ -910,7 +925,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                 <div className="clean-dropdown-grid clean-grid-6">
                   <a href="/about" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-about" src="/assets/process/consultation.jpg" alt="About Us Leadership & Story" />
+                      <img className="clean-img-about" src={navImg("/assets/process/consultation.jpg")} alt="About Us Leadership & Story" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">About Us</strong>
@@ -921,7 +936,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                   <a href="/sustainability" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-sustainability" src="/assets/about-purpose/electric-future.jpg" alt="Sustainability / ESG" />
+                      <img className="clean-img-sustainability" src={navImg("/assets/about-purpose/electric-future.jpg")} alt="Sustainability / ESG" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">Sustainability / ESG</strong>
@@ -932,7 +947,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                   <a href="/case-studies" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-casestudies" src="/assets/news/ads-foundation-partnership.png" alt="Case Studies" />
+                      <img className="clean-img-casestudies" src={navImg("/assets/news/ads-foundation-partnership.png")} alt="Case Studies" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">Case Studies</strong>
@@ -943,7 +958,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                   <a href="/media" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-media" src="/assets/news/city-pod-netherlands.jpg" alt="Media & Press" />
+                      <img className="clean-img-media" src={navImg("/assets/news/city-pod-netherlands.jpg")} alt="Media & Press" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">Media &amp; Press</strong>
@@ -954,7 +969,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                   <a href="/careers" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-careers" src="/assets/process/customization-design.jpg" alt="Careers at SAVY" />
+                      <img className="clean-img-careers" src={navImg("/assets/process/customization-design.jpg")} alt="Careers at SAVY" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">Careers</strong>
@@ -965,7 +980,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                   <a href="/blog" className="clean-card" onClick={closeAllMenus}>
                     <div className="clean-card-img">
-                      <img className="clean-img-blog" src="/assets/about-purpose/sustainability.jpg" alt="Blog & Insights" />
+                      <img className="clean-img-blog" src={navImg("/assets/about-purpose/sustainability.jpg")} alt="Blog & Insights" loading="lazy" decoding="async" />
                     </div>
                     <div className="clean-card-body">
                       <strong className="clean-card-title">Blog / Insights</strong>
@@ -993,7 +1008,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                     onClick={closeAllMenus}
                   >
                     <div className="mobile-company-thumb">
-                      <img src={item.img} alt={item.title} className={item.imgClass} />
+                      <img src={navImg(item.img)} alt={item.title} className={item.imgClass} loading="lazy" decoding="async" />
                     </div>
                     <div className="mobile-company-body">
                       <strong className="mobile-company-title">{item.title}</strong>
