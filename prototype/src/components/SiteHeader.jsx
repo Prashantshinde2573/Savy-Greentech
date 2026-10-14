@@ -138,6 +138,9 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
   const [mobileOpenCategory, setMobileOpenCategory] = useState(null);
   const [headerScrolled, setHeaderScrolled] = useState(!transparentInitially);
   const headerRef = useRef(null);
+  const closeTimerRef = useRef(null);
+  const lastEnterTimeRef = useRef(0);
+  const pinnedDropdownRef = useRef(null);
 
   useEffect(() => {
     if (!transparentInitially) {
@@ -174,13 +177,63 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
     };
   }, [openDropdown, menuOpen]);
 
-  // Reset all menu and dropdown states whenever currentPath changes
-  useEffect(() => {
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const closeAllMenus = () => {
+    clearCloseTimer();
+    pinnedDropdownRef.current = null;
     setMenuOpen(false);
     setOpenDropdown(null);
     setMobileOpenCategory(null);
     document.body.classList.remove('menu-backdrop-open');
+  };
+
+  // Reset all menu and dropdown states whenever currentPath changes
+  useEffect(() => {
+    closeAllMenus();
   }, [currentPath]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      clearCloseTimer();
+    };
+  }, []);
+
+  // Global listeners for clicking outside, Escape key, and keyboard focus leaving header
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        closeAllMenus();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeAllMenus();
+      }
+    };
+
+    const handleFocusIn = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        closeAllMenus();
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('focusin', handleFocusIn);
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('focusin', handleFocusIn);
+    };
+  }, []);
 
   const isCurrent = (path) => {
     if (path === '/' && currentPath === '/') return true;
@@ -208,8 +261,37 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
   const isScrolledOrActive = headerScrolled || openDropdown !== null || menuOpen;
 
-  const handleDropdownToggle = (name) => {
-    setOpenDropdown(openDropdown === name ? null : name);
+  const handleDropdownToggle = (name, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    clearCloseTimer();
+
+    const isMobile = window.matchMedia('(max-width: 960px)').matches;
+    if (isMobile) {
+      setOpenDropdown((prev) => (prev === name ? null : name));
+      return;
+    }
+
+    // Desktop logic:
+    if (openDropdown === name) {
+      // If the dropdown was just opened by hover on arrival (< 350ms)
+      // and not already pinned by click, treat this click as opening / pinning the dropdown
+      const isQuickArrivalClick = Date.now() - lastEnterTimeRef.current < 350;
+      if (isQuickArrivalClick && pinnedDropdownRef.current !== name) {
+        pinnedDropdownRef.current = name;
+        setOpenDropdown(name);
+      } else {
+        // Dropdown was already open / pinned, user clicked to toggle it closed
+        setOpenDropdown(null);
+        pinnedDropdownRef.current = null;
+      }
+    } else {
+      // Dropdown was closed or another dropdown was open -> open and pin this one
+      setOpenDropdown(name);
+      pinnedDropdownRef.current = name;
+    }
   };
 
   const handleMobileCategoryToggle = (catId) => {
@@ -218,21 +300,27 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
   const handleMouseEnter = (name) => {
     if (!window.matchMedia('(max-width: 960px)').matches) {
+      clearCloseTimer();
+      lastEnterTimeRef.current = Date.now();
       setOpenDropdown(name);
     }
   };
 
   const handleMouseLeave = () => {
     if (!window.matchMedia('(max-width: 960px)').matches) {
-      setOpenDropdown(null);
+      clearCloseTimer();
+      closeTimerRef.current = setTimeout(() => {
+        setOpenDropdown(null);
+        pinnedDropdownRef.current = null;
+      }, 180);
     }
   };
 
-  const closeAllMenus = () => {
-    setMenuOpen(false);
-    setOpenDropdown(null);
-    setMobileOpenCategory(null);
-    document.body.classList.remove('menu-backdrop-open');
+  const handleDropdownMenuEnter = (name) => {
+    if (!window.matchMedia('(max-width: 960px)').matches) {
+      clearCloseTimer();
+      setOpenDropdown(name);
+    }
   };
 
   const handleNavClick = (e) => {
@@ -282,20 +370,21 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
             className="nav-dropdown-trigger vehicle-menu-trigger"
             onMouseEnter={() => handleMouseEnter('products')}
             onMouseLeave={handleMouseLeave}
-            onBlur={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget)) setOpenDropdown(null);
-            }}
           >
             <button
               type="button"
               className={`dropdown-nav-button vehicle-nav-button ${isCategoryActive('products') ? 'active' : ''}`}
               aria-expanded={openDropdown === 'products'}
-              onClick={() => handleDropdownToggle('products')}
+              onClick={(e) => handleDropdownToggle('products', e)}
             >
               <span>Products</span> <PiCaretDown aria-hidden="true" />
             </button>
 
-            <div className={`tabbed-mega-menu vehicle-mega ${openDropdown === 'products' ? 'open' : ''}`}>
+            <div
+              className={`tabbed-mega-menu vehicle-mega ${openDropdown === 'products' ? 'open' : ''}`}
+              onMouseEnter={() => handleDropdownMenuEnter('products')}
+              onMouseLeave={handleMouseLeave}
+            >
               <div className="tabbed-mega-container">
                 {/* Left Interactive Sidebar */}
                 <aside className="tabbed-sidebar">
@@ -405,7 +494,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/classic-golf/Classic Golf5.webp" alt="Electric Campus Cart" />
+                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Electric Campus Cart" />
                           </div>
                           <strong className="product-tab-card-title">Electric Campus Cart</strong>
                           <span className="product-tab-card-sub">Campus transit, golf, luxury resort &amp; utility carts</span>
@@ -431,7 +520,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electric-passenger/Electric Passenger1.webp" alt="Electric Passenger Rickshaw" />
+                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Electric Passenger Rickshaw" />
                           </div>
                           <strong className="product-tab-card-title">Electric Passenger Rickshaw</strong>
                           <span className="product-tab-card-sub">Approved 3-wheel urban passenger &amp; group transit</span>
@@ -444,7 +533,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/dumptruck/Dumptruck1.webp" alt="Waste Collection Rickshaw" />
+                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Waste Collection Rickshaw" />
                           </div>
                           <strong className="product-tab-card-title">Waste Collection Rickshaw</strong>
                           <span className="product-tab-card-sub">Municipal door-to-door waste collection &amp; tippers</span>
@@ -457,7 +546,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/food-cart/Food cart1.webp" alt="Food Cart" />
+                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="Food Cart" />
                           </div>
                           <strong className="product-tab-card-title">Food Cart</strong>
                           <span className="product-tab-card-sub">Mobile culinary catering, ice cream, soda &amp; retail</span>
@@ -470,7 +559,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                           onClick={closeAllMenus}
                         >
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/special-purpose/Special Purpose Vehical1.webp" alt="Special Purpose Vehicle" />
+                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Special Purpose Vehicle" />
                           </div>
                           <strong className="product-tab-card-title">Special Purpose Vehicle</strong>
                           <span className="product-tab-card-sub">Custom-built design &amp; bespoke engineered platforms</span>
@@ -497,7 +586,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-4">
                         <a href="/products/classic-golf-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/classic-golf/Classic Golf5.webp" alt="Classic Golf Cart" />
+                            <img src="/assets/products/classic-golf/Classic Golf cart 001.webp" alt="Classic Golf Cart" />
                           </div>
                           <strong className="product-tab-card-title">Classic Golf Cart</strong>
                           <span className="product-tab-card-sub">2000W* BLDC • 2 - 8 Seater institutional cart</span>
@@ -506,7 +595,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/club-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/club-cart/Club Cart3.webp" alt="Club Cart" />
+                            <img src="/assets/products/club-cart/Club Cart 001.webp" alt="Club Cart" />
                           </div>
                           <strong className="product-tab-card-title">Club Cart</strong>
                           <span className="product-tab-card-sub">2000W Heavy Duty BLDC • 2 - 8 Seater resort cart</span>
@@ -515,7 +604,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/elite-vintage-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/elite-vintage/Elite Vintage Cart9.webp" alt="Elite Vintage Cart" />
+                            <img src="/assets/products/elite-vintage/Vintage cart 001.webp" alt="Elite Vintage Cart" />
                           </div>
                           <strong className="product-tab-card-title">Elite Vintage Cart</strong>
                           <span className="product-tab-card-sub">2000W BLDC • 2 - 8 Seater classic retro luxury</span>
@@ -524,7 +613,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/utility-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/utility-cart/utility Cart1.webp" alt="Utility Cart" />
+                            <img src="/assets/products/utility-cart/Desert Utility Cart 001.webp" alt="Utility Cart" />
                           </div>
                           <strong className="product-tab-card-title">Utility Cart</strong>
                           <span className="product-tab-card-sub">3000W BLDC • 2 Seater + 500 kg Cargo Platform</span>
@@ -569,7 +658,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tobu-truck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/tobu-truck/Tobu truck1.webp" alt="Tobu Truck" />
+                            <img src="/assets/products/tobu-truck/Tobu truck 001.webp" alt="Tobu Truck" />
                           </div>
                           <strong className="product-tab-card-title">Tobu Truck</strong>
                           <span className="product-tab-card-sub">1000W BLDC • 500 kg high maneuverability</span>
@@ -578,7 +667,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/ecotanker" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/ecotanker/EcoTanker1.webp" alt="EcoTanker" />
+                            <img src="/assets/products/ecotanker/Eco Tanker 001.webp" alt="EcoTanker" />
                           </div>
                           <strong className="product-tab-card-title">EcoTanker</strong>
                           <span className="product-tab-card-sub">2000W BLDC • 500 Ltr liquid &amp; spray tanker</span>
@@ -605,7 +694,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/tuk-tuk-e" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/electric-passenger/Electric Passenger1.webp" alt="Tuk Tuk e" />
+                            <img src="/assets/products/electric-passenger/tuk tuk e 001.webp" alt="Tuk Tuk e" />
                           </div>
                           <strong className="product-tab-card-title">Tuk Tuk e</strong>
                           <span className="product-tab-card-sub">1000W BLDC • Driver + 2 - 4 Passengers</span>
@@ -614,7 +703,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tuk-tuk-dlx" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/passenger-dlx/Passenger DLX1.webp" alt="Tuk Tuk DLX" />
+                            <img src="/assets/products/passenger-dlx/Tuk Tuk DLX 001.webp" alt="Tuk Tuk DLX" />
                           </div>
                           <strong className="product-tab-card-title">Tuk Tuk DLX</strong>
                           <span className="product-tab-card-sub">1000W High Capacity • Driver + 6 - 9 Passengers</span>
@@ -641,7 +730,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/dumptruck" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/dumptruck/Dumptruck1.webp" alt="Dumptruck" />
+                            <img src="/assets/products/dumptruck/Dumptruck 001.webp" alt="Dumptruck" />
                           </div>
                           <strong className="product-tab-card-title">Dumptruck</strong>
                           <span className="product-tab-card-sub">1200W BLDC • 500 kg Waste Capacity</span>
@@ -650,7 +739,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
 
                         <a href="/products/tipper" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/tipper/Tipper 1.webp" alt="Tipper" />
+                            <img src="/assets/products/tipper/Tipper 001.webp" alt="Tipper" />
                           </div>
                           <strong className="product-tab-card-title">Tipper</strong>
                           <span className="product-tab-card-sub">1500W* High Torque • 600 kg Hydraulic Tipping</span>
@@ -677,7 +766,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/e-food-cart" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/food-cart/Food cart1.webp" alt="E-Food Cart" />
+                            <img src="/assets/products/food-cart/Food Truck 001.webp" alt="E-Food Cart" />
                           </div>
                           <strong className="product-tab-card-title">E-Food Cart</strong>
                           <span className="product-tab-card-sub">1100W BLDC • 400 - 450 kg • Ice Cream, Soda, Dosa &amp; catering kiosk variants</span>
@@ -704,7 +793,7 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
                       <div className="product-cards-tab-grid product-grid-2">
                         <a href="/products/custom-spv" className="product-tab-card" onClick={closeAllMenus}>
                           <div className="product-tab-card-img">
-                            <img src="/assets/products/special-purpose/Special Purpose Vehical1.webp" alt="Custom SPV" />
+                            <img src="/assets/products/special-purpose/Custom SPV 001.webp" alt="Custom SPV" />
                           </div>
                           <strong className="product-tab-card-title">Custom SPV</strong>
                           <span className="product-tab-card-sub">Customizable Motor &amp; Capacity • Tailored design and fabrication</span>
@@ -799,20 +888,21 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
             className="nav-dropdown-trigger vehicle-menu-trigger"
             onMouseEnter={() => handleMouseEnter('company')}
             onMouseLeave={handleMouseLeave}
-            onBlur={(e) => {
-              if (!e.currentTarget.contains(e.relatedTarget)) setOpenDropdown(null);
-            }}
           >
             <button
               type="button"
               className={`dropdown-nav-button vehicle-nav-button ${isCategoryActive('company') ? 'active' : ''}`}
               aria-expanded={openDropdown === 'company'}
-              onClick={() => handleDropdownToggle('company')}
+              onClick={(e) => handleDropdownToggle('company', e)}
             >
               <span>Company</span> <PiCaretDown aria-hidden="true" />
             </button>
 
-            <div className={`clean-visual-dropdown vehicle-mega ${openDropdown === 'company' ? 'open' : ''}`}>
+            <div
+              className={`clean-visual-dropdown vehicle-mega ${openDropdown === 'company' ? 'open' : ''}`}
+              onMouseEnter={() => handleDropdownMenuEnter('company')}
+              onMouseLeave={handleMouseLeave}
+            >
               <div className="container clean-dropdown-shell">
                 <div className="clean-dropdown-grid clean-grid-6">
                   <a href="/about" className="clean-card" onClick={closeAllMenus}>

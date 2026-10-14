@@ -111,7 +111,7 @@ export function TechnologyPage() {
         eyebrow="Engineering Excellence"
         title="Engineering the Future of Purpose-Built Electric Mobility"
         description="Proprietary powertrain integration, robust tubular chassis fabrication, advanced battery systems, and rigorous quality testing built specifically for Indian operating conditions."
-        videoSrc="/assets/CTA-bg.mp4"
+        videoSrc="/assets/Videos/Dump truck manufacturing process .mp4"
         primaryCtaText="Discuss Your Vehicle Requirement"
         onPrimaryClick={() => setModalOpen(true)}
         secondaryCtaText="Explore Plant Capabilities"
@@ -431,7 +431,7 @@ export function TechnologyPage() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 

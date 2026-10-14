@@ -163,7 +163,7 @@ export function MediaPage() {
         eyebrow="News &amp; Recognition"
         title="Recognised Today. Trusted Everyday."
         description="From international debuts in Amsterdam to features in leading national automotive and industrial publications."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Download Press Kit"
         onPrimaryClick={handleDownloadPressKit}
         secondaryCtaText="Media Inquiries"
@@ -270,7 +270,7 @@ export function MediaPage() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 

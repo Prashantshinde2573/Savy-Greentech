@@ -32,7 +32,7 @@ export function ApplicationsPage() {
         eyebrow="Real-World Mobility Solutions"
         title="Electric Mobility Built for Real-World Applications"
         description="Custom electric vehicles tailored to the demanding operating environments of smart cities, healthcare complexes, luxury resorts, industrial warehouses, and institutional campuses."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/Aplication page (2).mp4"
         primaryCtaText="Discuss Your Industry Requirement"
         onPrimaryClick={() => handleInquireSector('General Industry Inquiry')}
         secondaryCtaText="Explore Use Cases"
@@ -55,7 +55,7 @@ export function ApplicationsPage() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 

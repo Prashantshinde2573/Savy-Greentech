@@ -3,9 +3,4 @@ node_modules
 dist
 prototype/dist
 .env
-.env.*
 .env.local
-prototype/.env
-prototype/.env.*
-prototype/.env.local
-

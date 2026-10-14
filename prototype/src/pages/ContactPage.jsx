@@ -69,7 +69,7 @@ export function ContactPage() {
         eyebrow="Get in Touch"
         title="Let's Build a Greener Tomorrow, Together."
         description="Whether you are an institutional buyer, municipal administrator, potential dealer, or clean-tech engineer, our team is ready to assist you."
-        videoSrc="/assets/hero.mp4"
+        videoSrc="/assets/Videos/Clubcart closeups (1).mp4"
         primaryCtaText="Submit Enquiry"
         primaryCtaHref="#contact-form-section"
         secondaryCtaText="Chat on WhatsApp"

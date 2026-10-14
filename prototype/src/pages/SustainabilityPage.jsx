@@ -113,7 +113,7 @@ export function SustainabilityPage() {
         eyebrow="Sustainability &amp; ESG"
         title="Driving a Cleaner, More Sustainable Future"
         description="Zero emissions at the tailpipe, sustainable manufacturing in our plant, and tangible reforestation for every electric vehicle deployed across India."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Calculate Your Fleet Savings"
         primaryCtaHref="#calculator"
         secondaryCtaText="One Vehicle, One Tree"
@@ -360,7 +360,7 @@ export function SustainabilityPage() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 

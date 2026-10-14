@@ -3179,8 +3179,7 @@ main#top:not(.home-old) :focus-visible {
 .nav-dropdown-menu.products-menu {
   min-width: 580px;
 }
-.nav-dropdown-menu.open,
-.nav-dropdown-trigger:hover .nav-dropdown-menu {
+.nav-dropdown-menu.open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -3214,9 +3213,7 @@ main#top:not(.home-old) :focus-visible {
 }
 
 .tabbed-mega-menu.vehicle-mega.open,
-.vehicle-menu-trigger:hover .tabbed-mega-menu.vehicle-mega,
-.clean-visual-dropdown.vehicle-mega.open,
-.vehicle-menu-trigger:hover .clean-visual-dropdown.vehicle-mega {
+.clean-visual-dropdown.vehicle-mega.open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);

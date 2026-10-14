@@ -72,7 +72,7 @@ export function BecomeDealerPage() {
         eyebrow="Channel Partnership"
         title="Become a SAVY Dealer"
         description="Join India’s fastest growing manufacturer of purpose-built custom electric vehicles and capture the booming commercial and institutional EV market."
-        videoSrc="/assets/CTA-bg.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Apply for Dealership"
         primaryCtaHref="#dealer-form"
         secondaryCtaText="Why Partner With Us"

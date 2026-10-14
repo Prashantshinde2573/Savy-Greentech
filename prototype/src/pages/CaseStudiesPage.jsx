@@ -34,7 +34,7 @@ export function CaseStudiesPage() {
         eyebrow="Verified Field Deployments"
         title="Proven Performance Across Indian Industries"
         description="Explore how India's top public institutions, FMCG corporations, healthcare complexes, and state tourism bodies achieve reliable operations with SAVY electric vehicles."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Have a Similar Requirement?"
         onPrimaryClick={() => handleInquire('General Case Study Inquiry')}
         secondaryCtaText="Explore Case Studies"
@@ -165,7 +165,7 @@ export function CaseStudiesPage() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 

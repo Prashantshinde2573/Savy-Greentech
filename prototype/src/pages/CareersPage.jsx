@@ -77,7 +77,7 @@ export function CareersPage() {
         eyebrow="Join Our Team"
         title="Build the Future of Electric Mobility With SAVY"
         description="Work with passionate automotive engineers, designers, and clean-tech pioneers building India's indigenous electric vehicle platforms."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Explore Open Positions"
         primaryCtaHref="#open-positions"
         secondaryCtaText="Life at SAVY"

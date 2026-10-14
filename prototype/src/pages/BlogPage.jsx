@@ -110,7 +110,7 @@ export function BlogPage() {
         eyebrow="Knowledge &amp; Insights"
         title="Electric Mobility Insights"
         description="Industry education, technological deep-dives, and total cost of ownership analysis shaping India's commercial electric transition."
-        videoSrc="/assets/about-hero.mp4"
+        videoSrc="/assets/Videos/became a dealer page (1).mp4"
         primaryCtaText="Read Featured Article"
         primaryCtaHref="#articles"
         secondaryCtaText="Explore Categories"

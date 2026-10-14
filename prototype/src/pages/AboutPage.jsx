@@ -949,7 +949,7 @@ export function AboutPage() {
           ========================================================================= */}
       <section className="contact" id="contact" aria-labelledby="about-contact-cta">
         <video className="contact-video" muted autoPlay loop playsInline preload="metadata" aria-hidden="true">
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
         <div className="container contact-inner">

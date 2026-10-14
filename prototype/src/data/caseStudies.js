@@ -66,8 +66,8 @@ export const caseStudies = [
       'Aligns with state-level green tourism and sustainability mandates'
     ],
     gallery: [
-      '/assets/products/club-cart/Club Cart1.webp',
-      '/assets/products/elite-vintage/Elite Vintage Cart1.webp',
+      '/assets/products/club-cart/Club Cart 001.webp',
+      '/assets/products/elite-vintage/Vintage cart 001.webp',
       '/assets/applications/tourism.jpg'
     ],
     relatedProduct: 'club-cart',

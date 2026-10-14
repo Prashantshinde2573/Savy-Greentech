@@ -64,13 +64,13 @@ const partners = [
 const vehicles = [
   {
     name: 'Classic Golf',
-    image: '/assets/products/classic-golf/Classic Golf5.webp',
+    image: '/assets/products/classic-golf/Classic Golf cart 001.webp',
     copy: 'High-efficiency four-wheel electric campus cart for universities, resorts, institutions, and industrial campuses.',
     slug: 'classic-golf'
   },
   {
     name: 'Club Cart',
-    image: '/assets/products/club-cart/Club Cart3.webp',
+    image: '/assets/products/club-cart/Club Cart 001.webp',
     copy: 'Premium exterior styling with contoured seating for luxury hospitality, VIP transit, and prestigious campuses.',
     slug: 'club-cart'
   },
@@ -82,19 +82,19 @@ const vehicles = [
   },
   {
     name: 'Vintage Elite',
-    image: '/assets/products/elite-vintage/Elite vintage cart4.webp',
+    image: '/assets/products/elite-vintage/Vintage cart 001.webp',
     copy: 'Vintage-styled luxury electric vehicle preferred for VIP transport, weddings, heritage properties, and premier resorts.',
     slug: 'vintage-elite'
   },
   {
     name: 'Tuk Tuk ë',
-    image: '/assets/products/electric-passenger/Electric Passenger1.webp',
+    image: '/assets/products/electric-passenger/tuk tuk e 001.webp',
     copy: 'Versatile electric passenger vehicle engineered for urban micro-mobility and institutional passenger movement.',
     slug: 'tuk-tuk-e'
   },
   {
     name: 'Dump Truck',
-    image: '/assets/products/dumptruck/Dumptruck1.webp',
+    image: '/assets/products/dumptruck/Dumptruck 001.webp',
     copy: 'Electro-hydraulic tipping electric tipper designed for municipal sanitation, smart cities, and Gram Panchayats.',
     slug: 'dump-truck'
   },
@@ -1126,7 +1126,7 @@ export function App() {
           preload="metadata"
           aria-hidden="true"
         >
-          <source src="/assets/hero.mp4" type="video/mp4" />
+          <source src="/assets/Videos/Clubcart closeups (1).mp4" type="video/mp4" />
         </video>
         <div className="contact-video-shade" aria-hidden="true" />
 
