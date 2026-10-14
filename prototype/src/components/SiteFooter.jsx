@@ -7,7 +7,7 @@ export function SiteFooter() {
         <div className="footer-top-brand-row">
           <div className="footer-brand-summary">
             <a className="brand brand-lockup inverse" href="/" aria-label="SAVYGREENTECH home">
-              <img src="/assets/SG-logo-white.png" alt="SAVYGREENTECH" />
+              <img src="/assets/SG-logo-white.png" alt="SAVYGREENTECH" width="121" height="56" loading="lazy" />
             </a>
             <p className="footer-brand-p">
               Purpose-built custom electric vehicles engineered for institutions, industries, resorts, and smart cities. Reliable, efficient mobility solutions since 2014.

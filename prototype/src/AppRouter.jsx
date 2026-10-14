@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { App } from './App.jsx';
-import { HomeOld } from './HomeOld.jsx';
-import { AboutPage } from './pages/AboutPage.jsx';
-import { ProductsPage } from './pages/ProductsPage.jsx';
-import { ProductCategoryPage } from './pages/ProductCategoryPage.jsx';
-import { ProductDetailPage } from './pages/ProductDetailPage.jsx';
-import { NotFoundPage } from './pages/NotFoundPage.jsx';
 import { getCategoryBySlug, getProductBySlug } from './data/products.js';
-import { ApplicationsPage } from './pages/ApplicationsPage.jsx';
-import { TechnologyPage } from './pages/TechnologyPage.jsx';
-import { SustainabilityPage } from './pages/SustainabilityPage.jsx';
-import { CaseStudiesPage } from './pages/CaseStudiesPage.jsx';
-import { MediaPage } from './pages/MediaPage.jsx';
-import { BecomeDealerPage } from './pages/BecomeDealerPage.jsx';
-import { CareersPage } from './pages/CareersPage.jsx';
-import { CareerDetailPage } from './pages/CareerDetailPage.jsx';
-import { BlogPage } from './pages/BlogPage.jsx';
-import { BlogDetailPage } from './pages/BlogDetailPage.jsx';
-import { ContactPage } from './pages/ContactPage.jsx';
-import { PolicyPage } from './pages/PolicyPage.jsx';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp.jsx';
-import FlowButtonDemo from './components/demo.tsx';
+
+// Lazy-load secondary and auxiliary routes to keep initial bundle lean
+const HomeOld = lazy(() => import('./HomeOld.jsx').then(m => ({ default: m.HomeOld })));
+const AboutPage = lazy(() => import('./pages/AboutPage.jsx').then(m => ({ default: m.AboutPage })));
+const ProductsPage = lazy(() => import('./pages/ProductsPage.jsx').then(m => ({ default: m.ProductsPage })));
+const ProductCategoryPage = lazy(() => import('./pages/ProductCategoryPage.jsx').then(m => ({ default: m.ProductCategoryPage })));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage.jsx').then(m => ({ default: m.ProductDetailPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage.jsx').then(m => ({ default: m.NotFoundPage })));
+const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage.jsx').then(m => ({ default: m.ApplicationsPage })));
+const TechnologyPage = lazy(() => import('./pages/TechnologyPage.jsx').then(m => ({ default: m.TechnologyPage })));
+const SustainabilityPage = lazy(() => import('./pages/SustainabilityPage.jsx').then(m => ({ default: m.SustainabilityPage })));
+const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage.jsx').then(m => ({ default: m.CaseStudiesPage })));
+const MediaPage = lazy(() => import('./pages/MediaPage.jsx').then(m => ({ default: m.MediaPage })));
+const BecomeDealerPage = lazy(() => import('./pages/BecomeDealerPage.jsx').then(m => ({ default: m.BecomeDealerPage })));
+const CareersPage = lazy(() => import('./pages/CareersPage.jsx').then(m => ({ default: m.CareersPage })));
+const CareerDetailPage = lazy(() => import('./pages/CareerDetailPage.jsx').then(m => ({ default: m.CareerDetailPage })));
+const BlogPage = lazy(() => import('./pages/BlogPage.jsx').then(m => ({ default: m.BlogPage })));
+const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage.jsx').then(m => ({ default: m.BlogDetailPage })));
+const ContactPage = lazy(() => import('./pages/ContactPage.jsx').then(m => ({ default: m.ContactPage })));
+const PolicyPage = lazy(() => import('./pages/PolicyPage.jsx').then(m => ({ default: m.PolicyPage })));
+const FlowButtonDemo = lazy(() => import('./components/demo.tsx'));
 
 export function AppRouter() {
   const [currentPath, setCurrentPath] = useState(() => {
@@ -142,7 +144,9 @@ export function AppRouter() {
 
   return (
     <>
-      {renderPage()}
+      <Suspense fallback={null}>
+        {renderPage()}
+      </Suspense>
       <FloatingWhatsApp />
     </>
   );

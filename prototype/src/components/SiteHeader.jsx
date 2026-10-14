@@ -352,6 +352,9 @@ export function SiteHeader({ currentPath = '', transparentInitially = false }) {
           <img
             src={!isScrolledOrActive ? '/assets/SG-logo-white.png' : '/assets/SG-logo-black.png'}
             alt="SAVYGREENTECH"
+            width="121"
+            height="56"
+            fetchPriority="high"
           />
         </a>
 

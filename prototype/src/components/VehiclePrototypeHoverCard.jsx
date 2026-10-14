@@ -89,9 +89,11 @@ export function VehicleCategoryCard({ vehicle }) {
   const totalFrames = frames.length;
 
   const canvasRef = useRef(null);
+  const cardRef = useRef(null);
   const imagesRef = useRef([]);
   const currentFrameIdxRef = useRef(0);
   const timeoutsRef = useRef([]);
+  const remainingLoadedRef = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Helper to draw a specific frame directly to the canvas
@@ -115,47 +117,67 @@ export function VehicleCategoryCard({ vehicle }) {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   };
 
-  // Preload all frames into memory on mount
+  const loadRemainingFrames = () => {
+    if (remainingLoadedRef.current) return;
+    remainingLoadedRef.current = true;
+    for (let idx = 1; idx < frames.length; idx++) {
+      if (!imagesRef.current[idx]) {
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = frames[idx];
+        imagesRef.current[idx] = img;
+      }
+    }
+  };
+
+  // Preload frame 0 immediately with async decoding; defer frames 1..N until near viewport
   useEffect(() => {
     let isMounted = true;
     imagesRef.current = [];
-    let loadedCount = 0;
+    remainingLoadedRef.current = false;
 
-    frames.forEach((src, idx) => {
-      const img = new Image();
-      img.decoding = 'sync';
-      img.src = src;
-      imagesRef.current[idx] = img;
+    // Load initial frame 0 asynchronously
+    const img0 = new Image();
+    img0.decoding = 'async';
+    img0.src = frames[0];
+    imagesRef.current[0] = img0;
 
-      const handleImageReady = () => {
-        loadedCount++;
-        if (!isMounted) return;
+    const handleFrame0Ready = () => {
+      if (!isMounted) return;
+      drawFrameToCanvas(0);
+      setIsLoaded(true);
+    };
 
-        // Immediately render frame 0 if it's the first frame
-        if (idx === currentFrameIdxRef.current) {
-          drawFrameToCanvas(idx);
-          setIsLoaded(true);
-        }
-
-        if (loadedCount === frames.length) {
-          setIsLoaded(true);
-          // Re-draw initial frame to ensure high-fidelity render
-          drawFrameToCanvas(currentFrameIdxRef.current);
-        }
+    if (img0.complete && img0.naturalWidth > 0) {
+      handleFrame0Ready();
+    } else {
+      img0.onload = handleFrame0Ready;
+      img0.onerror = () => {
+        console.warn(`Failed to preload frame 0: ${frames[0]}`);
       };
+    }
 
-      if (img.complete && img.naturalWidth > 0) {
-        handleImageReady();
-      } else {
-        img.onload = handleImageReady;
-        img.onerror = () => {
-          console.warn(`Failed to preload frame: ${src}`);
-        };
-      }
-    });
+    // Defer remaining rotation frames until user scrolls near this card
+    const el = cardRef.current;
+    let observer;
+    if (el && typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            loadRemainingFrames();
+            observer?.disconnect();
+          }
+        },
+        { rootMargin: '300px' }
+      );
+      observer.observe(el);
+    } else {
+      loadRemainingFrames();
+    }
 
     return () => {
       isMounted = false;
+      observer?.disconnect();
       clearAllTimeouts();
     };
   }, [frames]);
@@ -203,6 +225,7 @@ export function VehicleCategoryCard({ vehicle }) {
   };
 
   const handleMouseEnter = () => {
+    loadRemainingFrames();
     if (totalFrames > 1) {
       animateToFrame(totalFrames - 1);
     }
@@ -215,6 +238,7 @@ export function VehicleCategoryCard({ vehicle }) {
   };
 
   const handleTouchToggle = () => {
+    loadRemainingFrames();
     if (totalFrames <= 1) return;
     if (currentFrameIdxRef.current === 0) {
       animateToFrame(totalFrames - 1);
@@ -225,6 +249,7 @@ export function VehicleCategoryCard({ vehicle }) {
 
   return (
     <div
+      ref={cardRef}
       className="savy-proto-card"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -248,7 +273,7 @@ export function VehicleCategoryCard({ vehicle }) {
             src={frames[0]}
             alt={vehicle.name}
             className="savy-proto-frame frame-active frame-fallback"
-            loading="eager"
+            loading="lazy"
             decoding="async"
             draggable={false}
           />

@@ -486,7 +486,7 @@ export function App() {
         // Hero entrance
         gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
           .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
-          .from('.hero-content h1', { autoAlpha: 0, y: 28 }, 0.2)
+          .from('.hero-content h1', { opacity: 0.2, y: 24, clearProps: 'opacity,transform' }, 0.15)
           .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
 
         // Section headings reveal
@@ -501,7 +501,7 @@ export function App() {
         });
 
         // Applications, Rows & Bento Cards reveal
-        gsap.utils.toArray('.vehicle-grid, .application-carousel, .why-savy-rows-list, .engineering-bento-grid, .news-content-layout, .press-articles-grid').forEach((group) => {
+        gsap.utils.toArray('.application-carousel, .why-savy-rows-list, .engineering-bento-grid, .news-content-layout, .press-articles-grid').forEach((group) => {
           const cards = group.querySelectorAll('article, .why-savy-row, .bento-card, .news-card, .press-card');
           if (!cards.length) return;
           gsap.from(cards, {
@@ -521,7 +521,7 @@ export function App() {
         // Hero entrance
         gsap.timeline({ defaults: { duration: 0.85, ease: 'power4.out' } })
           .from('.hero-content .eyebrow', { autoAlpha: 0, y: 18 }, 0.12)
-          .from('.hero-content h1', { autoAlpha: 0, y: 28 }, 0.2)
+          .from('.hero-content h1', { opacity: 0.2, y: 24, clearProps: 'opacity,transform' }, 0.15)
           .from('.hero-actions', { autoAlpha: 0, y: 20, clearProps: 'transform' }, 0.42);
 
         // Section headings reveal (excluding news header)
@@ -587,6 +587,8 @@ export function App() {
           alt="SAVY Greentech Electric Vehicles"
           aria-hidden="true"
           className="hero-poster-fallback"
+          fetchPriority="high"
+          decoding="async"
         />
         <video
           ref={videoRef}
@@ -596,7 +598,7 @@ export function App() {
           autoPlay
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
         >
           <source src="/assets/Videos/Hero section video.mp4" type="video/mp4" />
         </video>
@@ -641,57 +643,12 @@ export function App() {
                 <div className="sponsor-group" aria-hidden={hidden || undefined} key={String(hidden)}>
                   {partners.map(([name, file]) => (
                     <div className="sponsor-logo" key={`${hidden}-${file}`}>
-                      <img src={`/assets/partners/${file}`} alt={hidden ? '' : `${name} logo`} loading="lazy" />
+                      <img src={`/assets/partners/${file}`} alt={hidden ? '' : `${name} logo`} loading="lazy" decoding="async" width="140" height="88" />
                     </div>
                   ))}
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          03. EXISTING PRODUCT SECTION (ORIGINAL - TEMPORARILY HIDDEN)
-          ========================================================================= */}
-      <section className="vehicles section-cream" id="vehicles" aria-labelledby="vehicles-title" style={{ display: 'none' }}>
-        <div className="container">
-          <div className="section-heading center">
-            <p className="eyebrow">SAVY VEHICLE LINEUP</p>
-            <h2 id="vehicles-title">Electric Vehicle Range</h2>
-            <p className="section-subtitle">
-              A purpose-built platform for every operation.
-            </p>
-          </div>
-
-          <div className="vehicle-grid">
-            {vehicles.map((vehicle) => (
-              <article
-                className={`vehicle-card${vehicle.comingSoon ? ' coming-soon' : ''}`}
-                key={vehicle.name}
-              >
-                <div className="vehicle-card-media">
-                  <img
-                    src={vehicle.image}
-                    alt={vehicle.comingSoon ? 'Electric vehicle design in development' : `${vehicle.name} electric vehicle`}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="vehicle-card-copy">
-                  <h3>{vehicle.name}</h3>
-                  <p>{vehicle.copy}</p>
-                  {vehicle.comingSoon ? (
-                    <span className="vehicle-status">In development</span>
-                  ) : (
-                    <div style={{ display: 'flex', gap: '14px', alignItems: 'center', marginTop: 'auto' }}>
-                      <a href={`/products/${vehicle.slug}`}>
-                        Explore details <PiArrowRight aria-hidden="true" />
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>

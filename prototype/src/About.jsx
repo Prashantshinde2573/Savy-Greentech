@@ -30,7 +30,7 @@ const focusAreas = [
 import { leadershipTeam } from './data/team';
 
 function Logo({ inverse = false }) {
-  return <a className={`brand brand-lockup ${inverse ? 'inverse' : ''}`} href="/" aria-label="SAVYGREENTECH home"><img src={inverse ? '/assets/SG-logo-white.png' : '/assets/SG-logo-black.png'} alt="SAVYGREENTECH" /></a>;
+  return <a className={`brand brand-lockup ${inverse ? 'inverse' : ''}`} href="/" aria-label="SAVYGREENTECH home"><img src={inverse ? '/assets/SG-logo-white.png' : '/assets/SG-logo-black.png'} alt="SAVYGREENTECH" width="121" height="56" /></a>;
 }
 
 function ButtonLink({ href, children, className = '' }) {
