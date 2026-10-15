@@ -52,15 +52,27 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
         honeypot,
       });
 
+      const quantityLabel =
+        formData.quantity === '1'
+          ? '1 Unit (Evaluation)'
+          : formData.quantity === '2-5'
+          ? '2 – 5 Units'
+          : formData.quantity === '6-20'
+          ? '6 – 20 Units (Fleet)'
+          : formData.quantity === '20+'
+          ? '20+ Units (Institutional)'
+          : formData.quantity;
+
       const waUrl = buildWhatsAppUrl({
-        formType: requestTypeName,
+        formType: SHEET_TABS.QUOTE_REQUEST,
         name: formData.name,
-        details: [
-          `Company: ${formData.company}`,
-          `Vehicle: ${formData.vehicle || 'Custom Solution'}`,
-          `Quantity: ${formData.quantity}`,
-          `Phone: ${formData.phone}`,
-        ],
+        phone: formData.phone,
+        email: formData.email,
+        company: formData.company,
+        vehicle: formData.vehicle,
+        quantity: quantityLabel,
+        requestType: mode === 'demo' ? 'Vehicle Demonstration' : 'Custom Quotation',
+        message: formData.message,
       });
 
       setWhatsappLink(waUrl);
@@ -97,7 +109,7 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <p>Our commercial and engineering team will contact you within 24 hours with a comprehensive proposal.</p>
             
             {whatsappLink && (
-              <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                 <a
                   href={whatsappLink}
                   target="_blank"
@@ -116,6 +128,9 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                   <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
                   <span>Chat on WhatsApp</span>
                 </a>
+                <span style={{ fontSize: '0.8125rem', color: '#6B7280', textAlign: 'center' }}>
+                  WhatsApp opens with your prefilled request. Review and manually click Send in WhatsApp.
+                </span>
               </div>
             )}
 

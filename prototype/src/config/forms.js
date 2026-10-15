@@ -17,11 +17,12 @@ export const GOOGLE_APPS_SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbxvCA3LCR-Sk1Nd9O6naRct1raLDbBz4BJIU6vCzR7F4DwLQDgco5uYNVPrZWkhJ15Zew/exec';
 
 /**
- * WhatsApp Click-to-Chat Phone Number Placeholder.
- * Replace 'REPLACE_WITH_MY_NUMBER' with your international phone number digits only (e.g., '919876543210').
+ * Verified SAVY Greentech Business WhatsApp Number (Digits only, international format).
+ * Configured in SiteFooter and FloatingWhatsApp as 919284830085.
+ * Can be overridden via VITE_WHATSAPP_NUMBER in .env if needed.
  */
 export const WHATSAPP_NUMBER =
-  import.meta.env?.VITE_WHATSAPP_NUMBER || 'REPLACE_WITH_MY_NUMBER';
+  import.meta.env?.VITE_WHATSAPP_NUMBER || '919284830085';
 
 /**
  * Google Sheet Tab Names strictly supported by the Apps Script endpoint.

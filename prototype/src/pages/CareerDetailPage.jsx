@@ -93,13 +93,16 @@ export function CareerDetailPage({ slug }) {
       });
 
       const waUrl = buildWhatsAppUrl({
-        formType: SHEET_TABS.CAREERS,
+        formType: 'Job Role Application',
         name: formData.name,
-        details: [
-          'Type: Job Role Application',
-          `Position: ${targetRole}`,
-          `Phone: ${formData.phone}`,
-        ],
+        email: formData.email,
+        phone: formData.phone,
+        jobRole: targetRole,
+        experience: job?.experience || '',
+        location: job?.location || '',
+        resume: resumeFileName || '',
+        portfolio: formData.portfolio || '',
+        message: formData.message || '',
       });
 
       setWhatsappLink(waUrl);
@@ -263,7 +266,7 @@ export function CareerDetailPage({ slug }) {
                 </p>
 
                 {whatsappLink && (
-                  <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                     <a
                       href={whatsappLink}
                       target="_blank"
@@ -282,6 +285,9 @@ export function CareerDetailPage({ slug }) {
                       <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
                       <span>Chat on WhatsApp</span>
                     </a>
+                    <span style={{ fontSize: '0.8125rem', color: '#6B7280', textAlign: 'center' }}>
+                      WhatsApp opens with your prefilled job application. Review and manually click Send in WhatsApp.
+                    </span>
                   </div>
                 )}
 

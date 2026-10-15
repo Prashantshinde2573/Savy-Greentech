@@ -85,14 +85,25 @@ export function BecomeDealerPage() {
         honeypot,
       });
 
+      const experienceMap = {
+        'automotive-dealership': 'Automotive / 2W / 3W / 4W Dealership',
+        'industrial-equipment': 'Industrial Equipment & Machinery',
+        'commercial-logistics': 'Fleet Logistics & Transport Operator',
+        'new-entrepreneur': 'New Business / Clean-Tech Entrepreneur',
+      };
+      const experienceLabel = experienceMap[formData.experience] || formData.experience;
+
       const waUrl = buildWhatsAppUrl({
         formType: SHEET_TABS.BECOME_A_DEALER,
         name: formData.name,
-        details: [
-          `Company: ${formData.company}`,
-          `Location: ${formData.city}, ${formData.state}`,
-          `Phone: ${formData.phone}`,
-        ],
+        company: formData.company,
+        phone: formData.phone,
+        email: formData.email,
+        city: formData.city,
+        state: formData.state,
+        territory: formData.preferredTerritory,
+        experience: experienceLabel,
+        message: formData.message,
       });
 
       setWhatsappLink(waUrl);
@@ -176,7 +187,7 @@ export function BecomeDealerPage() {
                 <p>Our dealer network director will review your territory application and contact you within 48 business hours.</p>
 
                 {whatsappLink && (
-                  <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                     <a
                       href={whatsappLink}
                       target="_blank"
@@ -195,6 +206,9 @@ export function BecomeDealerPage() {
                       <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
                       <span>Chat on WhatsApp</span>
                     </a>
+                    <span style={{ fontSize: '0.8125rem', color: '#6B7280', textAlign: 'center' }}>
+                      WhatsApp opens with your prefilled dealership application. Review and manually click Send in WhatsApp.
+                    </span>
                   </div>
                 )}
 

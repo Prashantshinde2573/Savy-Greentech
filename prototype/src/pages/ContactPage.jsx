@@ -52,11 +52,12 @@ export function ContactPage() {
       const waUrl = buildWhatsAppUrl({
         formType: SHEET_TABS.GET_IN_TOUCH,
         name: formData.name,
-        details: [
-          `Company: ${formData.company}`,
-          `Vehicle: ${formData.requirement || 'General Enquiry'}`,
-          `Phone: ${formData.phone}`,
-        ],
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        userType: formData.userType,
+        requirement: formData.requirement,
+        message: formData.message,
       });
 
       setWhatsappLink(waUrl);
@@ -113,7 +114,7 @@ export function ContactPage() {
                     <p>Your message has been received and saved. A member of our team will reach out to you promptly.</p>
                     
                     {whatsappLink && (
-                      <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                      <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                         <a
                           href={whatsappLink}
                           target="_blank"
@@ -132,6 +133,9 @@ export function ContactPage() {
                           <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
                           <span>Chat on WhatsApp</span>
                         </a>
+                        <span style={{ fontSize: '0.8125rem', color: '#6B7280', textAlign: 'center' }}>
+                          WhatsApp opens with your prefilled enquiry. Review and manually click Send in WhatsApp.
+                        </span>
                       </div>
                     )}
 
