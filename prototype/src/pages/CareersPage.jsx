@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { PiArrowRight, PiBriefcase, PiCheckCircle, PiClock, PiFileArrowUp, PiMapPin, PiSparkle } from 'react-icons/pi';
+import { PiArrowRight, PiBriefcase, PiCheckCircle, PiClock, PiFileArrowUp, PiMapPin, PiSparkle, PiWhatsappLogo } from 'react-icons/pi';
 import { SiteHeader } from '../components/SiteHeader';
 import { SiteFooter } from '../components/SiteFooter';
 import { PageHero } from '../components/PageHero';
@@ -7,6 +7,8 @@ import { SEOHead } from '../components/SEOHead';
 import { cultureBenefits } from '../data/careers';
 import { fetchCareerPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
+import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
+import { SHEET_TABS } from '../config/forms';
 
 export function CareersPage() {
   const pageRef = useRef(null);
@@ -14,6 +16,11 @@ export function CareersPage() {
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [whatsappLink, setWhatsappLink] = useState(null);
+  const [honeypot, setHoneypot] = useState('');
+  const [resumeFileName, setResumeFileName] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -60,9 +67,56 @@ export function CareersPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const appType = selectedJob ? 'Job Role Application' : 'General Application';
+      const targetRole = formData.role || (selectedJob ? selectedJob.title : 'General Application');
+
+      const payload = {
+        'Application Type': appType,
+        'Position': targetRole,
+        'Full Name': formData.name,
+        'Email Address': formData.email,
+        'Phone Number': formData.phone,
+        'LinkedIn / Portfolio': formData.portfolio || 'N/A',
+        'Resume File': resumeFileName || 'Not uploaded',
+        'Cover Note / Experience': formData.message || 'N/A',
+        'Job Slug': selectedJob?.slug || '',
+      };
+
+      await submitFormToGoogleSheets({
+        formType: SHEET_TABS.CAREERS,
+        payload,
+        honeypot,
+      });
+
+      const waUrl = buildWhatsAppUrl({
+        formType: SHEET_TABS.CAREERS,
+        name: formData.name,
+        details: [
+          `Type: ${appType}`,
+          `Position: ${targetRole}`,
+          `Phone: ${formData.phone}`,
+        ],
+      });
+
+      setWhatsappLink(waUrl);
+      setSubmitted(true);
+      setSubmitError(null);
+
+      if (waUrl) {
+        attemptOpenWhatsApp(waUrl);
+      }
+    } catch (err) {
+      console.error('Career application error:', err);
+      setSubmitError(err.message || 'Unable to submit your application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -208,12 +262,39 @@ export function CareersPage() {
                 <PiCheckCircle className="success-icon" />
                 <h3>Application Received!</h3>
                 <p>Our talent acquisition team will review your qualifications and contact shortlisted candidates for technical rounds.</p>
+
+                {whatsappLink && (
+                  <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="button-link secondary"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: '#25D366',
+                        color: '#ffffff',
+                        borderColor: '#25D366',
+                        fontWeight: 600,
+                      }}
+                    >
+                      <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
+                      <span>Chat on WhatsApp</span>
+                    </a>
+                  </div>
+                )}
+
                 <button
                   type="button"
                   className="button-link primary"
                   onClick={() => {
                     setSubmitted(false);
                     setSelectedJob(null);
+                    setWhatsappLink(null);
+                    setSubmitError(null);
+                    setResumeFileName('');
                     setFormData({ name: '', email: '', phone: '', role: '', portfolio: '', message: '' });
                   }}
                 >
@@ -223,6 +304,17 @@ export function CareersPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="career-main-form">
+                {/* Honeypot field for spam prevention */}
+                <input
+                  type="text"
+                  name="candidate_source"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, pointerEvents: 'none' }}
+                />
                 <div className="form-grid-2">
                   <div className="form-group">
                     <label htmlFor="c-name">Full Name *</label>
@@ -288,8 +380,18 @@ export function CareersPage() {
                   <label htmlFor="c-resume">Resume / CV Upload (PDF, DOCX)</label>
                   <div className="resume-upload-box">
                     <PiFileArrowUp className="upload-icon" />
-                    <span>Click or drag and drop your resume file here</span>
-                    <input id="c-resume" type="file" accept=".pdf,.doc,.docx" />
+                    <span>
+                      {resumeFileName ? `Selected: ${resumeFileName}` : 'Click or drag and drop your resume file here'}
+                    </span>
+                    <input
+                      id="c-resume"
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        setResumeFileName(file ? file.name : '');
+                      }}
+                    />
                   </div>
                 </div>
 
@@ -304,8 +406,31 @@ export function CareersPage() {
                   />
                 </div>
 
-                <button type="submit" className="button-link primary full-width">
-                  <span>Submit Application</span>
+                {submitError && (
+                  <div
+                    className="form-error-alert"
+                    role="alert"
+                    style={{
+                      backgroundColor: '#FEF2F2',
+                      color: '#991B1B',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      fontSize: '0.875rem',
+                      marginBottom: '16px',
+                      border: '1px solid #FCA5A5',
+                    }}
+                  >
+                    {submitError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="button-link primary full-width"
+                  disabled={isSubmitting}
+                  style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+                >
+                  <span>{isSubmitting ? 'Submitting Application...' : 'Submit Application'}</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
               </form>

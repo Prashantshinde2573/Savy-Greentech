@@ -85,7 +85,7 @@ export function ProductsPage() {
         eyebrow="SAVY Electric Vehicles"
         title="Purpose-built electric mobility for real-world applications."
         description="Engineered across 6 core categories for institutional campuses, commercial logistics, passenger micro-mobility, municipal sanitation, street retail, and specialized industrial operations."
-        videoSrc="/assets/CTA-bg.mp4"
+        videoSrc="/assets/Videos/Clubcart closeups (1).mp4"
         primaryCtaText="Request a Fleet Quote"
         onPrimaryClick={() => handleInquire('Fleet Inquiry')}
         secondaryCtaText="Explore Catalogue"

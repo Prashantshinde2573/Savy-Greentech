@@ -6,12 +6,16 @@ import { PageHero } from '../components/PageHero';
 import { SEOHead } from '../components/SEOHead';
 import { products } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
+import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
+import { SHEET_TABS } from '../config/forms';
 
 export function ContactPage() {
   const pageRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [whatsappLink, setWhatsappLink] = useState(null);
+  const [honeypot, setHoneypot] = useState('');
   const [formData, setFormData] = useState({
     userType: 'Buyer',
     name: '',
@@ -29,29 +33,42 @@ export function ContactPage() {
     setSubmitError(null);
 
     try {
-      const response = await fetch('/.netlify/functions/submit-contact-form', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      const payload = {
+        'User Type': formData.userType,
+        'Full Name': formData.name,
+        'Company / Organisation': formData.company,
+        'Email Address': formData.email,
+        'Phone Number': formData.phone,
+        'Vehicle of Interest': formData.requirement || 'General Enquiry',
+        'Message': formData.message,
+      };
+
+      await submitFormToGoogleSheets({
+        formType: SHEET_TABS.GET_IN_TOUCH,
+        payload,
+        honeypot,
       });
 
-      const result = await response.json().catch(() => ({}));
+      const waUrl = buildWhatsAppUrl({
+        formType: SHEET_TABS.GET_IN_TOUCH,
+        name: formData.name,
+        details: [
+          `Company: ${formData.company}`,
+          `Vehicle: ${formData.requirement || 'General Enquiry'}`,
+          `Phone: ${formData.phone}`,
+        ],
+      });
 
-      if (response.ok && result.success) {
-        setSubmitted(true);
-        setSubmitError(null);
-      } else {
-        const errorMsg = result.details
-          ? `${result.message || 'Submission failed'} (${result.details})`
-          : (result.message || 'Unable to submit the form. Please try again or reach out directly.');
-        console.error('Contact form submission failed:', { status: response.status, result });
-        setSubmitError(errorMsg);
+      setWhatsappLink(waUrl);
+      setSubmitted(true);
+      setSubmitError(null);
+
+      if (waUrl) {
+        attemptOpenWhatsApp(waUrl);
       }
     } catch (err) {
-      console.error('Contact form network error:', err);
-      setSubmitError('A network error occurred. Please check your internet connection and try again.');
+      console.error('Contact form submission failed:', err);
+      setSubmitError(err.message || 'Unable to submit the form. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -93,13 +110,38 @@ export function ContactPage() {
                   <div className="contact-success-state">
                     <PiCheckCircle className="success-icon" />
                     <h3>Thank you for contacting SAVY!</h3>
-                    <p>Your message has been received. A member of our team will reach out to you promptly.</p>
+                    <p>Your message has been received and saved. A member of our team will reach out to you promptly.</p>
+                    
+                    {whatsappLink && (
+                      <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                        <a
+                          href={whatsappLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="button-link secondary"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            background: '#25D366',
+                            color: '#ffffff',
+                            borderColor: '#25D366',
+                            fontWeight: 600,
+                          }}
+                        >
+                          <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
+                          <span>Chat on WhatsApp</span>
+                        </a>
+                      </div>
+                    )}
+
                     <button
                       type="button"
                       className="button-link primary"
                       onClick={() => {
                         setSubmitted(false);
                         setSubmitError(null);
+                        setWhatsappLink(null);
                         setFormData({ userType: 'Buyer', name: '', company: '', email: '', phone: '', requirement: '', message: '' });
                       }}
                     >
@@ -109,6 +151,17 @@ export function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="contact-inner-form">
+                    {/* Honeypot field for spam prevention */}
+                    <input
+                      type="text"
+                      name="website_url"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, pointerEvents: 'none' }}
+                    />
                     {/* Persona Selector Dropdown */}
                     <div className="form-group">
                       <label htmlFor="c-user-type">I am a: *</label>

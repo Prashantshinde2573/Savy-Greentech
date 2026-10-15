@@ -42,7 +42,7 @@ const manufacturingStages = [
     title: 'Multi-Point Quality Control & Dyno Testing',
     description: 'Comprehensive 48-point pre-delivery inspection including electrical leakage testing, dyno load testing, brake efficiency verification, and live test-track endurance trials.',
     icon: PiShieldCheck,
-    image: '/assets/process/deployment-external.jpg'
+    image: '/assets/Multi-Point Quality Control & Dyno Testing.webp'
   }
 ];
 

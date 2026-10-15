@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
-import { PiArrowRight, PiCheckCircle, PiX } from 'react-icons/pi';
+import { PiArrowRight, PiCheckCircle, PiWhatsappLogo, PiX } from 'react-icons/pi';
 import { products } from '../data/products';
+import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
+import { SHEET_TABS } from '../config/forms';
 
 export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote' }) {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [whatsappLink, setWhatsappLink] = useState(null);
+  const [honeypot, setHoneypot] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -22,9 +28,54 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const requestTypeName = mode === 'demo' ? 'Vehicle Demo Request' : 'Custom Quote Request';
+      const payload = {
+        'Request Type': requestTypeName,
+        'Full Name': formData.name,
+        'Company / Institution': formData.company,
+        'Phone Number': formData.phone,
+        'Work Email': formData.email,
+        'Vehicle Model': formData.vehicle || 'Not specified',
+        'Fleet Quantity': formData.quantity,
+        'Requirements / Notes': formData.message || 'N/A',
+      };
+
+      await submitFormToGoogleSheets({
+        formType: SHEET_TABS.QUOTE_REQUEST,
+        payload,
+        honeypot,
+      });
+
+      const waUrl = buildWhatsAppUrl({
+        formType: requestTypeName,
+        name: formData.name,
+        details: [
+          `Company: ${formData.company}`,
+          `Vehicle: ${formData.vehicle || 'Custom Solution'}`,
+          `Quantity: ${formData.quantity}`,
+          `Phone: ${formData.phone}`,
+        ],
+      });
+
+      setWhatsappLink(waUrl);
+      setSubmitted(true);
+      setSubmitError(null);
+
+      if (waUrl) {
+        attemptOpenWhatsApp(waUrl);
+      }
+    } catch (err) {
+      console.error('Quote form submission failed:', err);
+      setSubmitError(err.message || 'Unable to submit your quote request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const title = mode === 'demo' ? 'Book a Vehicle Demonstration' : 'Request a Custom Quotation';
@@ -44,7 +95,40 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <PiCheckCircle className="success-icon" />
             <h3>Thank you for reaching out!</h3>
             <p>Our commercial and engineering team will contact you within 24 hours with a comprehensive proposal.</p>
-            <button type="button" className="button-link primary" onClick={onClose}>
+            
+            {whatsappLink && (
+              <div style={{ marginTop: '20px', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="button-link secondary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: '#25D366',
+                    color: '#ffffff',
+                    borderColor: '#25D366',
+                    fontWeight: 600,
+                  }}
+                >
+                  <PiWhatsappLogo style={{ fontSize: '1.25rem' }} aria-hidden="true" />
+                  <span>Chat on WhatsApp</span>
+                </a>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="button-link primary"
+              onClick={() => {
+                setSubmitted(false);
+                setWhatsappLink(null);
+                setSubmitError(null);
+                onClose();
+              }}
+            >
               <span>Close</span>
               <PiArrowRight aria-hidden="true" />
             </button>
@@ -56,6 +140,17 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <p className="modal-subtitle">{subtitle}</p>
 
             <form onSubmit={handleSubmit} className="quote-form">
+              {/* Honeypot field for spam prevention */}
+              <input
+                type="text"
+                name="company_fax"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, pointerEvents: 'none' }}
+              />
               <div className="form-grid-2">
                 <div className="form-group">
                   <label htmlFor="modal-name">Full Name *</label>
@@ -153,8 +248,37 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                 />
               </div>
 
-              <button type="submit" className="button-link primary full-width">
-                <span>{mode === 'demo' ? 'Confirm Demo Request' : 'Submit Quote Request'}</span>
+              {submitError && (
+                <div
+                  className="form-error-alert"
+                  role="alert"
+                  style={{
+                    backgroundColor: '#FEF2F2',
+                    color: '#991B1B',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.875rem',
+                    marginBottom: '16px',
+                    border: '1px solid #FCA5A5',
+                  }}
+                >
+                  {submitError}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="button-link primary full-width"
+                disabled={isSubmitting}
+                style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+              >
+                <span>
+                  {isSubmitting
+                    ? 'Submitting...'
+                    : mode === 'demo'
+                    ? 'Confirm Demo Request'
+                    : 'Submit Quote Request'}
+                </span>
                 <PiArrowRight aria-hidden="true" />
               </button>
             </form>
