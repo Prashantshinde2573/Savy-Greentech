@@ -14,28 +14,28 @@ const manufacturingStages = [
     title: 'Computerized Design & FEA',
     description: '3D CAD structural chassis modeling, finite element stress analysis (FEA), and customized load distribution calculations tailored to client payload requirements.',
     icon: PiCpu,
-    image: '/assets/process/consultation-external.jpg'
+    image: '/assets/bento/cad-chassis.jpg'
   },
   {
     step: '02',
     title: 'Precision Fabrication & Welding',
     description: 'Robotic and high-precision manual MIG welding of high-tensile tubular steel frames with multi-stage anti-corrosion chemical treatment and powder coating.',
     icon: PiGear,
-    image: '/assets/process/customization-design.jpg'
+    image: '/assets/Videos/manufacturing img.webp'
   },
   {
     step: '03',
     title: 'Powertrain & Electrical Harnessing',
     description: 'Integration of indigenous high-torque AC/BLDC electric motors, intelligent smart motor controllers, automotive-grade sealed wiring harnesses, and IP-rated enclosures.',
     icon: PiLightning,
-    image: '/assets/process/customization-external.jpg'
+    image: '/assets/Detailed-Electric-Vehicle-Chassis-Cutaway.webp'
   },
   {
     step: '04',
     title: 'Battery Pack Integration & BMS',
     description: 'Assembly of smart Lithium-ion (LFP/NMC) or heavy-duty deep-cycle Lead-Acid battery banks equipped with active thermal monitoring and multi-layer protection BMS.',
     icon: PiBatteryCharging,
-    image: '/assets/about-purpose/innovation.webp'
+    image: '/assets/battery-chassis-tech.jpg'
   },
   {
     step: '05',

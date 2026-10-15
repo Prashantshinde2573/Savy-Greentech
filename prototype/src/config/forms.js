@@ -16,6 +16,10 @@ export const GOOGLE_APPS_SCRIPT_URL =
   import.meta.env?.VITE_GOOGLE_APPS_SCRIPT_URL ||
   'https://script.google.com/macros/s/AKfycbxvCA3LCR-Sk1Nd9O6naRct1raLDbBz4BJIU6vCzR7F4DwLQDgco5uYNVPrZWkhJ15Zew/exec';
 
+export const GOOGLE_RESUME_UPLOAD_URL =
+  import.meta.env?.VITE_GOOGLE_RESUME_UPLOAD_URL ||
+  'https://script.google.com/macros/s/AKfycbw_D95ygHn7j1E0c67RRD35LxxLM6frNzjl0AmA5AnPtbkwtBC2Hz9SZBhUMDTvnTQxMA/exec';
+
 /**
  * Verified SAVY Greentech Business WhatsApp Number (Digits only, international format).
  * Configured in SiteFooter and FloatingWhatsApp as 919284830085.

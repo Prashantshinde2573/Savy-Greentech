@@ -7,6 +7,7 @@ import { fetchCareerPostBySlug } from '../services/wordpress';
 import { getCareerBySlug } from '../data/careers';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
+import { uploadResumeToGoogleDrive, validateResumeFile } from '../services/resumeUpload';
 import { SHEET_TABS } from '../config/forms';
 
 export function CareerDetailPage({ slug }) {
@@ -18,7 +19,9 @@ export function CareerDetailPage({ slug }) {
   const [submitError, setSubmitError] = useState(null);
   const [whatsappLink, setWhatsappLink] = useState(null);
   const [honeypot, setHoneypot] = useState('');
+  const [resumeFile, setResumeFile] = useState(null);
   const [resumeFileName, setResumeFileName] = useState('');
+  const [submittingStage, setSubmittingStage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -71,9 +74,24 @@ export function CareerDetailPage({ slug }) {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
+    setSubmittingStage('');
 
     try {
       const targetRole = job?.title || formData.role || 'Job Role Application';
+
+      let uploadedDriveUrl = 'N/A';
+      let effectiveFileName = 'Not uploaded';
+
+      // 1. Upload resume to Google Drive if candidate provided a file
+      if (resumeFile) {
+        setSubmittingStage('Uploading resume to Google Drive...');
+        const uploadResult = await uploadResumeToGoogleDrive(resumeFile);
+        uploadedDriveUrl = uploadResult.fileUrl;
+        effectiveFileName = uploadResult.fileName || resumeFile.name;
+      }
+
+      // 2. Submit application to Google Sheets (same row, no duplicate rows)
+      setSubmittingStage('Saving application details...');
       const payload = {
         'Application Type': 'Job Role Application',
         'Position': targetRole,
@@ -81,7 +99,8 @@ export function CareerDetailPage({ slug }) {
         'Email Address': formData.email,
         'Phone Number': formData.phone,
         'LinkedIn / Portfolio': formData.portfolio || 'N/A',
-        'Resume File': resumeFileName || 'Not uploaded',
+        'Resume File': effectiveFileName,
+        'Resume Drive Link': uploadedDriveUrl,
         'Cover Note / Experience': formData.message || 'N/A',
         'Job Slug': slug || '',
       };
@@ -100,7 +119,7 @@ export function CareerDetailPage({ slug }) {
         jobRole: targetRole,
         experience: job?.experience || '',
         location: job?.location || '',
-        resume: resumeFileName || '',
+        resume: effectiveFileName !== 'Not uploaded' ? effectiveFileName : '',
         portfolio: formData.portfolio || '',
         message: formData.message || '',
       });
@@ -117,6 +136,7 @@ export function CareerDetailPage({ slug }) {
       setSubmitError(err.message || 'Unable to submit your application. Please try again.');
     } finally {
       setIsSubmitting(false);
+      setSubmittingStage('');
     }
   };
 
@@ -298,7 +318,9 @@ export function CareerDetailPage({ slug }) {
                     setSubmitted(false);
                     setWhatsappLink(null);
                     setSubmitError(null);
+                    setResumeFile(null);
                     setResumeFileName('');
+                    setSubmittingStage('');
                     setFormData({ name: '', email: '', phone: '', role: job.title, portfolio: '', message: '' });
                   }}
                 >
@@ -392,7 +414,22 @@ export function CareerDetailPage({ slug }) {
                       accept=".pdf,.doc,.docx"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        setResumeFileName(file ? file.name : '');
+                        if (file) {
+                          try {
+                            validateResumeFile(file);
+                            setResumeFile(file);
+                            setResumeFileName(file.name);
+                            setSubmitError(null);
+                          } catch (valErr) {
+                            setResumeFile(null);
+                            setResumeFileName('');
+                            e.target.value = '';
+                            setSubmitError(valErr.message);
+                          }
+                        } else {
+                          setResumeFile(null);
+                          setResumeFileName('');
+                        }
                       }}
                     />
                   </div>
@@ -433,7 +470,7 @@ export function CareerDetailPage({ slug }) {
                   disabled={isSubmitting}
                   style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
                 >
-                  <span>{isSubmitting ? 'Submitting Application...' : 'Submit Application'}</span>
+                  <span>{isSubmitting ? (submittingStage || 'Submitting Application...') : 'Submit Application'}</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
               </form>
