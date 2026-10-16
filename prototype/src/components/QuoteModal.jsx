@@ -3,11 +3,13 @@ import { PiArrowRight, PiCheckCircle, PiWhatsappLogo, PiX } from 'react-icons/pi
 import { products } from '../data/products';
 import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
 import { SHEET_TABS } from '../config/forms';
+import { validateEmail, validatePhoneNumber, sanitizePhoneInput } from '../utils/validation';
 
 export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote' }) {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [whatsappLink, setWhatsappLink] = useState(null);
   const [honeypot, setHoneypot] = useState('');
   const [formData, setFormData] = useState({
@@ -28,8 +30,72 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
 
   if (!isOpen) return null;
 
+  const handleEmailChange = (val) => {
+    setFormData((prev) => ({ ...prev, email: val }));
+    if (fieldErrors.email) {
+      const res = validateEmail(val);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email.trim()) {
+      const res = validateEmail(formData.email);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, email: res.error }));
+      }
+    }
+  };
+
+  const handlePhoneChange = (val) => {
+    const sanitized = sanitizePhoneInput(val);
+    setFormData((prev) => ({ ...prev, phone: sanitized }));
+    if (fieldErrors.phone) {
+      const res = validatePhoneNumber(sanitized);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.phone;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const res = validatePhoneNumber(formData.phone);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, phone: res.error }));
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Validate fields before submission
+    const emailRes = validateEmail(formData.email);
+    const phoneRes = validatePhoneNumber(formData.phone);
+
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Please enter your full name.';
+    if (!formData.company.trim()) errors.company = 'Please enter your company or institution name.';
+    if (!emailRes.isValid) errors.email = emailRes.error;
+    if (!phoneRes.isValid) errors.phone = phoneRes.error;
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -37,13 +103,13 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
       const requestTypeName = mode === 'demo' ? 'Vehicle Demo Request' : 'Custom Quote Request';
       const payload = {
         'Request Type': requestTypeName,
-        'Full Name': formData.name,
-        'Company / Institution': formData.company,
-        'Phone Number': formData.phone,
-        'Work Email': formData.email,
+        'Full Name': formData.name.trim(),
+        'Company / Institution': formData.company.trim(),
+        'Phone Number': phoneRes.value,
+        'Work Email': emailRes.value,
         'Vehicle Model': formData.vehicle || 'Not specified',
         'Fleet Quantity': formData.quantity,
-        'Requirements / Notes': formData.message || 'N/A',
+        'Requirements / Notes': formData.message.trim() || 'N/A',
       };
 
       await submitFormToGoogleSheets({
@@ -65,14 +131,14 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
 
       const waUrl = buildWhatsAppUrl({
         formType: SHEET_TABS.QUOTE_REQUEST,
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        company: formData.company,
+        name: formData.name.trim(),
+        phone: phoneRes.value,
+        email: emailRes.value,
+        company: formData.company.trim(),
         vehicle: formData.vehicle,
         quantity: quantityLabel,
         requestType: mode === 'demo' ? 'Vehicle Demonstration' : 'Custom Quotation',
-        message: formData.message,
+        message: formData.message.trim(),
       });
 
       setWhatsappLink(waUrl);
@@ -95,10 +161,18 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
     ? 'Experience SAVY electric vehicles at your campus, facility, or plant.'
     : 'Get detailed commercial and technical proposals customized to your operations.';
 
+  const handleModalClose = () => {
+    setSubmitted(false);
+    setWhatsappLink(null);
+    setSubmitError(null);
+    setFieldErrors({});
+    onClose();
+  };
+
   return (
-    <div className="quote-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
+    <div className="quote-modal-backdrop" onClick={handleModalClose} role="dialog" aria-modal="true">
       <div className="quote-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="quote-modal-close" onClick={onClose} aria-label="Close modal">
+        <button type="button" className="quote-modal-close" onClick={handleModalClose} aria-label="Close modal">
           <PiX />
         </button>
 
@@ -137,12 +211,7 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <button
               type="button"
               className="button-link primary"
-              onClick={() => {
-                setSubmitted(false);
-                setWhatsappLink(null);
-                setSubmitError(null);
-                onClose();
-              }}
+              onClick={handleModalClose}
             >
               <span>Close</span>
               <PiArrowRight aria-hidden="true" />
@@ -154,7 +223,7 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
             <h3 className="modal-title">{title}</h3>
             <p className="modal-subtitle">{subtitle}</p>
 
-            <form onSubmit={handleSubmit} className="quote-form">
+            <form onSubmit={handleSubmit} className="quote-form" noValidate>
               {/* Honeypot field for spam prevention */}
               <input
                 type="text"
@@ -174,9 +243,26 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                     type="text"
                     required
                     placeholder="e.g. Rahul Sharma"
+                    className={fieldErrors.name ? 'input-field-error' : ''}
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (fieldErrors.name && e.target.value.trim()) {
+                        setFieldErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.name;
+                          return next;
+                        });
+                      }
+                    }}
+                    aria-invalid={!!fieldErrors.name}
+                    aria-describedby={fieldErrors.name ? 'modal-name-error' : undefined}
                   />
+                  {fieldErrors.name && (
+                    <span id="modal-name-error" className="field-error-text" role="alert">
+                      {fieldErrors.name}
+                    </span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="modal-company">Company / Institution *</label>
@@ -185,9 +271,26 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                     type="text"
                     required
                     placeholder="e.g. Grand Heritage Resort"
+                    className={fieldErrors.company ? 'input-field-error' : ''}
                     value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, company: e.target.value });
+                      if (fieldErrors.company && e.target.value.trim()) {
+                        setFieldErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.company;
+                          return next;
+                        });
+                      }
+                    }}
+                    aria-invalid={!!fieldErrors.company}
+                    aria-describedby={fieldErrors.company ? 'modal-company-error' : undefined}
                   />
+                  {fieldErrors.company && (
+                    <span id="modal-company-error" className="field-error-text" role="alert">
+                      {fieldErrors.company}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -196,12 +299,24 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                   <label htmlFor="modal-phone">Phone / WhatsApp Number *</label>
                   <input
                     id="modal-phone"
-                    type="tel"
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={10}
+                    pattern="[0-9]*"
                     required
-                    placeholder="+91 98765 43210"
+                    placeholder="e.g. 9876543210"
+                    className={fieldErrors.phone ? 'input-field-error' : ''}
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    onBlur={handlePhoneBlur}
+                    aria-invalid={!!fieldErrors.phone}
+                    aria-describedby={fieldErrors.phone ? 'modal-phone-error' : undefined}
                   />
+                  {fieldErrors.phone && (
+                    <span id="modal-phone-error" className="field-error-text" role="alert">
+                      {fieldErrors.phone}
+                    </span>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="modal-email">Work Email *</label>
@@ -210,9 +325,18 @@ export function QuoteModal({ isOpen, onClose, defaultVehicle = '', mode = 'quote
                     type="email"
                     required
                     placeholder="name@company.com"
+                    className={fieldErrors.email ? 'input-field-error' : ''}
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    onBlur={handleEmailBlur}
+                    aria-invalid={!!fieldErrors.email}
+                    aria-describedby={fieldErrors.email ? 'modal-email-error' : undefined}
                   />
+                  {fieldErrors.email && (
+                    <span id="modal-email-error" className="field-error-text" role="alert">
+                      {fieldErrors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 

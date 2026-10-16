@@ -3946,6 +3946,31 @@ body.menu-backdrop-open {
   box-shadow: 0 0 0 3px rgba(16, 67, 54, 0.12);
 }
 
+.form-group input.input-field-error,
+.form-group select.input-field-error,
+.form-group textarea.input-field-error,
+.resume-upload-box.input-field-error {
+  border-color: #dc2626 !important;
+  background-color: #fffbfa !important;
+}
+
+.form-group input.input-field-error:focus,
+.form-group select.input-field-error:focus,
+.form-group textarea.input-field-error:focus,
+.resume-upload-box.input-field-error:focus-within {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12) !important;
+}
+
+.field-error-text {
+  display: block;
+  font-size: 12.5px;
+  color: #dc2626;
+  margin-top: 5px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
 /* ==========================================================================
    GLOBAL FORM SELECT / DROPDOWN CUSTOM ARROW SYSTEM
    Provides consistent 18px right edge spacing, vertical centering, and prevents text overlap.

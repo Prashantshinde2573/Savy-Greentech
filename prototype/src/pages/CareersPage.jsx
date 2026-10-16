@@ -8,8 +8,9 @@ import { cultureBenefits } from '../data/careers';
 import { fetchCareerPosts } from '../services/wordpress';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
-import { uploadResumeToGoogleDrive, validateResumeFile } from '../services/resumeUpload';
+import { uploadResumeToGoogleDrive } from '../services/resumeUpload';
 import { SHEET_TABS } from '../config/forms';
+import { validateEmail, validatePhoneNumber, validateResume, sanitizePhoneInput } from '../utils/validation';
 
 export function CareersPage() {
   const pageRef = useRef(null);
@@ -19,11 +20,11 @@ export function CareersPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [whatsappLink, setWhatsappLink] = useState(null);
   const [honeypot, setHoneypot] = useState('');
   const [resumeFile, setResumeFile] = useState(null);
   const [resumeFileName, setResumeFileName] = useState('');
-  const [submittingStage, setSubmittingStage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -70,39 +71,97 @@ export function CareersPage() {
     }
   };
 
+  const handleEmailChange = (val) => {
+    setFormData((prev) => ({ ...prev, email: val }));
+    if (fieldErrors.email) {
+      const res = validateEmail(val);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email.trim()) {
+      const res = validateEmail(formData.email);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, email: res.error }));
+      }
+    }
+  };
+
+  const handlePhoneChange = (val) => {
+    const sanitized = sanitizePhoneInput(val);
+    setFormData((prev) => ({ ...prev, phone: sanitized }));
+    if (fieldErrors.phone) {
+      const res = validatePhoneNumber(sanitized);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.phone;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const res = validatePhoneNumber(formData.phone);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, phone: res.error }));
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Comprehensive Client-side Validation (Email, Phone, Role, Mandatory Resume)
+    const emailRes = validateEmail(formData.email);
+    const phoneRes = validatePhoneNumber(formData.phone);
+    const resumeRes = validateResume(resumeFile, { required: true });
+
+    const errors = {};
+    if (!formData.name?.trim()) errors.name = 'Please enter your full name.';
+    if (!emailRes.isValid) errors.email = emailRes.error;
+    if (!phoneRes.isValid) errors.phone = phoneRes.error;
+    if (!formData.role?.trim()) errors.role = 'Please enter your position of interest.';
+    if (!resumeRes.isValid) errors.resume = resumeRes.error;
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setSubmitError(null);
-    setSubmittingStage('');
 
     try {
       const appType = selectedJob ? 'Job Role Application' : 'General Application';
       const targetRole = formData.role || (selectedJob ? selectedJob.title : 'General Application');
 
-      let uploadedDriveUrl = 'N/A';
-      let effectiveFileName = 'Not uploaded';
+      // 2. Upload mandatory resume to Google Drive
+      const uploadResult = await uploadResumeToGoogleDrive(resumeFile);
+      const uploadedDriveUrl = uploadResult.fileUrl;
+      const effectiveFileName = uploadResult.fileName || resumeFile.name;
 
-      // 1. Upload resume to Google Drive if candidate provided a file
-      if (resumeFile) {
-        setSubmittingStage('Uploading resume to Google Drive...');
-        const uploadResult = await uploadResumeToGoogleDrive(resumeFile);
-        uploadedDriveUrl = uploadResult.fileUrl;
-        effectiveFileName = uploadResult.fileName || resumeFile.name;
-      }
-
-      // 2. Submit application to Google Sheets (same row, no duplicate rows)
-      setSubmittingStage('Saving application details...');
+      // 3. Submit application to Google Sheets (same row, no duplicate rows)
       const payload = {
         'Application Type': appType,
         'Position': targetRole,
-        'Full Name': formData.name,
-        'Email Address': formData.email,
-        'Phone Number': formData.phone,
-        'LinkedIn / Portfolio': formData.portfolio || 'N/A',
+        'Full Name': formData.name.trim(),
+        'Email Address': emailRes.value,
+        'Phone Number': phoneRes.value,
+        'LinkedIn / Portfolio': formData.portfolio?.trim() || 'N/A',
         'Resume File': effectiveFileName,
         'Resume Drive Link': uploadedDriveUrl,
-        'Cover Note / Experience': formData.message || 'N/A',
+        'Cover Note / Experience': formData.message?.trim() || 'N/A',
         'Job Slug': selectedJob?.slug || '',
       };
 
@@ -114,15 +173,15 @@ export function CareersPage() {
 
       const waUrl = buildWhatsAppUrl({
         formType: selectedJob ? 'Job Role Application' : 'Career Application',
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.name.trim(),
+        email: emailRes.value,
+        phone: phoneRes.value,
         jobRole: targetRole,
         experience: selectedJob?.experience || '',
         location: selectedJob?.location || '',
         resume: effectiveFileName !== 'Not uploaded' ? effectiveFileName : '',
-        portfolio: formData.portfolio || '',
-        message: formData.message || '',
+        portfolio: formData.portfolio?.trim() || '',
+        message: formData.message?.trim() || '',
       });
 
       setWhatsappLink(waUrl);
@@ -137,7 +196,6 @@ export function CareersPage() {
       setSubmitError(err.message || 'Unable to submit your application. Please try again.');
     } finally {
       setIsSubmitting(false);
-      setSubmittingStage('');
     }
   };
 
@@ -319,9 +377,9 @@ export function CareersPage() {
                     setSelectedJob(null);
                     setWhatsappLink(null);
                     setSubmitError(null);
+                    setFieldErrors({});
                     setResumeFile(null);
                     setResumeFileName('');
-                    setSubmittingStage('');
                     setFormData({ name: '', email: '', phone: '', role: '', portfolio: '', message: '' });
                   }}
                 >
@@ -330,7 +388,7 @@ export function CareersPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="career-main-form">
+              <form onSubmit={handleSubmit} className="career-main-form" noValidate>
                 {/* Honeypot field for spam prevention */}
                 <input
                   type="text"
@@ -350,9 +408,26 @@ export function CareersPage() {
                       type="text"
                       required
                       placeholder="e.g. Priya Sharma"
+                      className={fieldErrors.name ? 'input-field-error' : ''}
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (fieldErrors.name && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.name;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.name}
+                      aria-describedby={fieldErrors.name ? 'c-name-error' : undefined}
                     />
+                    {fieldErrors.name && (
+                      <span id="c-name-error" className="field-error-text" role="alert">
+                        {fieldErrors.name}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="c-email">Email Address *</label>
@@ -361,9 +436,18 @@ export function CareersPage() {
                       type="email"
                       required
                       placeholder="priya@example.com"
+                      className={fieldErrors.email ? 'input-field-error' : ''}
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => handleEmailChange(e.target.value)}
+                      onBlur={handleEmailBlur}
+                      aria-invalid={!!fieldErrors.email}
+                      aria-describedby={fieldErrors.email ? 'c-email-error' : undefined}
                     />
+                    {fieldErrors.email && (
+                      <span id="c-email-error" className="field-error-text" role="alert">
+                        {fieldErrors.email}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -372,12 +456,24 @@ export function CareersPage() {
                     <label htmlFor="c-phone">Phone Number *</label>
                     <input
                       id="c-phone"
-                      type="tel"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]*"
                       required
-                      placeholder="+91 98765 43210"
+                      placeholder="e.g. 9876543210"
+                      className={fieldErrors.phone ? 'input-field-error' : ''}
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => handlePhoneChange(e.target.value)}
+                      onBlur={handlePhoneBlur}
+                      aria-invalid={!!fieldErrors.phone}
+                      aria-describedby={fieldErrors.phone ? 'c-phone-error' : undefined}
                     />
+                    {fieldErrors.phone && (
+                      <span id="c-phone-error" className="field-error-text" role="alert">
+                        {fieldErrors.phone}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="c-role">Position of Interest *</label>
@@ -386,9 +482,26 @@ export function CareersPage() {
                       type="text"
                       required
                       placeholder="e.g. EV Design & Chassis Engineer"
+                      className={fieldErrors.role ? 'input-field-error' : ''}
                       value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, role: e.target.value });
+                        if (fieldErrors.role && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.role;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.role}
+                      aria-describedby={fieldErrors.role ? 'c-role-error' : undefined}
                     />
+                    {fieldErrors.role && (
+                      <span id="c-role-error" className="field-error-text" role="alert">
+                        {fieldErrors.role}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -404,37 +517,53 @@ export function CareersPage() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="c-resume">Resume / CV Upload (PDF, DOCX)</label>
-                  <div className="resume-upload-box">
+                  <label htmlFor="c-resume">Resume / CV Upload (PDF, DOC, DOCX) *</label>
+                  <div className={`resume-upload-box ${fieldErrors.resume ? 'input-field-error' : ''}`}>
                     <PiFileArrowUp className="upload-icon" />
                     <span>
-                      {resumeFileName ? `Selected: ${resumeFileName}` : 'Click or drag and drop your resume file here'}
+                      {resumeFileName ? `Selected: ${resumeFileName}` : 'Click or drag and drop your resume file here *'}
                     </span>
                     <input
                       id="c-resume"
                       type="file"
+                      required
                       accept=".pdf,.doc,.docx"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          try {
-                            validateResumeFile(file);
+                          const valRes = validateResume(file, { required: true });
+                          if (valRes.isValid) {
                             setResumeFile(file);
                             setResumeFileName(file.name);
-                            setSubmitError(null);
-                          } catch (valErr) {
+                            setFieldErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.resume;
+                              return next;
+                            });
+                          } else {
                             setResumeFile(null);
                             setResumeFileName('');
                             e.target.value = '';
-                            setSubmitError(valErr.message);
+                            setFieldErrors((prev) => ({ ...prev, resume: valRes.error }));
                           }
                         } else {
                           setResumeFile(null);
                           setResumeFileName('');
+                          setFieldErrors((prev) => ({
+                            ...prev,
+                            resume: 'Please upload your resume before submitting your application.'
+                          }));
                         }
                       }}
+                      aria-invalid={!!fieldErrors.resume}
+                      aria-describedby={fieldErrors.resume ? 'c-resume-error' : undefined}
                     />
                   </div>
+                  {fieldErrors.resume && (
+                    <span id="c-resume-error" className="field-error-text" role="alert">
+                      {fieldErrors.resume}
+                    </span>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -472,7 +601,7 @@ export function CareersPage() {
                   disabled={isSubmitting}
                   style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
                 >
-                  <span>{isSubmitting ? (submittingStage || 'Submitting Application...') : 'Submit Application'}</span>
+                  <span>{isSubmitting ? 'Submitting your application...' : 'Submit Application'}</span>
                   <PiArrowRight aria-hidden="true" />
                 </button>
               </form>

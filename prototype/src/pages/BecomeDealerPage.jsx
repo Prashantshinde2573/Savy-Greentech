@@ -9,6 +9,7 @@ import { PanIndiaTerritoryMap } from '../components/PanIndiaTerritoryMap';
 import { DealerJourneyScrollSection } from '../components/DealerJourneyScrollSection';
 import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
 import { SHEET_TABS } from '../config/forms';
+import { validateEmail, validatePhoneNumber, sanitizePhoneInput } from '../utils/validation';
 
 const dealerBenefits = [
   {
@@ -46,6 +47,7 @@ export function BecomeDealerPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [whatsappLink, setWhatsappLink] = useState(null);
   const [honeypot, setHoneypot] = useState('');
   const [formData, setFormData] = useState({
@@ -61,22 +63,88 @@ export function BecomeDealerPage() {
   });
   usePageAnimations(pageRef);
 
+  const handleEmailChange = (val) => {
+    setFormData((prev) => ({ ...prev, email: val }));
+    if (fieldErrors.email) {
+      const res = validateEmail(val);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email.trim()) {
+      const res = validateEmail(formData.email);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, email: res.error }));
+      }
+    }
+  };
+
+  const handlePhoneChange = (val) => {
+    const sanitized = sanitizePhoneInput(val);
+    setFormData((prev) => ({ ...prev, phone: sanitized }));
+    if (fieldErrors.phone) {
+      const res = validatePhoneNumber(sanitized);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.phone;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const res = validatePhoneNumber(formData.phone);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, phone: res.error }));
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Validate fields before submission
+    const emailRes = validateEmail(formData.email);
+    const phoneRes = validatePhoneNumber(formData.phone);
+
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Please enter your full name.';
+    if (!formData.company.trim()) errors.company = 'Please enter your company or business name.';
+    if (!phoneRes.isValid) errors.phone = phoneRes.error;
+    if (!emailRes.isValid) errors.email = emailRes.error;
+    if (!formData.city.trim()) errors.city = 'Please enter your city / district.';
+    if (!formData.state.trim()) errors.state = 'Please enter your state.';
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
       const payload = {
-        'Applicant Name': formData.name,
-        'Company Name': formData.company,
-        'Phone Number': formData.phone,
-        'Email Address': formData.email,
-        'City': formData.city,
-        'State': formData.state,
-        'Target Territory': formData.preferredTerritory || 'N/A',
+        'Applicant Name': formData.name.trim(),
+        'Company Name': formData.company.trim(),
+        'Phone Number': phoneRes.value,
+        'Email Address': emailRes.value,
+        'City': formData.city.trim(),
+        'State': formData.state.trim(),
+        'Target Territory': formData.preferredTerritory.trim() || 'N/A',
         'Business Background': formData.experience || 'N/A',
-        'Facility Details & Notes': formData.message || 'N/A',
+        'Facility Details & Notes': formData.message.trim() || 'N/A',
       };
 
       await submitFormToGoogleSheets({
@@ -95,15 +163,15 @@ export function BecomeDealerPage() {
 
       const waUrl = buildWhatsAppUrl({
         formType: SHEET_TABS.BECOME_A_DEALER,
-        name: formData.name,
-        company: formData.company,
-        phone: formData.phone,
-        email: formData.email,
-        city: formData.city,
-        state: formData.state,
-        territory: formData.preferredTerritory,
+        name: formData.name.trim(),
+        company: formData.company.trim(),
+        phone: phoneRes.value,
+        email: emailRes.value,
+        city: formData.city.trim(),
+        state: formData.state.trim(),
+        territory: formData.preferredTerritory.trim(),
         experience: experienceLabel,
-        message: formData.message,
+        message: formData.message.trim(),
       });
 
       setWhatsappLink(waUrl);
@@ -219,6 +287,7 @@ export function BecomeDealerPage() {
                     setSubmitted(false);
                     setWhatsappLink(null);
                     setSubmitError(null);
+                    setFieldErrors({});
                     setFormData({
                       name: '', company: '', phone: '', email: '',
                       city: '', state: '', preferredTerritory: '', experience: '', message: ''
@@ -230,7 +299,7 @@ export function BecomeDealerPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="dealer-main-form">
+              <form onSubmit={handleSubmit} className="dealer-main-form" noValidate>
                 {/* Honeypot field for spam prevention */}
                 <input
                   type="text"
@@ -250,9 +319,26 @@ export function BecomeDealerPage() {
                       type="text"
                       required
                       placeholder="e.g. Vikram Patel"
+                      className={fieldErrors.name ? 'input-field-error' : ''}
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, name: e.target.value });
+                        if (fieldErrors.name && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.name;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.name}
+                      aria-describedby={fieldErrors.name ? 'd-name-error' : undefined}
                     />
+                    {fieldErrors.name && (
+                      <span id="d-name-error" className="field-error-text" role="alert">
+                        {fieldErrors.name}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="d-company">Company / Business Name *</label>
@@ -261,9 +347,26 @@ export function BecomeDealerPage() {
                       type="text"
                       required
                       placeholder="e.g. Patel Auto Enterprises"
+                      className={fieldErrors.company ? 'input-field-error' : ''}
                       value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, company: e.target.value });
+                        if (fieldErrors.company && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.company;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.company}
+                      aria-describedby={fieldErrors.company ? 'd-company-error' : undefined}
                     />
+                    {fieldErrors.company && (
+                      <span id="d-company-error" className="field-error-text" role="alert">
+                        {fieldErrors.company}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -272,12 +375,24 @@ export function BecomeDealerPage() {
                     <label htmlFor="d-phone">Mobile / WhatsApp Number *</label>
                     <input
                       id="d-phone"
-                      type="tel"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]*"
                       required
-                      placeholder="+91 98765 43210"
+                      placeholder="e.g. 9876543210"
+                      className={fieldErrors.phone ? 'input-field-error' : ''}
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => handlePhoneChange(e.target.value)}
+                      onBlur={handlePhoneBlur}
+                      aria-invalid={!!fieldErrors.phone}
+                      aria-describedby={fieldErrors.phone ? 'd-phone-error' : undefined}
                     />
+                    {fieldErrors.phone && (
+                      <span id="d-phone-error" className="field-error-text" role="alert">
+                        {fieldErrors.phone}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="d-email">Email Address *</label>
@@ -286,9 +401,18 @@ export function BecomeDealerPage() {
                       type="email"
                       required
                       placeholder="vikram@patelauto.com"
+                      className={fieldErrors.email ? 'input-field-error' : ''}
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => handleEmailChange(e.target.value)}
+                      onBlur={handleEmailBlur}
+                      aria-invalid={!!fieldErrors.email}
+                      aria-describedby={fieldErrors.email ? 'd-email-error' : undefined}
                     />
+                    {fieldErrors.email && (
+                      <span id="d-email-error" className="field-error-text" role="alert">
+                        {fieldErrors.email}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -300,9 +424,26 @@ export function BecomeDealerPage() {
                       type="text"
                       required
                       placeholder="e.g. Surat"
+                      className={fieldErrors.city ? 'input-field-error' : ''}
                       value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, city: e.target.value });
+                        if (fieldErrors.city && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.city;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.city}
+                      aria-describedby={fieldErrors.city ? 'd-city-error' : undefined}
                     />
+                    {fieldErrors.city && (
+                      <span id="d-city-error" className="field-error-text" role="alert">
+                        {fieldErrors.city}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="d-state">State *</label>
@@ -311,9 +452,26 @@ export function BecomeDealerPage() {
                       type="text"
                       required
                       placeholder="e.g. Gujarat"
+                      className={fieldErrors.state ? 'input-field-error' : ''}
                       value={formData.state}
-                      onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, state: e.target.value });
+                        if (fieldErrors.state && e.target.value.trim()) {
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.state;
+                            return next;
+                          });
+                        }
+                      }}
+                      aria-invalid={!!fieldErrors.state}
+                      aria-describedby={fieldErrors.state ? 'd-state-error' : undefined}
                     />
+                    {fieldErrors.state && (
+                      <span id="d-state-error" className="field-error-text" role="alert">
+                        {fieldErrors.state}
+                      </span>
+                    )}
                   </div>
                   <div className="form-group">
                     <label htmlFor="d-territory">Target Territory / Region</label>

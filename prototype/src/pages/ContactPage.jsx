@@ -8,12 +8,14 @@ import { products } from '../data/products';
 import { usePageAnimations } from '../hooks/usePageAnimations';
 import { submitFormToGoogleSheets, buildWhatsAppUrl, attemptOpenWhatsApp } from '../services/formSubmission';
 import { SHEET_TABS } from '../config/forms';
+import { validateEmail, validatePhoneNumber, sanitizePhoneInput } from '../utils/validation';
 
 export function ContactPage() {
   const pageRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [whatsappLink, setWhatsappLink] = useState(null);
   const [honeypot, setHoneypot] = useState('');
   const [formData, setFormData] = useState({
@@ -27,20 +29,85 @@ export function ContactPage() {
   });
   usePageAnimations(pageRef);
 
+  const handleEmailChange = (val) => {
+    setFormData((prev) => ({ ...prev, email: val }));
+    if (fieldErrors.email) {
+      const res = validateEmail(val);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.email;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (formData.email.trim()) {
+      const res = validateEmail(formData.email);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, email: res.error }));
+      }
+    }
+  };
+
+  const handlePhoneChange = (val) => {
+    const sanitized = sanitizePhoneInput(val);
+    setFormData((prev) => ({ ...prev, phone: sanitized }));
+    if (fieldErrors.phone) {
+      const res = validatePhoneNumber(sanitized);
+      if (res.isValid) {
+        setFieldErrors((prev) => {
+          const next = { ...prev };
+          delete next.phone;
+          return next;
+        });
+      }
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const res = validatePhoneNumber(formData.phone);
+      if (!res.isValid) {
+        setFieldErrors((prev) => ({ ...prev, phone: res.error }));
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Validate fields before submission
+    const emailRes = validateEmail(formData.email);
+    const phoneRes = validatePhoneNumber(formData.phone);
+
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Please enter your full name.';
+    if (!formData.company.trim()) errors.company = 'Please enter your company or organisation.';
+    if (!emailRes.isValid) errors.email = emailRes.error;
+    if (!phoneRes.isValid) errors.phone = phoneRes.error;
+    if (!formData.message.trim()) errors.message = 'Please enter your message.';
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
       const payload = {
         'User Type': formData.userType,
-        'Full Name': formData.name,
-        'Company / Organisation': formData.company,
-        'Email Address': formData.email,
-        'Phone Number': formData.phone,
+        'Full Name': formData.name.trim(),
+        'Company / Organisation': formData.company.trim(),
+        'Email Address': emailRes.value,
+        'Phone Number': phoneRes.value,
         'Vehicle of Interest': formData.requirement || 'General Enquiry',
-        'Message': formData.message,
+        'Message': formData.message.trim(),
       };
 
       await submitFormToGoogleSheets({
@@ -51,13 +118,13 @@ export function ContactPage() {
 
       const waUrl = buildWhatsAppUrl({
         formType: SHEET_TABS.GET_IN_TOUCH,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
+        name: formData.name.trim(),
+        email: emailRes.value,
+        phone: phoneRes.value,
+        company: formData.company.trim(),
         userType: formData.userType,
         requirement: formData.requirement,
-        message: formData.message,
+        message: formData.message.trim(),
       });
 
       setWhatsappLink(waUrl);
@@ -145,6 +212,7 @@ export function ContactPage() {
                       onClick={() => {
                         setSubmitted(false);
                         setSubmitError(null);
+                        setFieldErrors({});
                         setWhatsappLink(null);
                         setFormData({ userType: 'Buyer', name: '', company: '', email: '', phone: '', requirement: '', message: '' });
                       }}
@@ -154,7 +222,7 @@ export function ContactPage() {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="contact-inner-form">
+                  <form onSubmit={handleSubmit} className="contact-inner-form" noValidate>
                     {/* Honeypot field for spam prevention */}
                     <input
                       type="text"
@@ -190,9 +258,26 @@ export function ContactPage() {
                           type="text"
                           required
                           placeholder="e.g. Ramesh Patel"
+                          className={fieldErrors.name ? 'input-field-error' : ''}
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, name: e.target.value });
+                            if (fieldErrors.name && e.target.value.trim()) {
+                              setFieldErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.name;
+                                return next;
+                              });
+                            }
+                          }}
+                          aria-invalid={!!fieldErrors.name}
+                          aria-describedby={fieldErrors.name ? 'c-name-error' : undefined}
                         />
+                        {fieldErrors.name && (
+                          <span id="c-name-error" className="field-error-text" role="alert">
+                            {fieldErrors.name}
+                          </span>
+                        )}
                       </div>
                       <div className="form-group">
                         <label htmlFor="c-org">Company / Organisation *</label>
@@ -201,9 +286,26 @@ export function ContactPage() {
                           type="text"
                           required
                           placeholder="e.g. Ahmedabad Tech Park"
+                          className={fieldErrors.company ? 'input-field-error' : ''}
                           value={formData.company}
-                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, company: e.target.value });
+                            if (fieldErrors.company && e.target.value.trim()) {
+                              setFieldErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.company;
+                                return next;
+                              });
+                            }
+                          }}
+                          aria-invalid={!!fieldErrors.company}
+                          aria-describedby={fieldErrors.company ? 'c-org-error' : undefined}
                         />
+                        {fieldErrors.company && (
+                          <span id="c-org-error" className="field-error-text" role="alert">
+                            {fieldErrors.company}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -215,20 +317,41 @@ export function ContactPage() {
                           type="email"
                           required
                           placeholder="ramesh@techpark.com"
+                          className={fieldErrors.email ? 'input-field-error' : ''}
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={(e) => handleEmailChange(e.target.value)}
+                          onBlur={handleEmailBlur}
+                          aria-invalid={!!fieldErrors.email}
+                          aria-describedby={fieldErrors.email ? 'c-email-error' : undefined}
                         />
+                        {fieldErrors.email && (
+                          <span id="c-email-error" className="field-error-text" role="alert">
+                            {fieldErrors.email}
+                          </span>
+                        )}
                       </div>
                       <div className="form-group">
                         <label htmlFor="c-phone">Phone / WhatsApp Number *</label>
                         <input
                           id="c-phone"
-                          type="tel"
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={10}
+                          pattern="[0-9]*"
                           required
-                          placeholder="+91 98765 43210"
+                          placeholder="e.g. 9876543210"
+                          className={fieldErrors.phone ? 'input-field-error' : ''}
                           value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          onChange={(e) => handlePhoneChange(e.target.value)}
+                          onBlur={handlePhoneBlur}
+                          aria-invalid={!!fieldErrors.phone}
+                          aria-describedby={fieldErrors.phone ? 'c-phone-error' : undefined}
                         />
+                        {fieldErrors.phone && (
+                          <span id="c-phone-error" className="field-error-text" role="alert">
+                            {fieldErrors.phone}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -246,7 +369,7 @@ export function ContactPage() {
                           </option>
                         ))}
                         <option value="Custom SPV / Bespoke Solution">Custom SPV / Bespoke Fleet Solution</option>
-                        <option value="Multiple Vehicles / Fleet Order">Multiple Vehicles / Institutional Fleet Order</option>
+                        <option value="Multiple Vehicles / Institutional Fleet Order">Multiple Vehicles / Institutional Fleet Order</option>
                       </select>
                     </div>
 
@@ -257,9 +380,26 @@ export function ContactPage() {
                         rows="4"
                         required
                         placeholder="Please tell us about your application, operating location, or any specific questions..."
+                        className={fieldErrors.message ? 'input-field-error' : ''}
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, message: e.target.value });
+                          if (fieldErrors.message && e.target.value.trim()) {
+                            setFieldErrors((prev) => {
+                              const next = { ...prev };
+                              delete next.message;
+                              return next;
+                            });
+                          }
+                        }}
+                        aria-invalid={!!fieldErrors.message}
+                        aria-describedby={fieldErrors.message ? 'c-msg-error' : undefined}
                       />
+                      {fieldErrors.message && (
+                        <span id="c-msg-error" className="field-error-text" role="alert">
+                          {fieldErrors.message}
+                        </span>
+                      )}
                     </div>
 
                     {submitError && (
