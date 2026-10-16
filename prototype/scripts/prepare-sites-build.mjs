@@ -28,7 +28,7 @@ writeFileSync(path.join(clientDist, "_redirects"), redirectContent);
 try {
   const rootDist = path.join(repoRoot, "dist");
   mkdirSync(rootDist, { recursive: true });
-  cpSync(clientDist, rootDist, { recursive: true });
+  copyFileSync(path.join(clientDist, "index.html"), path.join(rootDist, "index.html"));
   writeFileSync(path.join(rootDist, "_redirects"), redirectContent);
 } catch (e) {
   console.warn("Notice: Could not copy to root dist:", e.message);

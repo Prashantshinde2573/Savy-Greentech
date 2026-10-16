@@ -14,35 +14,40 @@ const manufacturingStages = [
     title: 'Computerized Design & FEA',
     description: '3D CAD structural chassis modeling, finite element stress analysis (FEA), and customized load distribution calculations tailored to client payload requirements.',
     icon: PiCpu,
-    image: '/assets/bento/cad-chassis.jpg'
+    image: '/assets/Tubular Chassis Blueprint Illustration.webp',
+    fit: 'contain'
   },
   {
     step: '02',
     title: 'Precision Fabrication & Welding',
     description: 'Robotic and high-precision manual MIG welding of high-tensile tubular steel frames with multi-stage anti-corrosion chemical treatment and powder coating.',
     icon: PiGear,
-    image: '/assets/Videos/manufacturing img.webp'
+    image: '/assets/Videos/manufacturing img.webp',
+    fit: 'cover'
   },
   {
     step: '03',
     title: 'Powertrain & Electrical Harnessing',
     description: 'Integration of indigenous high-torque AC/BLDC electric motors, intelligent smart motor controllers, automotive-grade sealed wiring harnesses, and IP-rated enclosures.',
     icon: PiLightning,
-    image: '/assets/Detailed-Electric-Vehicle-Chassis-Cutaway.webp'
+    image: '/assets/Electric Chassis in a Futuristic Studio.webp',
+    fit: 'cover'
   },
   {
     step: '04',
     title: 'Battery Pack Integration & BMS',
     description: 'Assembly of smart Lithium-ion (LFP/NMC) or heavy-duty deep-cycle Lead-Acid battery banks equipped with active thermal monitoring and multi-layer protection BMS.',
     icon: PiBatteryCharging,
-    image: '/assets/battery-chassis-tech.jpg'
+    image: '/assets/Exploded Electric Vehicle Battery Chassis (1).webp',
+    fit: 'cover'
   },
   {
     step: '05',
     title: 'Multi-Point Quality Control & Dyno Testing',
     description: 'Comprehensive 48-point pre-delivery inspection including electrical leakage testing, dyno load testing, brake efficiency verification, and live test-track endurance trials.',
     icon: PiShieldCheck,
-    image: '/assets/Multi-Point Quality Control & Dyno Testing.webp'
+    image: '/assets/Multi-Point Quality Control & Dyno Testing.webp',
+    fit: 'cover'
   }
 ];
 
@@ -301,8 +306,13 @@ export function TechnologyPage() {
                   key={stage.step}
                 >
                   <div className="process-step-number mobile-step-badge">{stage.step}</div>
-                  <div className="process-editorial-media">
-                    <img src={stage.image} alt={stage.title} loading="lazy" />
+                  <div className={`process-editorial-media ${stage.fit === 'contain' ? 'media-contain' : ''}`}>
+                    <img
+                      src={stage.image}
+                      alt={stage.title}
+                      loading="lazy"
+                      style={stage.fit === 'contain' ? { objectFit: 'contain' } : undefined}
+                    />
                   </div>
                   <div className="process-editorial-content">
                     <div className="process-step-number desktop-step-badge">{stage.step}</div>
